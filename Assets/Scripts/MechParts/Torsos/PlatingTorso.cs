@@ -1,16 +1,9 @@
 using UnityEngine;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class PlatingTorso : TorsoPart
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    override public void DefensiveAbility()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        return;
     }
 }

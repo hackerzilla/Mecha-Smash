@@ -13,7 +13,7 @@ public class MechController : MonoBehaviour
     public LegsPart legsPrefab;
 
     private HeadPart headInstance;
-    private TorsoPart torosInstance;
+    private TorsoPart torsoInstance;
     private ArmsPart armsInstance;
     private LegsPart legsInstance;
  
@@ -78,9 +78,9 @@ public class MechController : MonoBehaviour
 
     public void DefensiveAbility()
     {
-        if (torosInstance)
+        if (torsoInstance)
         {
-            torosInstance.DefensiveAbility();
+            torsoInstance.DefensiveAbility();
         }
 
     }
@@ -97,7 +97,10 @@ public class MechController : MonoBehaviour
     public void AssembleMechParts()
     {
         // TODO: repeat this logic for the torso
-        // Assert.AreNotEqual(torsoPrefab, null);
+        Assert.AreNotEqual(torsoPrefab, null);
+        torsoInstance = Instantiate(torsoPrefab);
+        torsoInstance.transform.SetParent(torsoParent.transform);
+        torsoInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
         Assert.AreNotEqual(headPrefab, null);
         headInstance = Instantiate(headPrefab);
