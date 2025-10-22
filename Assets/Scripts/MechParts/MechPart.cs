@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEditor.Animations;
 using UnityEngine;
 
@@ -7,34 +8,26 @@ using UnityEngine;
 /// </summary>
 abstract public class MechPart : MonoBehaviour
 {
+    // I realized that I don't actually need to track these references since they are contained in the animator.
     /// <summary>
     /// The base animation controller. Has the same state machine structure as all its sub-types. 
     /// This allows us to basically do polymorphism with animations.
     /// </summary>
-    public AnimatorController baseAnimController = null;
+    // public AnimatorController baseAnimController = null;
 
     /// <summary>
     /// The override animation controller. This is what changes the specific part type animation. 
     /// For example, this is where the cyclops head will override the special attack animation with 
     /// a laser beam animation with the head slightly shaking. 
     /// </summary>
-    public AnimatorOverrideController overrideAnimController = null;
+    // public AnimatorOverrideController overrideAnimController = null;
 
     protected Animator animator; 
 
+    // This function will run for all mech parts regardless of type.
     protected virtual void Awake()
     {
-        animator = GetComponentInChildren<Animator>();
-        animator.runtimeAnimatorController = overrideAnimController;
+        animator = GetComponent<Animator>();
+        Assert.NotNull(animator);
     }
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-
-    }
-
-
 }

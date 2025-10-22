@@ -1,16 +1,10 @@
 using UnityEngine;
 
-public class StrikerArms : MonoBehaviour
+public class StrikerArms : ArmsPart
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void BasicAttack()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("Striker basic attack!");
+        animator.SetTrigger("BasicAttack");
     }
 }

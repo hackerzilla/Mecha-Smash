@@ -1,16 +1,10 @@
 using UnityEngine;
 
-public class BoosterLegs : MonoBehaviour
+public class BoosterLegs : LegsPart
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void MovementAbility()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("Booster movement ability!");
+        animator.SetTrigger("MovementAbility");
     }
 }
