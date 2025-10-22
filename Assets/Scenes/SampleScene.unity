@@ -146,7 +146,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.41664, y: 0.41664, z: 0.41664}
+  m_LocalScale: {x: 0.27, y: 0.29, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 520312571}
@@ -946,6 +946,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1644198637}
   - component: {fileID: 1644198636}
+  - component: {fileID: 1644198638}
   m_Layer: 0
   m_Name: Mech
   m_TagString: Untagged
@@ -995,6 +996,22 @@ Transform:
   - {fileID: 241905843}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1644198638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644198635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c14fdc2ce84e452ab2ee025973fa423, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headPart: {fileID: 0}
+  torsoPart: {fileID: 0}
+  armsPart: {fileID: 0}
+  legsPart: {fileID: 0}
 --- !u!1 &1883330701
 GameObject:
   m_ObjectHideFlags: 0
