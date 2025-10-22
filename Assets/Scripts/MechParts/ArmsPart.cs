@@ -1,16 +1,7 @@
 using UnityEngine;
 
-public class ArmsPart : MonoBehaviour
+abstract public class ArmsPart : MechPart
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Transform torsoAttachmentPoint;
+    abstract public void BasicAttack();
 }

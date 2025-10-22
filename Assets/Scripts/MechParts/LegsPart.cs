@@ -1,16 +1,7 @@
 using UnityEngine;
 
-public class LegsPart : MonoBehaviour
+abstract public class LegsPart : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Transform torsoAttachmentPoint;
+    abstract public void MovementAbility();
 }

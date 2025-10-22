@@ -118,6 +118,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2430884242090985201}
+  - {fileID: 261802347245844399}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6977617424403156341
@@ -133,4 +134,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAnimController: {fileID: 9100000, guid: 6123e12ccfa8243d9a357e1e6c782cda, type: 2}
-  overrideAnimController: {fileID: 0}
+  overrideAnimController: {fileID: 22100000, guid: 738dc251e2adb4121a9f721f99335ba2, type: 2}
+  torsoAttachmentPoint: {fileID: 261802347245844399}
+--- !u!1 &8239433521472769163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 261802347245844399}
+  m_Layer: 0
+  m_Name: TorsoAttachmentPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &261802347245844399
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8239433521472769163}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.269, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1856876077599893022}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

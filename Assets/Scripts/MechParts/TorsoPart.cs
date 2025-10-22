@@ -1,16 +1,9 @@
 using UnityEngine;
 
-public class TorsoPart : MonoBehaviour
+abstract public class TorsoPart : MechPart
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Transform headAttachmentPoint;
+    public Transform armsAttachmentPoint;
+    public Transform legsAttachmentPoint;
+    abstract public void DefensiveAbility();
 }
