@@ -20,6 +20,13 @@ abstract public class MechPart : MonoBehaviour
     /// </summary>
     public AnimatorOverrideController overrideAnimController = null;
 
+    protected Animator animator; 
+
+    protected virtual void Awake()
+    {
+        animator = GetComponentInChildren<Animator>();
+        animator.runtimeAnimatorController = overrideAnimController;
+    }
     void Start()
     {
     }

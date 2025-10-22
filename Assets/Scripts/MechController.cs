@@ -49,7 +49,10 @@ public class MechController : MonoBehaviour
 
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SpecialAttack();
+        }
     }
 
     public void MoveFromInput(Vector2 moveInput)
@@ -94,6 +97,8 @@ public class MechController : MonoBehaviour
     public void AssembleMechParts()
     {
         // TODO: repeat this logic for the torso
+        // Assert.AreNotEqual(torsoPrefab, null);
+
         Assert.AreNotEqual(headPrefab, null);
         headInstance = Instantiate(headPrefab);
         headInstance.transform.SetParent(headParent.transform);
@@ -103,5 +108,7 @@ public class MechController : MonoBehaviour
 
         // TODO: repeat this logic for arms
         // TODO : repeat this logic for legs
+        // Assert.AreNotEqual(armsPrefab, null);
+        // Assert.AreNotEqual(legsPrefab, null);
     }
 }
