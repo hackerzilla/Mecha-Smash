@@ -13,10 +13,7 @@ public class MechController : MonoBehaviour
     public ArmsPart armsPrefab;
     public LegsPart legsPrefab;
 
-    public GameObject headParent;
-    public GameObject torsoParent;
-    public GameObject armsParent;
-    public GameObject legsParent;
+    public GameObject torsoParent;    
 
     public HeadPart headInstance;
     public TorsoPart torsoInstance;
@@ -71,79 +68,44 @@ public class MechController : MonoBehaviour
 
     public void BasicAttack()
     {
-        if (armsInstance)
-        {
-            armsInstance.BasicAttack();
-        }
+        armsInstance.BasicAttack();
     }
 
     public void SpecialAttack()
     {
-        if (headInstance)
-        {
-            headInstance.SpecialAttack();
-        }
+        headInstance.SpecialAttack();
     }
 
     public void DefensiveAbility()
     {
-        if (torsoInstance)
-        {
-            torsoInstance.DefensiveAbility();
-        }
-
+        torsoInstance.DefensiveAbility();
     }
 
     public void MovementAbility()
     {
-        if (legsInstance)
-        {
-            legsInstance.MovementAbility();
-        }
+        legsInstance.MovementAbility();
     }
 
     public void AssembleMechParts()
     {
-        torsoInstance = torsoParent.GetComponentInChildren<TorsoPart>();
-        if (torsoInstance == null)
-        {
-            Assert.AreNotEqual(torsoPrefab, null);
-            torsoInstance = Instantiate(torsoPrefab);
-            torsoInstance.transform.SetParent(torsoParent.transform);
-            torsoInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-        }
+        Assert.AreNotEqual(torsoPrefab, null);
+        torsoInstance = Instantiate(torsoPrefab);
+        torsoInstance.transform.SetParent(torsoParent.transform);
+        torsoInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
-        headInstance = headParent.GetComponentInChildren<HeadPart>();
-        if (headInstance == null)
-        {
-            Assert.AreNotEqual(headPrefab, null);
-            headInstance = Instantiate(headPrefab);
-            headInstance.transform.SetParent(headParent.transform);
-            // note: negate the attachment point's local pos cuz that's now the head's offset from its parent.
-            headInstance.transform.SetLocalPositionAndRotation(-headInstance.torsoAttachmentPoint.localPosition, Quaternion.identity);
-            headParent.transform.localPosition = torsoInstance.headAttachmentPoint.localPosition;
-        }
+        Assert.AreNotEqual(headPrefab, null);
+        headInstance = Instantiate(headPrefab);
+        headInstance.transform.SetParent(torsoInstance.headAttachmentPoint);
+        headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
-        // TODO: repeat this logic for arms
-        armsInstance = armsParent.GetComponentInChildren<ArmsPart>();
-        if (armsInstance == null)
-        {
-            Assert.AreNotEqual(armsPrefab, null);
-            armsInstance = Instantiate(armsPrefab);
-            armsInstance.transform.SetParent(armsParent.transform);
-            armsInstance.transform.SetLocalPositionAndRotation(-armsInstance.torsoAttachmentPoint.localPosition, Quaternion.identity);
-            armsParent.transform.localPosition = torsoInstance.armsAttachmentPoint.localPosition;
-        }
+        Assert.AreNotEqual(armsPrefab, null);
+        armsInstance = Instantiate(armsPrefab);
+        armsInstance.transform.SetParent(torsoInstance.armsAttachmentPoint);
+        armsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
-        // TODO : repeat this logic for legs
-        legsInstance = legsParent.GetComponentInChildren<LegsPart>();
-        if (legsInstance == null)
-        {
-            Assert.AreNotEqual(legsPrefab, null);
-            legsInstance = Instantiate(legsPrefab);
-            legsInstance.transform.SetParent(legsParent.transform);
-            legsInstance.transform.SetLocalPositionAndRotation(-legsInstance.torsoAttachmentPoint.localPosition, Quaternion.identity);
-            legsParent.transform.localPosition = torsoInstance.legsAttachmentPoint.localPosition;
-        }
+        Assert.AreNotEqual(legsPrefab, null);
+        legsInstance = Instantiate(legsPrefab);
+        legsInstance.transform.SetParent(torsoInstance.legsAttachmentPoint);
+        legsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
     }
 }
