@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// Class <c>MechController</c> holds references to the part slots and has all methods related to mech logic.
@@ -17,10 +18,10 @@ public class MechController : MonoBehaviour
     public GameObject armsParent;
     public GameObject legsParent;
 
-    private HeadPart headInstance;
-    private TorsoPart torsoInstance;
-    private ArmsPart armsInstance;
-    private LegsPart legsInstance;
+    public HeadPart headInstance;
+    public TorsoPart torsoInstance;
+    public ArmsPart armsInstance;
+    public LegsPart legsInstance;
  
 
     void Start()
@@ -56,10 +57,16 @@ public class MechController : MonoBehaviour
         }
     }
 
-    public void MoveFromInput(Vector2 moveInput)
+    public void MoveFromInput(float xAxisInput)
     {
-        // TODO: implement movement logic
-        
+        Vector3 walkMovement = new Vector3(xAxisInput, 0, 0);
+        transform.position += walkMovement * Time.deltaTime;
+    }
+
+    public void Jump()
+    {
+        // TODO implement this
+        Debug.Log(name + " jumped!");
     }
 
     public void BasicAttack()
@@ -93,7 +100,6 @@ public class MechController : MonoBehaviour
         {
             legsInstance.MovementAbility();
         }
-
     }
 
     public void AssembleMechParts()

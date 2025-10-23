@@ -17,6 +17,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-         
+        // TODO replace this code with gamepad unity input system code
+        float xInput = Input.GetAxisRaw("Horizontal");
+        if (xInput != 0)
+        {
+            mechInstance.MoveFromInput(xInput);
+            mechInstance.legsInstance.animator.SetBool("walking", true);
+        }
+        else
+        {
+            mechInstance.legsInstance.animator.SetBool("walking", false);
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            mechInstance.Jump();
+        }
     }
 }

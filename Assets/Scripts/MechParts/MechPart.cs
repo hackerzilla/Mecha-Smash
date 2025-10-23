@@ -22,7 +22,7 @@ abstract public class MechPart : MonoBehaviour
     /// </summary>
     // public AnimatorOverrideController overrideAnimController = null;
 
-    protected Animator animator; 
+    public Animator animator; 
 
     // This function will run for all mech parts regardless of type.
     protected virtual void Awake()
