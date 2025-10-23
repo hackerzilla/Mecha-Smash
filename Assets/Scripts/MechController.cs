@@ -13,37 +13,18 @@ public class MechController : MonoBehaviour
     public ArmsPart armsPrefab;
     public LegsPart legsPrefab;
 
+    // The game object that will basically be the transform that the torso gets attached to.
     public GameObject torsoParent;    
 
     public HeadPart headInstance;
     public TorsoPart torsoInstance;
     public ArmsPart armsInstance;
     public LegsPart legsInstance;
- 
 
     void Start()
     {
-        // headParent = GameObject.Find("Head");
-        // if (headParent)
-        // {
-        //     Debug.Log("Found " + headParent.name);
-        // }
-        // torsoParent = GameObject.Find("Torso");
-        // if (torsoParent)
-        // {
-        //     Debug.Log("Found " + torsoParent.name);
-        // }
-        // armsParent = GameObject.Find("Arms");
-        // if (armsParent)
-        // {
-        //     Debug.Log("Found " + armsParent.name);
-        // }
-        // legsParent = GameObject.Find("Legs");
-        // if (legsParent)
-        // {
-        //     Debug.Log("Found " + legsParent.name);
-        // }
-        AssembleMechParts();
+        bool ready = torsoPrefab && headPrefab && armsPrefab && legsPrefab;
+        if (ready) AssembleMechParts();
     }
 
     void Update()
@@ -62,8 +43,8 @@ public class MechController : MonoBehaviour
 
     public void Jump()
     {
-        // TODO implement this
         Debug.Log(name + " jumped!");
+        // TODO implement this
     }
 
     public void BasicAttack()
@@ -86,23 +67,71 @@ public class MechController : MonoBehaviour
         legsInstance.MovementAbility();
     }
 
+    public void AssembleMechFromPrefabParts(TorsoPart torso, HeadPart head, ArmsPart arms, LegsPart legs)
+    {
+        torsoPrefab = torso;
+        headPrefab = head;
+        armsPrefab = arms;
+        legsPrefab = legs;
+        AssembleMechParts();
+    }
+    
     public void AssembleMechParts()
+    {
+        AttachTorso();
+        AttachHead();
+        AttachArms();
+        AttachLegs();
+    }
+
+    public void SwapPart(MechPart part)
+    {
+        Debug.Log("SwapPart called on " + part.name);
+        if (part is HeadPart)
+        {
+            Debug.Log(part.name + " is a HeadPart");
+        }
+        else if (part is TorsoPart)
+        {
+            Debug.Log(part.name + " is a TorsoPart");
+        }
+        else if (part is ArmsPart)
+        {
+            Debug.Log(part.name + " is a ArmsPart");
+        }
+        else if (part is LegsPart)
+        {
+            Debug.Log(part.name + " is a LegsPart");
+        }
+        else
+        {
+            Debug.Log(part.name + " is not a valid MechPart subclass!");
+        }
+    }
+
+    protected void AttachHead()
+    {
+        Assert.AreNotEqual(headPrefab, null);
+        headInstance = Instantiate(headPrefab);
+        headInstance.transform.SetParent(torsoInstance.headAttachmentPoint);
+        headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+    }
+    protected void AttachTorso()
     {
         Assert.AreNotEqual(torsoPrefab, null);
         torsoInstance = Instantiate(torsoPrefab);
         torsoInstance.transform.SetParent(torsoParent.transform);
         torsoInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-
-        Assert.AreNotEqual(headPrefab, null);
-        headInstance = Instantiate(headPrefab);
-        headInstance.transform.SetParent(torsoInstance.headAttachmentPoint);
-        headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-
+    }
+    protected void AttachArms()
+    {
         Assert.AreNotEqual(armsPrefab, null);
         armsInstance = Instantiate(armsPrefab);
         armsInstance.transform.SetParent(torsoInstance.armsAttachmentPoint);
         armsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-
+    }
+    protected void AttachLegs()
+    {
         Assert.AreNotEqual(legsPrefab, null);
         legsInstance = Instantiate(legsPrefab);
         legsInstance.transform.SetParent(torsoInstance.legsAttachmentPoint);
