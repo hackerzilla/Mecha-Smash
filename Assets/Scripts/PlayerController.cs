@@ -4,6 +4,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public MechController mechPrefab;
+    public HeadPart headPrefab;
+    public TorsoPart torsoPrefab;
+    public ArmsPart armsPrefab;
+    public LegsPart legsPrefab;
     public MechController mechInstance;
     void Start()
     {
@@ -11,6 +15,7 @@ public class PlayerController : MonoBehaviour
         {
             Assert.NotNull(mechPrefab);
             mechInstance = Instantiate(mechPrefab, this.transform);
+            mechInstance.AssembleMechFromPrefabParts(torsoPrefab, headPrefab, armsPrefab, legsPrefab);
         }
         Assert.NotNull(mechInstance);
     }

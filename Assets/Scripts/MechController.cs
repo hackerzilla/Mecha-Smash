@@ -86,9 +86,12 @@ public class MechController : MonoBehaviour
 
     public void SwapPart(MechPart part)
     {
+        // TODO implement
         Debug.Log("SwapPart called on " + part.name);
         if (part is HeadPart)
         {
+            // delete current part
+            // attach new part
             Debug.Log(part.name + " is a HeadPart");
         }
         else if (part is TorsoPart)
