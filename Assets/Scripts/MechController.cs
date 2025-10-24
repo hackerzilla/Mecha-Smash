@@ -23,8 +23,8 @@ public class MechController : MonoBehaviour
 
     void Start()
     {
-        bool ready = torsoPrefab && headPrefab && armsPrefab && legsPrefab;
-        if (ready) AssembleMechParts();
+        // bool ready = torsoPrefab && headPrefab && armsPrefab && legsPrefab;
+        // if (ready) AssembleMechParts();
     }
 
     void Update()
@@ -78,6 +78,7 @@ public class MechController : MonoBehaviour
     
     public void AssembleMechParts()
     {
+        Debug.Log(name + " assembling parts (" + headPrefab.name + ", " + torsoPrefab.name + ", " + armsPrefab.name + ", " + legsPrefab.name + ")");
         AttachTorso();
         AttachHead();
         AttachArms();
@@ -90,13 +91,16 @@ public class MechController : MonoBehaviour
         Debug.Log("SwapPart called on " + part.name);
         if (part is HeadPart)
         {
-            // delete current part
-            // attach new part
             Debug.Log(part.name + " is a HeadPart");
+            headPrefab = (HeadPart)part;
+            AttachHead();
         }
         else if (part is TorsoPart)
         {
             Debug.Log(part.name + " is a TorsoPart");
+            torsoPrefab = (TorsoPart)part;
+            AttachTorso();
+            // todo reparent the head, arms and legs to the new torso's attachment points
         }
         else if (part is ArmsPart)
         {
@@ -114,6 +118,10 @@ public class MechController : MonoBehaviour
 
     protected void AttachHead()
     {
+        if (headInstance != null)
+        {
+            Destroy(headInstance);
+        }
         Assert.AreNotEqual(headPrefab, null);
         headInstance = Instantiate(headPrefab);
         headInstance.transform.SetParent(torsoInstance.headAttachmentPoint);
@@ -121,6 +129,10 @@ public class MechController : MonoBehaviour
     }
     protected void AttachTorso()
     {
+        if (torsoInstance != null)
+        {
+            Destroy(torsoInstance);
+        }
         Assert.AreNotEqual(torsoPrefab, null);
         torsoInstance = Instantiate(torsoPrefab);
         torsoInstance.transform.SetParent(torsoParent.transform);
@@ -128,6 +140,10 @@ public class MechController : MonoBehaviour
     }
     protected void AttachArms()
     {
+        if (armsInstance != null)
+        {
+            Destroy(armsInstance);
+        }
         Assert.AreNotEqual(armsPrefab, null);
         armsInstance = Instantiate(armsPrefab);
         armsInstance.transform.SetParent(torsoInstance.armsAttachmentPoint);
@@ -135,6 +151,10 @@ public class MechController : MonoBehaviour
     }
     protected void AttachLegs()
     {
+        if (legsInstance != null)
+        {
+            Destroy(legsInstance);
+        }
         Assert.AreNotEqual(legsPrefab, null);
         legsInstance = Instantiate(legsPrefab);
         legsInstance.transform.SetParent(torsoInstance.legsAttachmentPoint);
