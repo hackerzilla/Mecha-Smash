@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -65,6 +66,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             mechInstance.Jump();
+        }
+    }
           
     private void FixedUpdate()
     {
