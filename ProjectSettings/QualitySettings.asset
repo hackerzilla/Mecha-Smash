@@ -20,6 +20,8 @@ QualitySettings:
     shadowmaskMode: 0
     skinWeights: 1
     textureQuality: 1
+    globalTextureMipmapLimit: 1
+    textureMipmapLimitSettings: []
     anisotropicTextures: 0
     antiAliasing: 0
     softParticles: 0
@@ -29,6 +31,15 @@ QualitySettings:
     vSyncCount: 0
     lodBias: 0.3
     maximumLODLevel: 0
+    useLegacyDetailDistribution: 1
+    adaptiveVsync: 0
+    vSyncCount: 0
+    realtimeGICPUUsage: 25
+    adaptiveVsyncExtraA: 0
+    adaptiveVsyncExtraB: 0
+    lodBias: 0.3
+    maximumLODLevel: 0
+    enableLODCrossFade: 1
     streamingMipmapsActive: 0
     streamingMipmapsAddAllCameras: 1
     streamingMipmapsMemoryBudget: 512
@@ -56,6 +67,8 @@ QualitySettings:
     shadowmaskMode: 0
     skinWeights: 2
     textureQuality: 0
+    globalTextureMipmapLimit: 0
+    textureMipmapLimitSettings: []
     anisotropicTextures: 0
     antiAliasing: 0
     softParticles: 0
@@ -65,6 +78,15 @@ QualitySettings:
     vSyncCount: 0
     lodBias: 0.4
     maximumLODLevel: 0
+    useLegacyDetailDistribution: 1
+    adaptiveVsync: 0
+    vSyncCount: 0
+    realtimeGICPUUsage: 25
+    adaptiveVsyncExtraA: 0
+    adaptiveVsyncExtraB: 0
+    lodBias: 0.4
+    maximumLODLevel: 0
+    enableLODCrossFade: 1
     streamingMipmapsActive: 0
     streamingMipmapsAddAllCameras: 1
     streamingMipmapsMemoryBudget: 512
@@ -79,6 +101,18 @@ QualitySettings:
     customRenderPipeline: {fileID: 0}
     excludedTargetPlatforms: []
   - serializedVersion: 2
+    customRenderPipeline: {fileID: 11400000, guid: 681886c5eb7344803b6206f758bf0b1c, type: 2}
+    terrainQualityOverrides: 0
+    terrainPixelError: 1
+    terrainDetailDensityScale: 1
+    terrainBasemapDistance: 1000
+    terrainDetailDistance: 80
+    terrainTreeDistance: 5000
+    terrainBillboardStart: 50
+    terrainFadeLength: 5
+    terrainMaxTrees: 50
+    excludedTargetPlatforms: []
+  - serializedVersion: 4
     name: Medium
     pixelLightCount: 1
     shadows: 1
@@ -92,6 +126,8 @@ QualitySettings:
     shadowmaskMode: 0
     skinWeights: 2
     textureQuality: 0
+    globalTextureMipmapLimit: 0
+    textureMipmapLimitSettings: []
     anisotropicTextures: 1
     antiAliasing: 0
     softParticles: 0
