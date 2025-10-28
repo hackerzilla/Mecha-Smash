@@ -47,9 +47,10 @@ public class PlayerUIManager : MonoBehaviour
 
             // Create Event System
             var uiEventSystem = new GameObject($"Player {playerInput.playerIndex} EventSystem");
+            var multiplayerEventSystem = uiEventSystem.AddComponent<MultiplayerEventSystem>();
             var uiInputModule = uiEventSystem.AddComponent<InputSystemUIInputModule>();
             uiInputModule.actionsAsset = playerInput.actions;
-
+            multiplayerEventSystem.playerRoot = playerUI;
             uiEventSystem.transform.SetParent(playerInput.transform, false);
         }
 
