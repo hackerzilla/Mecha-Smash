@@ -37,13 +37,13 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
-        if (mechInstance == null)
-        {
-            Assert.NotNull(mechPrefab);
-            mechInstance = Instantiate(mechPrefab, this.transform);
-            mechInstance.AssembleMechFromPrefabParts(torsoPrefab, headPrefab, armsPrefab, legsPrefab);
-        }
-        Assert.NotNull(mechInstance);
+        // if (mechInstance == null)
+        // {
+        //     Assert.NotNull(mechPrefab);
+        //     mechInstance = Instantiate(mechPrefab, this.transform);
+        //     mechInstance.AssembleMechFromPrefabParts(torsoPrefab, headPrefab, armsPrefab, legsPrefab);
+        // }
+        // Assert.NotNull(mechInstance);
         
         rb = GetComponent<Rigidbody2D>();
         // Random Color
@@ -53,33 +53,33 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // TODO replace this code with gamepad unity input system code
-        float xInput = Input.GetAxisRaw("Horizontal");
-        if (xInput != 0)
-        {
-            mechInstance.MoveFromInput(xInput);
-            mechInstance.legsInstance.animator.SetBool("walking", true);
-        }
-        else
-        {
-            mechInstance.legsInstance.animator.SetBool("walking", false);
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            mechInstance.Jump();
-        }
+        // float xInput = Input.GetAxisRaw("Horizontal");
+        // if (xInput != 0)
+        // {
+        //     mechInstance.MoveFromInput(xInput);
+        //     mechInstance.legsInstance.animator.SetBool("walking", true);
+        // }
+        // else
+        // {
+        //     mechInstance.legsInstance.animator.SetBool("walking", false);
+        // }
+        // if (Input.GetKeyDown(KeyCode.W))
+        // {
+        //     mechInstance.Jump();
+        // }
     }
           
     private void FixedUpdate()
     {
         // Ground Check
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
-        if (isGrounded)
-            jumpsRemaining = maxJumps;
+        // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
+        // if (isGrounded)
+        //     jumpsRemaining = maxJumps;
 
-        // Movement
-        float control = isGrounded ? 1f : airControl;
-        float targetVelocityX = moveInput.x * moveSpeed * control;
-        rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
+        // // Movement
+        // float control = isGrounded ? 1f : airControl;
+        // float targetVelocityX = moveInput.x * moveSpeed * control;
+        // rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -110,11 +110,12 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         // Check if we have enough jumps
-        if (jumpsRemaining > 0)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            jumpsRemaining -= 1;
-        }
+        // if (jumpsRemaining > 0)
+        // {
+        //     rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+        //     rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        //     jumpsRemaining -= 1;
+        // }
+        mechInstance.Jump();
     }
 }
