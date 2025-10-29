@@ -2,7 +2,6 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Mech Configuration")]
@@ -48,7 +47,7 @@ public class PlayerController : MonoBehaviour
         }
         Assert.NotNull(mechInstance);
         
-        rb = GetComponent<Rigidbody2D>();
+        rb = mechInstance.GetComponent<Rigidbody2D>();
         // Random Color
 //         GetComponent<SpriteRenderer>().color = new Color(Random.value, Random.value, Random.value);
     }
@@ -75,17 +74,16 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // OnMove();
-
-        
         // Ground Check
         // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
         // if (isGrounded)
-        //     jumpsRemaining = maxJumps;
+            jumpsRemaining = maxJumps;
 
-        // // Movement
-        // float control = isGrounded ? 1f : airControl;
-        // float targetVelocityX = moveInput.x * moveSpeed * control;
-        // rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
+        // Movement
+        float control = isGrounded ? 1f : airControl;
+        // float control = 1f;
+        float targetVelocityX = moveInput.x * moveSpeed * control;
+        rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -117,12 +115,12 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         // Check if we have enough jumps
-        // if (jumpsRemaining > 0)
-        // {
-        //     rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-        //     rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        //     jumpsRemaining -= 1;
-        // }
+        if (jumpsRemaining > 0)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            jumpsRemaining -= 1;
+        }
         mechInstance.Jump();
     }
 }
