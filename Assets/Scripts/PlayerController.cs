@@ -40,13 +40,13 @@ public class PlayerController : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         playerInput.currentActionMap.Enable();
-        // if (mechInstance == null)
-        // {
-        //     Assert.NotNull(mechPrefab);
-        //     mechInstance = Instantiate(mechPrefab, this.transform);
-        //     mechInstance.AssembleMechFromPrefabParts(torsoPrefab, headPrefab, armsPrefab, legsPrefab);
-        // }
-        // Assert.NotNull(mechInstance);
+        if (mechInstance == null)
+        {
+            Assert.NotNull(mechPrefab);
+            mechInstance = Instantiate(mechPrefab, this.transform);
+            mechInstance.AssembleMechFromPrefabParts(torsoPrefab, headPrefab, armsPrefab, legsPrefab);
+        }
+        Assert.NotNull(mechInstance);
         
         rb = GetComponent<Rigidbody2D>();
         // Random Color
@@ -74,6 +74,9 @@ public class PlayerController : MonoBehaviour
           
     private void FixedUpdate()
     {
+        // OnMove();
+
+        
         // Ground Check
         // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
         // if (isGrounded)
