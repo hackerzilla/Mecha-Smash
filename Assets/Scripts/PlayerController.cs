@@ -34,9 +34,12 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveInput;
     private int jumpsRemaining;
     private bool isGrounded;
+    private PlayerInput playerInput;
     
     void Start()
     {
+        playerInput = GetComponent<PlayerInput>();
+        playerInput.currentActionMap.Enable();
         // if (mechInstance == null)
         // {
         //     Assert.NotNull(mechPrefab);
@@ -99,6 +102,7 @@ public class PlayerController : MonoBehaviour
 
     public void Submit(InputAction.CallbackContext context)
     {
+        print("Submit called by " + name);
         if (context.performed)
         {
             playerUI.SetReady();
