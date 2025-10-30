@@ -1,0 +1,371 @@
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using TMPro;
+using System.Collections;
+using System.Collections.Generic;
+
+/// <summary>
+/// Handles per-player mech customization in the lobby using Unity Input System.
+/// Players navigate through part slots (Head/Torso/Arms/Legs) and select from available options.
+/// Replaces the old PlayerUI.cs and PlayerCustomizer.cs scripts.
+/// </summary>
+public class PlayerCard : MonoBehaviour
+{
+    [Header("Mech Part Options")]
+    public List<HeadPart> headOptions = new List<HeadPart>();
+    public List<TorsoPart> torsoOptions = new List<TorsoPart>();
+    public List<ArmsPart> armsOptions = new List<ArmsPart>();
+    public List<LegsPart> legsOptions = new List<LegsPart>();
+
+    [Header("UI Elements - Part Display")]
+    public List<Image> partIcons; // [0]=Head, [1]=Torso, [2]=Arms, [3]=Legs - optional visual preview
+    public List<TMP_Text> partNameTexts; // Display current part names
+    public List<Image> menuOutlines; // Selection indicators (flashing borders)
+    public float flashingPeriod = 0.25f;
+    
+    [Header("Ready System")]
+    public TMP_Text readyButtonText; 
+    
+    // State 
+    private int[] currentPartIndices; // Index into each options list [Head, Torso, Arms, Legs]
+    private int currentMenuSlot = 0; // Which part slot is currently selected (0-3)
+    public bool isReady = false;
+    private Coroutine activeFlashCoroutine;
+    
+    // Input debouncing
+    private float lastInputTime = 0f;
+    private float inputCooldown = 0.2f; // Prevent accidental double-inputs 
+    
+    
+    private const int PART_SLOT_COUNT = 4; // Head, Torso, Arms, Legs 
+
+    void Start()
+    {
+        // Initialize to first option for each part type
+        currentPartIndices = new int[PART_SLOT_COUNT];
+        for (int i = 0; i < PART_SLOT_COUNT; i++)
+        {
+            currentPartIndices[i] = 0;
+        }
+        
+        // Update UI to show starting selections
+        UpdateAllPartDisplays();
+        
+        // Disable all outlines initially
+        foreach (var outline in menuOutlines)
+        {
+            if (outline != null) outline.enabled = false;
+        }
+        
+        // Start with head slot selected (flashing outline)
+        StartFlashing(currentMenuSlot);
+        
+        // Initialize ready button text
+        if (readyButtonText != null)
+        {
+            readyButtonText.text = "Unready";
+        }
+    }
+    
+    public void SetReady()
+    {
+        if (isReady)
+        {
+            readyButtonText.text = "Unready";
+            isReady = false;
+        }
+        else
+        {
+            readyButtonText.text = "Ready";
+            isReady = true;
+        }
+    }
+
+    public void CheckReady()
+    {
+        foreach (GameObject player in LobbyMenuManager.instance.players)
+        {
+            var ui = player.GetComponent<PlayerController>().playerCard;
+    
+            if (!ui.isReady)
+            {
+                Debug.Log("Not all players are ready");
+                return;
+            }
+    
+        }
+    
+        Debug.Log("All players are ready!");
+        LobbyMenuManager.instance.lobbyMenu.SetActive(false); // make the lobby UI invisible
+    }
+    /// <summary>
+    /// Called by Unity Input System when Navigate action is triggered (D-pad, left stick, arrow keys).
+    /// Horizontal: Cycles through part options for current slot
+    /// Vertical: Switches between part slots (Head/Torso/Arms/Legs)
+    /// </summary>
+    public void OnNavigate(InputAction.CallbackContext context)
+    {
+        if (!context.performed || isReady) return;
+        
+        // Cooldown to prevent rapid-fire inputs from held buttons/sticks
+        if (Time.time - lastInputTime < inputCooldown) return;
+        lastInputTime = Time.time;
+        
+        Vector2 input = context.ReadValue<Vector2>();
+        
+        // Horizontal input: cycle through part options
+        if (Mathf.Abs(input.x) > 0.5f)
+        {
+            int direction = input.x > 0 ? 1 : -1;
+            CyclePart(direction);
+        }
+        
+        // Vertical input: switch part slot
+        if (Mathf.Abs(input.y) > 0.5f)
+        {
+            int direction = input.y > 0 ? -1 : 1; // Up = previous slot, Down = next slot
+            SwitchPartSlot(direction);
+        }
+    }
+    
+    /// <summary>
+    /// Called by Unity Input System when Submit action is triggered (A button, Enter, etc.)
+    /// Toggles ready state and checks if all players are ready to start
+    /// </summary>
+    public void OnSubmit(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        
+        ToggleReady();
+    }
+    
+    /// <summary>
+    /// Cycles through available parts for the currently selected slot
+    /// </summary>
+    private void CyclePart(int direction)
+    {
+        int maxIndex = GetPartOptionsCount(currentMenuSlot);
+        
+        if (maxIndex == 0) return; // No parts available for this slot
+        
+        currentPartIndices[currentMenuSlot] += direction;
+        
+        // Wrap around
+        if (currentPartIndices[currentMenuSlot] >= maxIndex)
+            currentPartIndices[currentMenuSlot] = 0;
+        else if (currentPartIndices[currentMenuSlot] < 0)
+            currentPartIndices[currentMenuSlot] = maxIndex - 1;
+        
+        UpdatePartDisplay(currentMenuSlot);
+    }
+    
+    /// <summary>
+    /// Switches which part slot is currently being customized (Head -> Torso -> Arms -> Legs)
+    /// </summary>
+    private void SwitchPartSlot(int direction)
+    {
+        StopFlashing();
+        
+        currentMenuSlot += direction;
+        
+        // Wrap around
+        if (currentMenuSlot >= PART_SLOT_COUNT)
+            currentMenuSlot = 0;
+        else if (currentMenuSlot < 0)
+            currentMenuSlot = PART_SLOT_COUNT - 1;
+        
+        StartFlashing(currentMenuSlot);
+    }
+    
+    /// <summary>
+    /// Toggles ready state. When ready, part selection is locked.
+    /// Checks if all players are ready to start the game.
+    /// </summary>
+    private void ToggleReady()
+    {
+        isReady = !isReady;
+        
+        if (readyButtonText != null)
+        {
+            readyButtonText.text = isReady ? "Ready" : "Unready";
+        }
+        
+        // Stop part selection when ready
+        if (isReady)
+        {
+            StopFlashing();
+        }
+        else
+        {
+            StartFlashing(currentMenuSlot);
+        }
+        
+        CheckAllPlayersReady();
+    }
+    
+    /// <summary>
+    /// Checks if all connected players are ready. If so, proceeds to game start.
+    /// </summary>
+    private void CheckAllPlayersReady()
+    {
+        // Verify LobbyMenuManager singleton exists
+        if (LobbyMenuManager.instance == null)
+        {
+            Debug.LogWarning("LobbyMenuManager instance not found!");
+            return;
+        }
+        
+        foreach (GameObject player in LobbyMenuManager.instance.players)
+        {
+            var controller = player.GetComponent<PlayerController>();
+            if (controller == null || controller.playerCard == null)
+            {
+                Debug.LogWarning($"Player {player.name} missing PlayerController or playerCard reference");
+                continue;
+            }
+            
+            if (!controller.playerCard.isReady)
+            {
+                Debug.Log("Not all players are ready");
+                return;
+            }
+        }
+        
+        Debug.Log("All players are ready!");
+        
+        // Apply selected parts to each player's mech
+        ApplySelectedPartsToMech();
+        
+        LobbyMenuManager.instance.lobbyMenu.SetActive(false);
+    }
+    
+    /// <summary>
+    /// Applies the selected mech parts to the player's actual mech
+    /// </summary>
+    private void ApplySelectedPartsToMech()
+    {
+        // Get the PlayerController this customizer belongs to
+        // This assumes the customizer is on the UI, and we need to find the associated player
+        // The LobbyMenuManager should maintain this relationship
+        
+        // For now, this is a placeholder - you'll need to implement the actual part swapping
+        // when the player enters the game scene with their selected parts
+        Debug.Log($"Player selected: {GetSelectedHead()?.name}, {GetSelectedTorso()?.name}, {GetSelectedArms()?.name}, {GetSelectedLegs()?.name}");
+    }
+    
+    private int GetPartOptionsCount(int slotIndex)
+    {
+        switch (slotIndex)
+        {
+            case 0: return headOptions.Count;
+            case 1: return torsoOptions.Count;
+            case 2: return armsOptions.Count;
+            case 3: return legsOptions.Count;
+            default: return 0;
+        }
+    }
+    
+    /// <summary>
+    /// Updates the UI display for a specific part slot
+    /// </summary>
+    private void UpdatePartDisplay(int slotIndex)
+    {
+        if (partNameTexts.Count <= slotIndex || partNameTexts[slotIndex] == null)
+            return;
+        
+        string partName = "None";
+        
+        switch (slotIndex)
+        {
+            case 0: // Head
+                if (headOptions.Count > 0 && currentPartIndices[0] < headOptions.Count)
+                    partName = headOptions[currentPartIndices[0]].name;
+                break;
+            case 1: // Torso
+                if (torsoOptions.Count > 0 && currentPartIndices[1] < torsoOptions.Count)
+                    partName = torsoOptions[currentPartIndices[1]].name;
+                break;
+            case 2: // Arms
+                if (armsOptions.Count > 0 && currentPartIndices[2] < armsOptions.Count)
+                    partName = armsOptions[currentPartIndices[2]].name;
+                break;
+            case 3: // Legs
+                if (legsOptions.Count > 0 && currentPartIndices[3] < legsOptions.Count)
+                    partName = legsOptions[currentPartIndices[3]].name;
+                break;
+        }
+        
+        partNameTexts[slotIndex].text = partName;
+        
+        // TODO: Update partIcons[slotIndex].sprite with preview sprites for parts
+        // This would require each MechPart to have a sprite reference for UI preview
+    }
+    
+    private void UpdateAllPartDisplays()
+    {
+        for (int i = 0; i < PART_SLOT_COUNT; i++)
+        {
+            UpdatePartDisplay(i);
+        }
+    }
+    
+    private void StartFlashing(int slotIndex)
+    {
+        if (menuOutlines.Count > slotIndex && menuOutlines[slotIndex] != null)
+        {
+            activeFlashCoroutine = StartCoroutine(FlashOutline(menuOutlines[slotIndex]));
+        }
+    }
+    
+    private void StopFlashing()
+    {
+        if (activeFlashCoroutine != null)
+        {
+            StopCoroutine(activeFlashCoroutine);
+            activeFlashCoroutine = null;
+        }
+        
+        if (menuOutlines.Count > currentMenuSlot && menuOutlines[currentMenuSlot] != null)
+        {
+            menuOutlines[currentMenuSlot].enabled = false;
+        }
+    }
+    
+    private IEnumerator FlashOutline(Image outline)
+    {
+        while (true)
+        {
+            outline.enabled = !outline.enabled;
+            yield return new WaitForSeconds(flashingPeriod);
+        }
+    }
+    
+    public HeadPart GetSelectedHead()
+    {
+        return (headOptions.Count > 0 && currentPartIndices[0] < headOptions.Count) 
+            ? headOptions[currentPartIndices[0]] 
+            : null;
+    }
+    
+    public TorsoPart GetSelectedTorso()
+    {
+        return (torsoOptions.Count > 0 && currentPartIndices[1] < torsoOptions.Count) 
+            ? torsoOptions[currentPartIndices[1]] 
+            : null;
+    }
+    
+    public ArmsPart GetSelectedArms()
+    {
+        return (armsOptions.Count > 0 && currentPartIndices[2] < armsOptions.Count) 
+            ? armsOptions[currentPartIndices[2]] 
+            : null;
+    }
+    
+    public LegsPart GetSelectedLegs()
+    {
+        return (legsOptions.Count > 0 && currentPartIndices[3] < legsOptions.Count) 
+            ? legsOptions[currentPartIndices[3]] 
+            : null;
+    }
+}

@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundRadius = 0.1f;
 
     [Header("User Interface")]
-    public PlayerUI playerUI;
+    public PlayerCard playerCard;
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        playerInput.currentActionMap.Enable();
+        // playerInput.currentActionMap.Enable();
         if (mechInstance == null)
         {
             Assert.NotNull(mechPrefab);
@@ -48,8 +48,6 @@ public class PlayerController : MonoBehaviour
         Assert.NotNull(mechInstance);
         
         rb = mechInstance.GetComponent<Rigidbody2D>();
-        // Random Color
-//         GetComponent<SpriteRenderer>().color = new Color(Random.value, Random.value, Random.value);
     }
 
     void Update()
@@ -100,14 +98,20 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
     }
+    
+    public void OnNavigate(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            playerCard.OnNavigate(context);
+        }
+    }
 
     public void Submit(InputAction.CallbackContext context)
     {
-        print("Submit called by " + name);
         if (context.performed)
         {
-            playerUI.SetReady();
-            playerUI.CheckReady();
+            playerCard.OnSubmit(context);
             Debug.Log($"{gameObject.name} Submit pressed by {GetComponent<PlayerInput>().devices[0].displayName}");
         }
     }

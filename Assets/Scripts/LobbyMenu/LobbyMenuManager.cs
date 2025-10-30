@@ -2,15 +2,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.Serialization;
 
-public class PlayerUIManager : MonoBehaviour
+public class LobbyMenuManager : MonoBehaviour
 {
-    [SerializeField] private GameObject playerUIPrefab;
-    [SerializeField] private Transform playerUIParent;
-    public List<GameObject> players;
+    // Singleton
+    public static LobbyMenuManager instance { get; private set; }
+    
+    [FormerlySerializedAs("playerUIPrefab")]
+    public GameObject playerCardPrefab;
     public PlayerInputManager playerInputManager;
-    public static PlayerUIManager instance { get; private set; }
-    public GameObject controllersMenu;
+    public GameObject lobbyMenu;
+    public List<GameObject> players;
 
     private void Awake()
     {
@@ -19,44 +22,48 @@ public class PlayerUIManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
+        // singleton pattern
         instance = this;
     }
 
     private void OnEnable()
     {
+        // Subscribe to the Player Input Manager's events.
         playerInputManager.onPlayerJoined += OnPlayerJoined;
         playerInputManager.onPlayerLeft += OnPlayerLeft;
     }
 
     private void OnDisable()
     {
+        // Unsubscribe from the Player Input Manager's events. (avoids memory leaks)
         playerInputManager.onPlayerJoined -= OnPlayerJoined;
         playerInputManager.onPlayerLeft -= OnPlayerLeft;
     }
 
+    // Called every time a player joins via Player Input Manager (a new controller is detected)
     private void OnPlayerJoined(PlayerInput playerInput)
     {
         players.Add(playerInput.gameObject);
 
-        if (playerUIPrefab != null)
+        if (playerCardPrefab != null)
         {
             // Create Player UI
-            var playerUI = Instantiate(playerUIPrefab, playerUIParent);
-            playerInput.GetComponent<PlayerController>().playerUI = playerUI.GetComponent<PlayerUI>();
+            var playerCard = Instantiate(playerCardPrefab, lobbyMenu.transform);
+            playerInput.GetComponent<PlayerController>().playerCard = playerCard.GetComponent<PlayerCard>();
 
-            // Create Event System
+            // Create Event System and attach to the Player object (not the PlayerCard object!).
             var uiEventSystem = new GameObject($"Player {playerInput.playerIndex} EventSystem");
             var multiplayerEventSystem = uiEventSystem.AddComponent<MultiplayerEventSystem>();
             var uiInputModule = uiEventSystem.AddComponent<InputSystemUIInputModule>();
             uiInputModule.actionsAsset = playerInput.actions;
-            multiplayerEventSystem.playerRoot = playerUI;
+            multiplayerEventSystem.playerRoot = playerCard;
             uiEventSystem.transform.SetParent(playerInput.transform, false);
         }
 
         Debug.Log($"Player {playerInput.playerIndex} joined!");
     }
 
+    // Called every time a player leaves via Player Input Manager (a new controller is disconnected)
     private void OnPlayerLeft(PlayerInput playerInput)
     {
         players.Remove(playerInput.gameObject);

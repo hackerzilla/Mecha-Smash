@@ -883,7 +883,7 @@
                 {
                     "name": "",
                     "id": "d45bced2-d5ff-407b-a9c3-68d117ac32f4",
-                    "path": "<HID::usb gamepad           >/button6",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad;Joystick;XR;Touch;Keyboard&Mouse",

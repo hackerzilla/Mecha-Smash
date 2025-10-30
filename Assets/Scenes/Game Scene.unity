@@ -171,7 +171,7 @@ MonoBehaviour:
   m_PlayerJoinedEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 348030160}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: 
         m_MethodName: 
         m_Mode: 1
@@ -219,12 +219,11 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1bc3df13143d4ab5826b1a02df08b63, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerUIManager
-  playerUIPrefab: {fileID: 5901416972420248410, guid: cbb9cbd53b6d2554d9031ae877d93e14, type: 3}
-  playerUIParent: {fileID: 1114999246}
-  players: []
+  m_EditorClassIdentifier: Assembly-CSharp::LobbyMenuManager
+  playerCardPrefab: {fileID: 5901416972420248410, guid: cbb9cbd53b6d2554d9031ae877d93e14, type: 3}
   playerInputManager: {fileID: 348030159}
-  controllersMenu: {fileID: 1114999245}
+  lobbyMenu: {fileID: 1114999245}
+  players: []
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,7 +458,7 @@ GameObject:
   - component: {fileID: 1114999248}
   - component: {fileID: 1114999247}
   m_Layer: 5
-  m_Name: Controllers Menu
+  m_Name: Lobby Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -561,7 +560,7 @@ GameObject:
   - component: {fileID: 2068834324}
   - component: {fileID: 2068834323}
   m_Layer: 5
-  m_Name: Player UI
+  m_Name: UI Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
