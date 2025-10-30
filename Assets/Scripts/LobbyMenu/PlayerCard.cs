@@ -34,7 +34,7 @@ public class PlayerCard : MonoBehaviour
     
     // Input debouncing
     private float lastInputTime = 0f;
-    private float inputCooldown = 0.2f; // Prevent accidental double-inputs 
+    private float inputCooldown = 0.15f; // Prevent accidental double-inputs 
     
     
     private const int PART_SLOT_COUNT = 4; // Head, Torso, Arms, Legs 
