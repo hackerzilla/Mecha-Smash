@@ -208,11 +208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bc3df13143d4ab5826b1a02df08b63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerUIManager
-  playerUIPrefab: {fileID: 5901416972420248410, guid: cbb9cbd53b6d2554d9031ae877d93e14, type: 3}
-  playerUIParent: {fileID: 1114999246}
-  players: []
   playerInputManager: {fileID: 348030159}
-  controllersMenu: {fileID: 1114999245}
+  playerMenuPrefab: {fileID: 5901416972420248410, guid: cbb9cbd53b6d2554d9031ae877d93e14, type: 3}
+  playerMenuParent: {fileID: 1114999246}
+  toggleDebug: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,7 +446,7 @@ GameObject:
   - component: {fileID: 1114999248}
   - component: {fileID: 1114999247}
   m_Layer: 5
-  m_Name: Controllers Menu
+  m_Name: Player Controllers Menu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -490,7 +489,7 @@ MonoBehaviour:
     m_Top: 70
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 0
+  m_Spacing: -100
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -549,7 +548,7 @@ GameObject:
   - component: {fileID: 2068834324}
   - component: {fileID: 2068834323}
   m_Layer: 5
-  m_Name: Player UI
+  m_Name: Player Menu UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -584,7 +583,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -781,6 +780,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 619394802}
-  - {fileID: 348030158}
   - {fileID: 2092977065}
+  - {fileID: 348030158}
   - {fileID: 2068834326}
