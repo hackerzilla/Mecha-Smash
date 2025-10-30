@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        Debug.Log("Move pressed via: " + context.control.device.displayName);
+        // Debug.Log("Move pressed via: " + context.control.device.displayName);
         moveInput = context.ReadValue<Vector2>();
     }
 
@@ -126,5 +126,17 @@ public class PlayerController : MonoBehaviour
             jumpsRemaining -= 1;
         }
         mechInstance.Jump();
+    }
+    
+    public void SwapMechPart(MechPart newPartPrefab)
+    {
+        if (mechInstance != null)
+        {
+            mechInstance.SwapPart(newPartPrefab);
+        }
+        else
+        {
+            Debug.Log("For some reason the mechInstance was null (from SwapMechPart in PlayerController on "+ name + ")");
+        }
     }
 }

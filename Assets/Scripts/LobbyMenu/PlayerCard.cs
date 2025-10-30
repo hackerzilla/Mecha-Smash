@@ -4,12 +4,11 @@ using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
-/// <summary>
-/// Handles per-player mech customization in the lobby using Unity Input System.
-/// Players navigate through part slots (Head/Torso/Arms/Legs) and select from available options.
-/// Replaces the old PlayerUI.cs and PlayerCustomizer.cs scripts.
-/// </summary>
+// Handles per-player mech customization in the lobby using Unity Input System.
+// Players navigate through part slots (Head/Torso/Arms/Legs) and select from available options.
+// Replaces the old PlayerUI.cs and PlayerCustomizer.cs scripts.
 public class PlayerCard : MonoBehaviour
 {
     [Header("Mech Part Options")]
@@ -27,8 +26,9 @@ public class PlayerCard : MonoBehaviour
     public TMP_Text readyButtonText; 
     
     // State 
-    private int[] currentPartIndices; // Index into each options list [Head, Torso, Arms, Legs]
-    private int currentMenuSlot = 0; // Which part slot is currently selected (0-3)
+    public PlayerController playerRef;
+    private int currentMenuSlot = 0; // Which part slot is currently selected (corresponds to vertical movement)
+    private int[] currentPartIndices; // Index into each part list (corresponds to horizontal movement)
     public bool isReady = false;
     private Coroutine activeFlashCoroutine;
     
@@ -41,6 +41,7 @@ public class PlayerCard : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Player ref" + playerRef);
         // Initialize to first option for each part type
         currentPartIndices = new int[PART_SLOT_COUNT];
         for (int i = 0; i < PART_SLOT_COUNT; i++)
@@ -95,11 +96,8 @@ public class PlayerCard : MonoBehaviour
         Debug.Log("All players are ready!");
         LobbyMenuManager.instance.lobbyMenu.SetActive(false); // make the lobby UI invisible
     }
-    /// <summary>
-    /// Called by Unity Input System when Navigate action is triggered (D-pad, left stick, arrow keys).
-    /// Horizontal: Cycles through part options for current slot
-    /// Vertical: Switches between part slots (Head/Torso/Arms/Legs)
-    /// </summary>
+    
+    // Called by Unity Input System when Navigate action is triggered (D-pad, left stick, arrow keys).
     public void OnNavigate(InputAction.CallbackContext context)
     {
         if (!context.performed || isReady) return;
@@ -130,6 +128,57 @@ public class PlayerCard : MonoBehaviour
         ToggleReady();
     }
     
+    public MechPart GetSelectedPart()
+    {
+        switch (currentMenuSlot)
+        {
+            case 0: return headOptions[currentPartIndices[0]];
+            case 1: return torsoOptions[currentPartIndices[1]];
+            case 2: return armsOptions[currentPartIndices[2]];
+            case 3: return legsOptions[currentPartIndices[3]];
+            default: return null;
+        }      
+    }
+    public MechPart GetSelectedHead()
+    {
+        return (headOptions.Count > 0 && currentPartIndices[0] < headOptions.Count) 
+            ? headOptions[currentPartIndices[0]] 
+            : null;
+    }
+    
+    public MechPart GetSelectedTorso()
+    {
+        return (torsoOptions.Count > 0 && currentPartIndices[1] < torsoOptions.Count) 
+            ? torsoOptions[currentPartIndices[1]] 
+            : null;
+    }
+    
+    public MechPart GetSelectedArms()
+    {
+        return (armsOptions.Count > 0 && currentPartIndices[2] < armsOptions.Count) 
+            ? armsOptions[currentPartIndices[2]] 
+            : null;
+    }
+    
+    public MechPart GetSelectedLegs()
+    {
+        return (legsOptions.Count > 0 && currentPartIndices[3] < legsOptions.Count) 
+            ? legsOptions[currentPartIndices[3]] 
+            : null;
+    }
+    
+    private int GetPartOptionsCount(int slotIndex)
+    {
+        switch (slotIndex)
+        {
+            case 0: return headOptions.Count;
+            case 1: return torsoOptions.Count;
+            case 2: return armsOptions.Count;
+            case 3: return legsOptions.Count;
+            default: return 0;
+        }
+    }
+    
     private void CyclePart(int direction)
     {
         int maxIndex = GetPartOptionsCount(currentMenuSlot);
@@ -145,11 +194,15 @@ public class PlayerCard : MonoBehaviour
             currentPartIndices[currentMenuSlot] = maxIndex - 1;
         
         UpdatePartDisplay(currentMenuSlot);
+        SwapPartOnMech(currentMenuSlot);
     }
+   private void SwapPartOnMech(int slot)
+   {
+       playerRef.SwapMechPart(GetSelectedPart());
+   } 
     
-    /// <summary>
-    /// Switches which part slot is currently being customized (Head -> Torso -> Arms -> Legs)
-    /// </summary>
+    
+    // Switches which part slot is currently being customized (Head -> Torso -> Arms -> Legs)
     private void SwitchPartSlot(int direction)
     {
         StopFlashing();
@@ -165,10 +218,8 @@ public class PlayerCard : MonoBehaviour
         StartFlashing(currentMenuSlot);
     }
     
-    /// <summary>
-    /// Toggles ready state. When ready, part selection is locked.
-    /// Checks if all players are ready to start the game.
-    /// </summary>
+    // Toggles ready state. When ready, part selection is locked.
+    // Checks if all players are ready to start the game.
     private void ToggleReady()
     {
         isReady = !isReady;
@@ -191,9 +242,8 @@ public class PlayerCard : MonoBehaviour
         CheckAllPlayersReady();
     }
     
-    /// <summary>
-    /// Checks if all connected players are ready. If so, proceeds to game start.
-    /// </summary>
+    
+    // Checks if all connected players are ready. If so, proceeds to game start.
     private void CheckAllPlayersReady()
     {
         // Verify LobbyMenuManager singleton exists
@@ -236,18 +286,6 @@ public class PlayerCard : MonoBehaviour
         // For now, this is a placeholder - you'll need to implement the actual part swapping
         // when the player enters the game scene with their selected parts
         Debug.Log($"Player selected: {GetSelectedHead()?.name}, {GetSelectedTorso()?.name}, {GetSelectedArms()?.name}, {GetSelectedLegs()?.name}");
-    }
-    
-    private int GetPartOptionsCount(int slotIndex)
-    {
-        switch (slotIndex)
-        {
-            case 0: return headOptions.Count;
-            case 1: return torsoOptions.Count;
-            case 2: return armsOptions.Count;
-            case 3: return legsOptions.Count;
-            default: return 0;
-        }
     }
     
     private void UpdatePartDisplay(int slotIndex)
@@ -319,31 +357,5 @@ public class PlayerCard : MonoBehaviour
         }
     }
     
-    public HeadPart GetSelectedHead()
-    {
-        return (headOptions.Count > 0 && currentPartIndices[0] < headOptions.Count) 
-            ? headOptions[currentPartIndices[0]] 
-            : null;
-    }
-    
-    public TorsoPart GetSelectedTorso()
-    {
-        return (torsoOptions.Count > 0 && currentPartIndices[1] < torsoOptions.Count) 
-            ? torsoOptions[currentPartIndices[1]] 
-            : null;
-    }
-    
-    public ArmsPart GetSelectedArms()
-    {
-        return (armsOptions.Count > 0 && currentPartIndices[2] < armsOptions.Count) 
-            ? armsOptions[currentPartIndices[2]] 
-            : null;
-    }
-    
-    public LegsPart GetSelectedLegs()
-    {
-        return (legsOptions.Count > 0 && currentPartIndices[3] < legsOptions.Count) 
-            ? legsOptions[currentPartIndices[3]] 
-            : null;
-    }
+
 }

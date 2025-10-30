@@ -47,16 +47,19 @@ public class LobbyMenuManager : MonoBehaviour
 
         if (playerCardPrefab != null)
         {
+            PlayerController playerController = playerInput.gameObject.GetComponent<PlayerController>();
             // Create Player UI
-            var playerCard = Instantiate(playerCardPrefab, lobbyMenu.transform);
-            playerInput.GetComponent<PlayerController>().playerCard = playerCard.GetComponent<PlayerCard>();
-
+            GameObject playerCardObject = Instantiate(playerCardPrefab, lobbyMenu.transform);
+            // Attach references 
+            PlayerCard playerCard = playerCardObject.GetComponent<PlayerCard>();
+            playerController.playerCard = playerCard;
+            playerCard.playerRef = playerController;
             // Create Event System and attach to the Player object (not the PlayerCard object!).
             var uiEventSystem = new GameObject($"Player {playerInput.playerIndex} EventSystem");
             var multiplayerEventSystem = uiEventSystem.AddComponent<MultiplayerEventSystem>();
             var uiInputModule = uiEventSystem.AddComponent<InputSystemUIInputModule>();
             uiInputModule.actionsAsset = playerInput.actions;
-            multiplayerEventSystem.playerRoot = playerCard;
+            multiplayerEventSystem.playerRoot = playerCardObject;
             uiEventSystem.transform.SetParent(playerInput.transform, false);
         }
 

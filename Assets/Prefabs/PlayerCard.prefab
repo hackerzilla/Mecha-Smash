@@ -1593,13 +1593,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCard
   headOptions:
   - {fileID: 3187049979565007219, guid: 966c9d61300e24d33a5e001195060369, type: 3}
+  - {fileID: 3187049979565007219, guid: cbfc92d0c462146e383aa32586fe0d36, type: 3}
   torsoOptions:
   - {fileID: 6383253985334823945, guid: de729d02645d3478ba9ad76728eee79b, type: 3}
   armsOptions:
   - {fileID: 8818423925520398678, guid: 35d75e11865a945deb64417d9aa41fb9, type: 3}
   legsOptions:
   - {fileID: 7231484667331967985, guid: 4a923d49503634f03953024cfe484c4a, type: 3}
-  partIcons: []
   partNameTexts:
   - {fileID: 9125902807152408692}
   - {fileID: 6878624093415078948}
@@ -1612,6 +1612,7 @@ MonoBehaviour:
   - {fileID: 7334838771377797224}
   flashingPeriod: 0.25
   readyButtonText: {fileID: 8014023922552487056}
+  playerRef: {fileID: 0}
   isReady: 0
 --- !u!1 &6087759647504081683
 GameObject:
