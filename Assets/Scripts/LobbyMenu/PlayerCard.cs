@@ -19,9 +19,8 @@ public class PlayerCard : MonoBehaviour
     public List<LegsPart> legsOptions = new List<LegsPart>();
 
     [Header("UI Elements - Part Display")]
-    public List<Image> partIcons; // [0]=Head, [1]=Torso, [2]=Arms, [3]=Legs - optional visual preview
-    public List<TMP_Text> partNameTexts; // Display current part names
-    public List<Image> menuOutlines; // Selection indicators (flashing borders)
+    public List<TMP_Text> partNameTexts; 
+    public List<Image> menuOutlines; 
     public float flashingPeriod = 0.25f;
     
     [Header("Ready System")]
@@ -49,7 +48,6 @@ public class PlayerCard : MonoBehaviour
             currentPartIndices[i] = 0;
         }
         
-        // Update UI to show starting selections
         UpdateAllPartDisplays();
         
         // Disable all outlines initially
@@ -58,10 +56,8 @@ public class PlayerCard : MonoBehaviour
             if (outline != null) outline.enabled = false;
         }
         
-        // Start with head slot selected (flashing outline)
         StartFlashing(currentMenuSlot);
         
-        // Initialize ready button text
         if (readyButtonText != null)
         {
             readyButtonText.text = "Unready";
@@ -114,14 +110,12 @@ public class PlayerCard : MonoBehaviour
         
         Vector2 input = context.ReadValue<Vector2>();
         
-        // Horizontal input: cycle through part options
         if (Mathf.Abs(input.x) > 0.5f)
         {
             int direction = input.x > 0 ? 1 : -1;
             CyclePart(direction);
         }
         
-        // Vertical input: switch part slot
         if (Mathf.Abs(input.y) > 0.5f)
         {
             int direction = input.y > 0 ? -1 : 1; // Up = previous slot, Down = next slot
@@ -129,10 +123,6 @@ public class PlayerCard : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Called by Unity Input System when Submit action is triggered (A button, Enter, etc.)
-    /// Toggles ready state and checks if all players are ready to start
-    /// </summary>
     public void OnSubmit(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
@@ -140,9 +130,6 @@ public class PlayerCard : MonoBehaviour
         ToggleReady();
     }
     
-    /// <summary>
-    /// Cycles through available parts for the currently selected slot
-    /// </summary>
     private void CyclePart(int direction)
     {
         int maxIndex = GetPartOptionsCount(currentMenuSlot);
@@ -234,17 +221,14 @@ public class PlayerCard : MonoBehaviour
         
         Debug.Log("All players are ready!");
         
-        // Apply selected parts to each player's mech
         ApplySelectedPartsToMech();
         
         LobbyMenuManager.instance.lobbyMenu.SetActive(false);
     }
     
-    /// <summary>
-    /// Applies the selected mech parts to the player's actual mech
-    /// </summary>
     private void ApplySelectedPartsToMech()
     {
+        // TODO 
         // Get the PlayerController this customizer belongs to
         // This assumes the customizer is on the UI, and we need to find the associated player
         // The LobbyMenuManager should maintain this relationship
@@ -266,9 +250,6 @@ public class PlayerCard : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Updates the UI display for a specific part slot
-    /// </summary>
     private void UpdatePartDisplay(int slotIndex)
     {
         if (partNameTexts.Count <= slotIndex || partNameTexts[slotIndex] == null)
@@ -297,9 +278,6 @@ public class PlayerCard : MonoBehaviour
         }
         
         partNameTexts[slotIndex].text = partName;
-        
-        // TODO: Update partIcons[slotIndex].sprite with preview sprites for parts
-        // This would require each MechPart to have a sprite reference for UI preview
     }
     
     private void UpdateAllPartDisplays()
