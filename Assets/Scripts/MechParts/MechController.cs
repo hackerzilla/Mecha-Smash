@@ -87,28 +87,35 @@ public class MechController : MonoBehaviour
 
     public void SwapPart(MechPart part)
     {
-        // TODO implement
         Debug.Log("SwapPart called on " + part.name);
         if (part is HeadPart)
         {
             Debug.Log(part.name + " is a HeadPart");
             headPrefab = (HeadPart)part;
             AttachHead();
+            Debug.Log("After swapping, headInstance is now: " + headInstance.name); 
+            
         }
         else if (part is TorsoPart)
         {
             Debug.Log(part.name + " is a TorsoPart");
             torsoPrefab = (TorsoPart)part;
             AttachTorso();
-            // todo reparent the head, arms and legs to the new torso's attachment points
+            headInstance.transform.SetParent(torsoInstance.headAttachmentPoint); 
+            armsInstance.transform.SetParent(torsoInstance.armsAttachmentPoint);
+            legsInstance.transform.SetParent(torsoInstance.legsAttachmentPoint);
         }
         else if (part is ArmsPart)
         {
             Debug.Log(part.name + " is a ArmsPart");
+            armsPrefab = (ArmsPart)part;
+            AttachArms();
         }
         else if (part is LegsPart)
         {
             Debug.Log(part.name + " is a LegsPart");
+            legsPrefab = (LegsPart)part;
+            AttachLegs();
         }
         else
         {
@@ -120,12 +127,13 @@ public class MechController : MonoBehaviour
     {
         if (headInstance != null)
         {
-            Destroy(headInstance);
+            Debug.Log(name + " is already attached! Destroying...");
+            Destroy(headInstance.gameObject);
         }
         Assert.AreNotEqual(headPrefab, null);
-        headInstance = Instantiate(headPrefab);
-        headInstance.transform.SetParent(torsoInstance.headAttachmentPoint);
+        headInstance = Instantiate(headPrefab, torsoInstance.headAttachmentPoint);
         headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+        Debug.Log("torso head attachment point child: " + torsoInstance.headAttachmentPoint.transform.GetChild(0).gameObject.name);
     }
     protected void AttachTorso()
     {

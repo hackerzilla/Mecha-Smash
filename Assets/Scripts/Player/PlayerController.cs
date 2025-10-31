@@ -2,7 +2,6 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Mech Configuration")]
@@ -28,15 +27,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundRadius = 0.1f;
 
     [Header("User Interface")]
-    public PlayerUI playerUI;
+    public PlayerCard playerCard;
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private int jumpsRemaining;
     private bool isGrounded;
+    private PlayerInput playerInput;
     
     void Start()
     {
+        playerInput = GetComponent<PlayerInput>();
+        // playerInput.currentActionMap.Enable();
         if (mechInstance == null)
         {
             Assert.NotNull(mechPrefab);
@@ -45,46 +47,33 @@ public class PlayerController : MonoBehaviour
         }
         Assert.NotNull(mechInstance);
         
-        rb = GetComponent<Rigidbody2D>();
-        // Random Color
-//         GetComponent<SpriteRenderer>().color = new Color(Random.value, Random.value, Random.value);
+        rb = mechInstance.GetComponent<Rigidbody2D>();
+        
+        DisableInputMapping("Player");
+        EnableInputMapping("UI"); 
     }
 
     void Update()
     {
-        // TODO replace this code with gamepad unity input system code
-        float xInput = Input.GetAxisRaw("Horizontal");
-        if (xInput != 0)
-        {
-            mechInstance.MoveFromInput(xInput);
-            mechInstance.legsInstance.animator.SetBool("walking", true);
-        }
-        else
-        {
-            mechInstance.legsInstance.animator.SetBool("walking", false);
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            mechInstance.Jump();
-        }
     }
           
     private void FixedUpdate()
     {
         // Ground Check
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
-        if (isGrounded)
+        // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
+        // if (isGrounded)
             jumpsRemaining = maxJumps;
 
         // Movement
         float control = isGrounded ? 1f : airControl;
+        // float control = 1f;
         float targetVelocityX = moveInput.x * moveSpeed * control;
         rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        Debug.Log("Move pressed via: " + context.control.device.displayName);
+        // Debug.Log("Move pressed via: " + context.control.device.displayName);
         moveInput = context.ReadValue<Vector2>();
     }
 
@@ -96,13 +85,20 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
     }
+    
+    public void OnNavigate(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            playerCard.OnNavigate(context);
+        }
+    }
 
     public void Submit(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
-            playerUI.SetReady();
-            playerUI.CheckReady();
+            playerCard.OnSubmit(context);
             Debug.Log($"{gameObject.name} Submit pressed by {GetComponent<PlayerInput>().devices[0].displayName}");
         }
     }
@@ -116,5 +112,55 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             jumpsRemaining -= 1;
         }
+        mechInstance.Jump();
+    }
+    
+    public void SwapMechPart(MechPart newPartPrefab)
+    {
+        if (mechInstance != null)
+        {
+            mechInstance.SwapPart(newPartPrefab);
+        }
+        else
+        {
+            Debug.Log("For some reason the mechInstance was null (from SwapMechPart in PlayerController on "+ name + ")");
+        }
+    }
+    
+    public void OnGameStart()
+    {
+        DisableInputMapping("UI"); 
+        EnableInputMapping("Player");
+    }
+    public void EnableUIInputMapping()
+    {
+        if (playerInput != null && playerInput.actions != null)
+        {
+            var uiMap = playerInput.actions.FindActionMap("UI");
+            if (uiMap != null)
+            {
+                uiMap.Enable();
+                Debug.Log($"{gameObject.name}: UI input mapping enabled");
+            }
+            else
+            {
+                Debug.LogWarning($"{gameObject.name}: Could not find 'UI' action map");
+            }
+        }
+    }
+
+    public void DisableInputMapping(string mapName)
+    {
+        var map = playerInput.actions.FindActionMap(mapName); 
+        Debug.Assert(map != null, "Could not find map: " + mapName);
+        map.Disable();
+        Debug.Log($"{gameObject.name}: Input mapping {mapName} disabled");
+    }
+    public void EnableInputMapping(string mapName)
+    {
+        var map = playerInput.actions.FindActionMap(mapName); 
+        Debug.Assert(map != null, "Could not find map: " + mapName);
+        map.Enable();
+        Debug.Log($"{gameObject.name}: Input mapping {mapName} enabled");
     }
 }
