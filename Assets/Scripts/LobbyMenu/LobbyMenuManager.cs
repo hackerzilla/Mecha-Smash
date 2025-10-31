@@ -13,7 +13,7 @@ public class LobbyMenuManager : MonoBehaviour
     public GameObject playerCardPrefab;
     public PlayerInputManager playerInputManager;
     public GameObject lobbyMenu;
-    public List<GameObject> players;
+    public List<PlayerController> players;
 
     private void Awake()
     {
@@ -43,7 +43,7 @@ public class LobbyMenuManager : MonoBehaviour
     // Called every time a player joins via Player Input Manager (a new controller is detected)
     private void OnPlayerJoined(PlayerInput playerInput)
     {
-        players.Add(playerInput.gameObject);
+        players.Add(playerInput.GetComponent<PlayerController>());
 
         if (playerCardPrefab != null)
         {
@@ -69,8 +69,22 @@ public class LobbyMenuManager : MonoBehaviour
     // Called every time a player leaves via Player Input Manager (a new controller is disconnected)
     private void OnPlayerLeft(PlayerInput playerInput)
     {
-        players.Remove(playerInput.gameObject);
+        players.Remove(playerInput.GetComponent<PlayerController>());
 
         Debug.Log($"Player {playerInput.playerIndex} left. Total players: {players.Count}");
     }
+    
+    public void StartGame()
+    {
+        // make lobby menu invisible
+        lobbyMenu.SetActive(false);
+        
+        // disable the UI input action mapping for all players
+        // enable the normal input action mapping for all players
+        // any other logic that the player object should run when the game is started goes in PlayerController.OnGameStart
+        foreach (PlayerController player in players)
+        {
+            player.OnGameStart();
+        }
+    } 
 }

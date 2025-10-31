@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine.Rendering;
 
 // Handles per-player mech customization in the lobby using Unity Input System.
@@ -81,7 +82,7 @@ public class PlayerCard : MonoBehaviour
 
     public void CheckReady()
     {
-        foreach (GameObject player in LobbyMenuManager.instance.players)
+        foreach (PlayerController player in LobbyMenuManager.instance.players)
         {
             var ui = player.GetComponent<PlayerController>().playerCard;
     
@@ -246,38 +247,29 @@ public class PlayerCard : MonoBehaviour
     // Checks if all connected players are ready. If so, proceeds to game start.
     private void CheckAllPlayersReady()
     {
-        // Verify LobbyMenuManager singleton exists
-        if (LobbyMenuManager.instance == null)
+        Debug.Assert(LobbyMenuManager.instance != null, "LobbyMenuManager not found!"); 
+        foreach (PlayerController player in LobbyMenuManager.instance.players)
         {
-            Debug.LogWarning("LobbyMenuManager instance not found!");
-            return;
-        }
-        
-        foreach (GameObject player in LobbyMenuManager.instance.players)
-        {
-            var controller = player.GetComponent<PlayerController>();
-            if (controller == null || controller.playerCard == null)
-            {
-                Debug.LogWarning($"Player {player.name} missing PlayerController or playerCard reference");
-                continue;
-            }
+            Debug.Assert(player != null, $"Player {player.name} missing PlayerController reference!");
+            Debug.Assert(player.playerCard != null, $"Player {player.name} missing playerCard reference!");
             
-            if (!controller.playerCard.isReady)
+            if (!player.playerCard.isReady)
             {
-                Debug.Log("Not all players are ready");
+                Debug.Log($"Player {player.name} is not ready! Not all players are ready.");
                 return;
             }
         }
         
         Debug.Log("All players are ready!");
         
-        ApplySelectedPartsToMech();
+        ApplySelectedPartsToMech(); // does nothing right now, mechs are being assembled in-place
         
-        LobbyMenuManager.instance.lobbyMenu.SetActive(false);
+        LobbyMenuManager.instance.StartGame();
     }
     
     private void ApplySelectedPartsToMech()
     {
+        // DEPRECATED might not even use this function at all, just use SwapMechPart instead
         // TODO 
         // Get the PlayerController this customizer belongs to
         // This assumes the customizer is on the UI, and we need to find the associated player
@@ -356,6 +348,4 @@ public class PlayerCard : MonoBehaviour
             yield return new WaitForSeconds(flashingPeriod);
         }
     }
-    
-
 }

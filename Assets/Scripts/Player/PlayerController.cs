@@ -48,30 +48,17 @@ public class PlayerController : MonoBehaviour
         Assert.NotNull(mechInstance);
         
         rb = mechInstance.GetComponent<Rigidbody2D>();
+        
+        DisableInputMapping("Player");
+        EnableInputMapping("UI"); 
     }
 
     void Update()
     {
-        // TODO replace this code with gamepad unity input system code
-        // float xInput = Input.GetAxisRaw("Horizontal");
-        // if (xInput != 0)
-        // {
-        //     mechInstance.MoveFromInput(xInput);
-        //     mechInstance.legsInstance.animator.SetBool("walking", true);
-        // }
-        // else
-        // {
-        //     mechInstance.legsInstance.animator.SetBool("walking", false);
-        // }
-        // if (Input.GetKeyDown(KeyCode.W))
-        // {
-        //     mechInstance.Jump();
-        // }
     }
           
     private void FixedUpdate()
     {
-        // OnMove();
         // Ground Check
         // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
         // if (isGrounded)
@@ -138,5 +125,42 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("For some reason the mechInstance was null (from SwapMechPart in PlayerController on "+ name + ")");
         }
+    }
+    
+    public void OnGameStart()
+    {
+        DisableInputMapping("UI"); 
+        EnableInputMapping("Player");
+    }
+    public void EnableUIInputMapping()
+    {
+        if (playerInput != null && playerInput.actions != null)
+        {
+            var uiMap = playerInput.actions.FindActionMap("UI");
+            if (uiMap != null)
+            {
+                uiMap.Enable();
+                Debug.Log($"{gameObject.name}: UI input mapping enabled");
+            }
+            else
+            {
+                Debug.LogWarning($"{gameObject.name}: Could not find 'UI' action map");
+            }
+        }
+    }
+
+    public void DisableInputMapping(string mapName)
+    {
+        var map = playerInput.actions.FindActionMap(mapName); 
+        Debug.Assert(map != null, "Could not find map: " + mapName);
+        map.Disable();
+        Debug.Log($"{gameObject.name}: Input mapping {mapName} disabled");
+    }
+    public void EnableInputMapping(string mapName)
+    {
+        var map = playerInput.actions.FindActionMap(mapName); 
+        Debug.Assert(map != null, "Could not find map: " + mapName);
+        map.Enable();
+        Debug.Log($"{gameObject.name}: Input mapping {mapName} enabled");
     }
 }
