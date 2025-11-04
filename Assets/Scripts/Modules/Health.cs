@@ -3,19 +3,19 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public float maxHealth = 100.0f;
-    public float health = 0.0f;
+    public float currentHealth = 0.0f;
     public bool isDead = false;
     
     void Start()
     {
-        health = maxHealth; 
+        currentHealth = maxHealth; 
         isDead = false;
     }
     
     void Update()
     {
         // testing purposes 
-        // TakeDamage(Time.deltaTime * 20); 
+        TakeDamage(Time.deltaTime * 5); 
     }
 
     void TakeDamage(float damage)
@@ -25,10 +25,10 @@ public class Health : MonoBehaviour
             Debug.Log(name + " is already dead, ignoring " + damage + " damage"); 
             return;
         }
-        var prevHealth = health;
-        health -= damage;
-        Debug.Log(name + " takes " + damage + " damage" + $" [{prevHealth}->{health}]"); 
-        if (health <= 0)
+        var prevHealth = currentHealth;
+        currentHealth -= damage;
+        Debug.Log(name + " takes " + damage + " damage" + $" [{prevHealth}->{currentHealth}]"); 
+        if (currentHealth <= 0)
         {
             Die(); 
         }
@@ -41,9 +41,9 @@ public class Health : MonoBehaviour
             print(name + " is dead, ignoring " + heal + " healing");
             return;
         }
-        var prevHealth = health;
-        health += heal;
-        Debug.Log(name + " heals for " + heal + $" [{prevHealth}->{health}]");
+        var prevHealth = currentHealth;
+        currentHealth += heal;
+        Debug.Log(name + " heals for " + heal + $" [{prevHealth}->{currentHealth}]");
     }
     
     void Die()
