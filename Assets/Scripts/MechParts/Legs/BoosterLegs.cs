@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-//By Jae
 public class BoosterLegs : LegsPart
 {
 

@@ -1,7 +1,5 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 
 public class CyclopsHead : HeadPart
 {
@@ -16,9 +14,16 @@ public class CyclopsHead : HeadPart
         laser.transform.SetParent(eyePoint);
     }
 
+    override public void SpecialAttack(PlayerController player, InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            SpecialAttack();
+        }
+    }
+
     override public void SpecialAttack()
     {
-        
         // TODO: Do the cyclops laser attack logic.
         // Spawn laser pointing in facing direction, originating at eye.
         // Make the head look in the controlling player's joystick direction.
@@ -26,11 +31,6 @@ public class CyclopsHead : HeadPart
         animator.SetTrigger("SpecialAttack");
 
         StartCoroutine(spawnedLaser.ShootLaser_());
-    }   
-   
-    override public void SpecialAttack(PlayerController player, InputAction.CallbackContext context)
-    {
-        
     }
  
     

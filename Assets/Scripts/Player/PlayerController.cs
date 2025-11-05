@@ -1,4 +1,3 @@
-using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -42,7 +41,6 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        // playerInput.currentActionMap.Enable();
         if (mechInstance == null)
         {
             Assert.NotNull(mechPrefab);
@@ -60,16 +58,10 @@ public class PlayerController : MonoBehaviour
         }
 
         ApplyLegStats();
-        
-        DisableInputMapping("Player");
-        EnableInputMapping("UI"); 
-    }
 
-    void Update()
-    {
+        DisableInputMapping("Player");
+        EnableInputMapping("UI");
     }
-          
-  
 
     public Rigidbody2D GetRigidbody() { return rb; }
     public bool IsGrounded() { return isGrounded; }
@@ -78,17 +70,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Ground Check
-        // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
-        // if (isGrounded)
-        jumpsRemaining = maxJumps;
-
-        // Movement
-        float control = isGrounded ? 1f : airControl;
-        // float control = 1f;
-        float targetVelocityX = moveInput.x * moveSpeed * control;
-        rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
-        
         if (isAbilityOverridingMovement)
         {
             return;
@@ -101,6 +82,7 @@ public class PlayerController : MonoBehaviour
             jumpsRemaining = maxJumps;
         }
 
+        // Update facing direction
         if (moveInput.x > 0.1f)
         {
             isFacingRight = true;
@@ -110,9 +92,11 @@ public class PlayerController : MonoBehaviour
             isFacingRight = false;
         }
 
-        if(isGrounded)
+        // Apply movement
+        float targetVelocityX;
+        if (isGrounded)
         {
-            targetVelocityX = moveInput.x * moveSpeed; 
+            targetVelocityX = moveInput.x * moveSpeed;
         }
         else
         {
@@ -120,24 +104,9 @@ public class PlayerController : MonoBehaviour
         }
         rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
     }
-    
-    public void Rotate()
-    {
-        if (moveInput.x > 0.01f)
-        {
-            // Face Right
-            mechInstance.transform.localScale = new Vector3(1, 1, 1);
-        }
-        else if (moveInput.x < -0.01f)
-        {
-            // Face Left
-            mechInstance.transform.localScale = new Vector3(-1, 1, 1);
-        }
-    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        // Debug.Log("Move pressed via: " + context.control.device.displayName);
         moveInput = context.ReadValue<Vector2>();
     }
 
@@ -175,7 +144,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnLegsAbility(InputAction.CallbackContext context)
     {
-        Debug.Log("legability perform!");
         if (mechInstance != null)
         {
             mechInstance.MovementAbility(this, context);
@@ -274,24 +242,8 @@ public class PlayerController : MonoBehaviour
     
     public void OnGameStart()
     {
-        DisableInputMapping("UI"); 
+        DisableInputMapping("UI");
         EnableInputMapping("Player");
-    }
-    public void EnableUIInputMapping()
-    {
-        if (playerInput != null && playerInput.actions != null)
-        {
-            var uiMap = playerInput.actions.FindActionMap("UI");
-            if (uiMap != null)
-            {
-                uiMap.Enable();
-                Debug.Log($"{gameObject.name}: UI input mapping enabled");
-            }
-            else
-            {
-                Debug.LogWarning($"{gameObject.name}: Could not find 'UI' action map");
-            }
-        }
     }
 
     public void DisableInputMapping(string mapName)

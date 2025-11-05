@@ -1,9 +1,6 @@
 using NUnit.Framework;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.VisualScripting;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// Class <c>MechController</c> holds references to the part slots and has all methods related to mech logic.
@@ -23,34 +20,6 @@ public class MechController : MonoBehaviour
     public ArmsPart armsInstance;
     public LegsPart legsInstance;
 
-    void Start()
-    {
-        // bool ready = torsoPrefab && headPrefab && armsPrefab && legsPrefab;
-        // if (ready) AssembleMechParts();
-    }
-
-    void Update()
-    {
-        // if (Input.GetKeyDown(KeyCode.Space))
-        // {
-        //     SpecialAttack();
-        // }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpecialAttack();
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            BasicAttack();
-        }
-    }
-
-    public void MoveFromInput(float xAxisInput)
-    {
-        Vector3 walkMovement = new Vector3(xAxisInput, 0, 0);
-        transform.position += walkMovement * Time.deltaTime;
-    }
 
     public void Jump()
     {
@@ -124,39 +93,32 @@ public class MechController : MonoBehaviour
 
     public void SwapPart(MechPart part)
     {
-        Debug.Log("SwapPart called on " + part.name);
         if (part is HeadPart)
         {
-            Debug.Log(part.name + " is a HeadPart");
             headPrefab = (HeadPart)part;
             AttachHead();
-            Debug.Log("After swapping, headInstance is now: " + headInstance.name); 
-            
         }
         else if (part is TorsoPart)
         {
-            Debug.Log(part.name + " is a TorsoPart");
             torsoPrefab = (TorsoPart)part;
             AttachTorso();
-            headInstance.transform.SetParent(torsoInstance.headAttachmentPoint); 
+            headInstance.transform.SetParent(torsoInstance.headAttachmentPoint);
             armsInstance.transform.SetParent(torsoInstance.armsAttachmentPoint);
             legsInstance.transform.SetParent(torsoInstance.legsAttachmentPoint);
         }
         else if (part is ArmsPart)
         {
-            Debug.Log(part.name + " is a ArmsPart");
             armsPrefab = (ArmsPart)part;
             AttachArms();
         }
         else if (part is LegsPart)
         {
-            Debug.Log(part.name + " is a LegsPart");
             legsPrefab = (LegsPart)part;
             AttachLegs();
         }
         else
         {
-            Debug.Log(part.name + " is not a valid MechPart subclass!");
+            Debug.LogWarning($"Cannot swap part '{part.name}' - not a valid MechPart subclass");
         }
     }
 
@@ -164,13 +126,11 @@ public class MechController : MonoBehaviour
     {
         if (headInstance != null)
         {
-            Debug.Log(name + " is already attached! Destroying...");
             Destroy(headInstance.gameObject);
         }
         Assert.AreNotEqual(headPrefab, null);
         headInstance = Instantiate(headPrefab, torsoInstance.headAttachmentPoint);
         headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-        Debug.Log("torso head attachment point child: " + torsoInstance.headAttachmentPoint.transform.GetChild(0).gameObject.name);
     }
     protected void AttachTorso()
     {
