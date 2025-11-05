@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6440714264977151159}
-  - component: {fileID: 5070111705530324853}
+  - component: {fileID: 3187049979565007219}
   - component: {fileID: 5824245975385387738}
   m_Layer: 0
   m_Name: VenomHead
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 829548791038413682}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5070111705530324853
+--- !u!114 &3187049979565007219
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,9 +43,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1808851970761600467}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86cbc5960539f4d70818d673ebe065b4, type: 3}
+  m_Script: {fileID: 11500000, guid: f1b2f77f508f74968b3518c37a137231, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VenomHead
+  m_EditorClassIdentifier: 
+  animator: {fileID: 5824245975385387738}
 --- !u!95 &5824245975385387738
 Animator:
   serializedVersion: 7
@@ -147,7 +148,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2627925046696885852, guid: 84e6e6e851b99433187ea813088c13cc, type: 3}
+  m_Sprite: {fileID: -5312594864399356600, guid: e1c4e3fbfa8024806bd470dd94f0ef56, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

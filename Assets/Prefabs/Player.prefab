@@ -51,6 +51,13 @@ MonoBehaviour:
   armsPrefab: {fileID: 8818423925520398678, guid: 35d75e11865a945deb64417d9aa41fb9, type: 3}
   legsPrefab: {fileID: 7231484667331967985, guid: 4a923d49503634f03953024cfe484c4a, type: 3}
   mechInstance: {fileID: 0}
+  airControl: 0.6
+  jumpForce: 6
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundRadius: 0
+  playerCard: {fileID: 0}
   moveSpeed: 8
   airControl: 0.6
   jumpForce: 6
@@ -212,6 +219,73 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5409699917994673121}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnHeadAbility
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7cc522a7-918a-45f4-9c62-bcf45cd16aaa
+    m_ActionName: 'Player/HeadAbility[/Keyboard/upArrow,/usb gamepad           /trigger]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5409699917994673121}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnTorsoAbility
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ad813b66-a125-491a-bcbd-f68c52de3f77
+    m_ActionName: 'Player/TorsoAbility[/Keyboard/leftArrow,/usb gamepad          
+      /button4]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5409699917994673121}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnArmsAbility
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 76ae7ed6-da55-4664-812b-e20524a50e40
+    m_ActionName: 'Player/ArmsAbillity[/Keyboard/rightArrow,/usb gamepad          
+      /button2]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5409699917994673121}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnLegsAbility
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 45586047-9e0f-4c1a-ab86-dfcbf234150d
+    m_ActionName: 'Player/LegsAbility[/Keyboard/downArrow,/usb gamepad          
+      /button3]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI
