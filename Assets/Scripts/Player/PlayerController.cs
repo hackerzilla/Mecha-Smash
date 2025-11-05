@@ -3,9 +3,6 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -72,8 +69,26 @@ public class PlayerController : MonoBehaviour
     {
     }
           
+  
+
+    public Rigidbody2D GetRigidbody() { return rb; }
+    public bool IsGrounded() { return isGrounded; }
+    public float GetFacingDirection() { return isFacingRight ? 1f : -1f; }
+
+
     private void FixedUpdate()
     {
+        // Ground Check
+        // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
+        // if (isGrounded)
+        jumpsRemaining = maxJumps;
+
+        // Movement
+        float control = isGrounded ? 1f : airControl;
+        // float control = 1f;
+        float targetVelocityX = moveInput.x * moveSpeed * control;
+        rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
+        
         if (isAbilityOverridingMovement)
         {
             return;
@@ -95,7 +110,6 @@ public class PlayerController : MonoBehaviour
             isFacingRight = false;
         }
 
-        float targetVelocityX;
         if(isGrounded)
         {
             targetVelocityX = moveInput.x * moveSpeed; 
@@ -105,28 +119,6 @@ public class PlayerController : MonoBehaviour
             targetVelocityX = Mathf.Lerp(rb.linearVelocity.x, moveInput.x * moveSpeed, Time.fixedDeltaTime * airControl);
         }
         rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
-    }
-
-    public Rigidbody2D GetRigidbody() { return rb; }
-    public bool IsGrounded() { return isGrounded; }
-    public float GetFacingDirection() { return isFacingRight ? 1f : -1f; }
-
-        Rotate();
-    }
-
-    private void FixedUpdate()
-    {
-        // Ground Check
-        // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
-        // if (isGrounded)
-        jumpsRemaining = maxJumps;
-
-        // Movement
-        float control = isGrounded ? 1f : airControl;
-        // float control = 1f;
-        float targetVelocityX = moveInput.x * moveSpeed * control;
-        rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
-        
     }
     
     public void Rotate()
@@ -187,11 +179,6 @@ public class PlayerController : MonoBehaviour
         if (mechInstance != null)
         {
             mechInstance.MovementAbility(this, context);
-        }
-    }
-
-            Debug.Log("Jump pressed via: " + context.control.device.displayName);
-            Jump();
         }
     }
     

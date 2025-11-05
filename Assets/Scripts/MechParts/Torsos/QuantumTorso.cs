@@ -13,6 +13,8 @@ public class QuantumTorso : TorsoPart
         AbilityName = "Quantom Core";
     }
     
+    override public void DefensiveAbility() {}
+    
     override public void DefensiveAbility(PlayerController player, InputAction.CallbackContext context)
     {
         if (context.performed)

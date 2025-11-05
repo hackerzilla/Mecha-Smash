@@ -14,6 +14,8 @@ public class ForceTorso : TorsoPart
         AbilityName = "Magnetic Repulsion";
     }
     
+    override public void DefensiveAbility() {}
+    
     override public void DefensiveAbility(PlayerController player, InputAction.CallbackContext context)
     {
         if (context.performed)

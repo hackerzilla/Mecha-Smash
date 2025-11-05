@@ -3,7 +3,6 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.VisualScripting;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -83,6 +82,8 @@ public class MechController : MonoBehaviour
         {
             legsInstance.MovementAbility(player, context);
         }
+    }
+    
     public void BasicAttack()
     {
         armsInstance.BasicAttack();

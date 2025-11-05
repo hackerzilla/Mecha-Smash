@@ -1,17 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class UltraswordArms : MonoBehaviour
+public class UltraswordArms : ArmsPart 
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    override public void BasicAttack(PlayerController player, InputAction.CallbackContext context) {}
+    override public void BasicAttack() {}
 }

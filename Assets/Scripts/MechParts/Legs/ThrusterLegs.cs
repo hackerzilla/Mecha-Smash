@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class ThrusterLegs : LegsPart
 {
-
     [SerializeField] 
     private float thrustForce = 15f;
     [SerializeField] 
@@ -67,4 +66,7 @@ public class ThrusterLegs : LegsPart
             animator.SetBool("MovementAbilityActive", false);
         }
     }
+    
+    public override void MovementAbility()
+    {}
 }

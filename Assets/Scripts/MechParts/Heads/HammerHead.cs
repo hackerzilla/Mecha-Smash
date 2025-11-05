@@ -1,17 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class HammerHead : MonoBehaviour
+public class HammerHead : HeadPart 
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    override public void SpecialAttack(PlayerController player, InputAction.CallbackContext context)
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
+    override public void SpecialAttack()
     {
         
-    }
+    } 
 }

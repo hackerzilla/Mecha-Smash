@@ -16,4 +16,6 @@ public class BoosterLegs : LegsPart
     {
         return;
     }
+    public override void MovementAbility()
+    {}
 }

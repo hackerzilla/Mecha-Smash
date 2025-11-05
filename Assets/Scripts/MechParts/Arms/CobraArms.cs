@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CobraArms : ArmsPart
 {
@@ -7,6 +8,11 @@ public class CobraArms : ArmsPart
     public Transform armPoint;
     public float delay = 2f;
 
+    override public void BasicAttack(PlayerController player, InputAction.CallbackContext context)
+    {
+        
+    }
+    
     public override void BasicAttack()
     {
         Debug.Log("Cobra basic attack!");
@@ -17,6 +23,7 @@ public class CobraArms : ArmsPart
 
     private IEnumerator FireBothCannons()
     {
+        // TODO: move this expensive lookup to a single function call on awake
         var mech = transform.root.GetComponent<PlayerController>().mechInstance;
         var my_direction = transform.right * Mathf.Sign(mech.transform.localScale.x);
 
