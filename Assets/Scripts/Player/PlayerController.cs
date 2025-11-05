@@ -3,6 +3,9 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,17 +19,16 @@ public class PlayerController : MonoBehaviour
     
     [Header("Runtime")]
     public MechController mechInstance;
-
-    [Header("Movement")]
     
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float airControl = 0.6f;
     [SerializeField] private float jumpForce = 6f;
-    private float moveSpeed;
-    private int maxJumps;
+    [SerializeField] private int maxJumps = 1;
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask groundLayer;
-    private Transform groundCheck;
+    [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundRadius = 0.1f;
 
     [Header("User Interface")]
@@ -109,6 +111,38 @@ public class PlayerController : MonoBehaviour
     public bool IsGrounded() { return isGrounded; }
     public float GetFacingDirection() { return isFacingRight ? 1f : -1f; }
 
+        Rotate();
+    }
+
+    private void FixedUpdate()
+    {
+        // Ground Check
+        // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
+        // if (isGrounded)
+        jumpsRemaining = maxJumps;
+
+        // Movement
+        float control = isGrounded ? 1f : airControl;
+        // float control = 1f;
+        float targetVelocityX = moveInput.x * moveSpeed * control;
+        rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
+        
+    }
+    
+    public void Rotate()
+    {
+        if (moveInput.x > 0.01f)
+        {
+            // Face Right
+            mechInstance.transform.localScale = new Vector3(1, 1, 1);
+        }
+        else if (moveInput.x < -0.01f)
+        {
+            // Face Left
+            mechInstance.transform.localScale = new Vector3(-1, 1, 1);
+        }
+    }
+
     public void OnMove(InputAction.CallbackContext context)
     {
         // Debug.Log("Move pressed via: " + context.control.device.displayName);
@@ -156,6 +190,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+            Debug.Log("Jump pressed via: " + context.control.device.displayName);
+            Jump();
+        }
+    }
+    
     public void OnNavigate(InputAction.CallbackContext context)
     {
         if (context.performed)

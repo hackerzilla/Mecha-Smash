@@ -28,4 +28,9 @@ abstract public class LegsPart : MechPart
     {
         lastUseTime = Time.time;
     }
+using UnityEngine;
+
+abstract public class LegsPart : MechPart 
+{
+    abstract public void MovementAbility();
 }

@@ -6,10 +6,32 @@ public class CyclopsHead : HeadPart
 {
     override public void SpecialAttack(PlayerController player, InputAction.CallbackContext context)
     {
+using UnityEngine;
+
+public class CyclopsHead : HeadPart
+{
+    public Transform eyePoint;
+    public GameObject laserPrefab;
+    private LaserBeam spawnedLaser;
+
+    private void Start()
+    {
+        GameObject laser = Instantiate(laserPrefab, eyePoint.position, eyePoint.rotation);
+        spawnedLaser = laser.GetComponent<LaserBeam>();
+        laser.transform.SetParent(eyePoint);
+    }
+
+    override public void SpecialAttack()
+    {
+        
         // TODO: Do the cyclops laser attack logic.
         // Spawn laser pointing in facing direction, originating at eye.
         // Make the head look in the controlling player's joystick direction.
         Debug.Log("Cyclops special attack!");
         animator.SetTrigger("SpecialAttack");
+
+        StartCoroutine(spawnedLaser.ShootLaser_());
     }   
 }
+
+

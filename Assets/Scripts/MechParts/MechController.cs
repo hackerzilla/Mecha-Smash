@@ -2,6 +2,8 @@ using NUnit.Framework;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -34,6 +36,15 @@ public class MechController : MonoBehaviour
         // {
         //     SpecialAttack();
         // }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SpecialAttack();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            BasicAttack();
+        }
     }
 
     public void MoveFromInput(float xAxisInput)
@@ -72,6 +83,24 @@ public class MechController : MonoBehaviour
         {
             legsInstance.MovementAbility(player, context);
         }
+    public void BasicAttack()
+    {
+        armsInstance.BasicAttack();
+    }
+
+    public void SpecialAttack()
+    {
+        headInstance.SpecialAttack();
+    }
+
+    public void DefensiveAbility()
+    {
+        torsoInstance.DefensiveAbility();
+    }
+
+    public void MovementAbility()
+    {
+        legsInstance.MovementAbility();
     }
 
     public void AssembleMechFromPrefabParts(TorsoPart torso, HeadPart head, ArmsPart arms, LegsPart legs)

@@ -58,6 +58,16 @@ MonoBehaviour:
     m_Bits: 64
   groundRadius: 0
   playerCard: {fileID: 0}
+  moveSpeed: 8
+  airControl: 0.6
+  jumpForce: 6
+  maxJumps: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheck: {fileID: 8209658445924219068}
+  groundRadius: 0.1
+  lobbyCustomizer: {fileID: 0}
 --- !u!114 &-7664173455312917518
 MonoBehaviour:
   m_ObjectHideFlags: 0
