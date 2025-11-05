@@ -1,5 +1,7 @@
 using NUnit.Framework;
 using Unity.Mathematics;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -30,6 +32,10 @@ public class MechController : MonoBehaviour
 
     void Update()
     {
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     SpecialAttack();
+        // }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SpecialAttack();
@@ -53,6 +59,30 @@ public class MechController : MonoBehaviour
         // TODO implement this
     }
 
+    public void BasicAttack(PlayerController player, InputAction.CallbackContext context)
+    {
+        if (armsInstance != null)
+            armsInstance.BasicAttack(player, context);
+    }
+
+    public void SpecialAttack(PlayerController player, InputAction.CallbackContext context)
+    {
+        if (headInstance != null)
+            headInstance.SpecialAttack(player, context);
+    }
+
+    public void DefensiveAbility(PlayerController player, InputAction.CallbackContext context)
+    {
+        if (torsoInstance != null)
+            torsoInstance.DefensiveAbility(player, context);
+    }
+
+    public void MovementAbility(PlayerController player, InputAction.CallbackContext context)
+    {
+        if(legsInstance != null)
+        {
+            legsInstance.MovementAbility(player, context);
+        }
     public void BasicAttack()
     {
         armsInstance.BasicAttack();
@@ -145,7 +175,7 @@ public class MechController : MonoBehaviour
     {
         if (torsoInstance != null)
         {
-            Destroy(torsoInstance);
+            Destroy(torsoInstance.gameObject);
         }
         Assert.AreNotEqual(torsoPrefab, null);
         torsoInstance = Instantiate(torsoPrefab);
@@ -156,7 +186,7 @@ public class MechController : MonoBehaviour
     {
         if (armsInstance != null)
         {
-            Destroy(armsInstance);
+            Destroy(armsInstance.gameObject);
         }
         Assert.AreNotEqual(armsPrefab, null);
         armsInstance = Instantiate(armsPrefab);
@@ -167,7 +197,7 @@ public class MechController : MonoBehaviour
     {
         if (legsInstance != null)
         {
-            Destroy(legsInstance);
+            Destroy(legsInstance.gameObject);
         }
         Assert.AreNotEqual(legsPrefab, null);
         legsInstance = Instantiate(legsPrefab);

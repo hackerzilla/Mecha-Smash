@@ -1,3 +1,11 @@
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class CyclopsHead : HeadPart
+{
+    override public void SpecialAttack(PlayerController player, InputAction.CallbackContext context)
+    {
 using UnityEngine;
 
 public class CyclopsHead : HeadPart
