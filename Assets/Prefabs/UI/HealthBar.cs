@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using NUnit.Framework;
 
 public class HealthBar : MonoBehaviour
 {
@@ -7,19 +8,22 @@ public class HealthBar : MonoBehaviour
     public Image  fillBar;
     private float initialBarSize;
     
-    void Start()
+    void OnEnable()
     {
         initialBarSize = fillBar.rectTransform.sizeDelta.x; 
-    }
-
-    void Update()
-    {
-        
+        Assert.NotNull(health);
+        health.onHealthChanged.AddListener(OnHealthChanged);
     }
     
-    void OnHealthChanged()
+    void OnDisable()
     {
-        float percent = health.currentHealth / health.maxHealth;
-        fillBar.rectTransform.sizeDelta = new Vector2(initialBarSize * percent,  fillBar.rectTransform.sizeDelta.y); 
+        health.onHealthChanged.RemoveListener(OnHealthChanged);
+    }
+    
+    void OnHealthChanged(float newHealth, float maxHealth)
+    {
+        Assert.NotNull(fillBar);
+        float healthPercent = newHealth / maxHealth;
+        fillBar.rectTransform.sizeDelta = new Vector2(initialBarSize * healthPercent,  fillBar.rectTransform.sizeDelta.y); 
     }
 }

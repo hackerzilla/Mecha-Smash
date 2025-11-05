@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
@@ -6,10 +7,17 @@ public class Health : MonoBehaviour
     public float currentHealth = 0.0f;
     public bool isDead = false;
     
+    [System.Serializable]
+    public class HealthChangedEvent : UnityEvent<float, float> { } // new health, max health
+    public HealthChangedEvent onHealthChanged = new HealthChangedEvent();
+    public UnityEvent onDeath;
+    
     void Start()
     {
         currentHealth = maxHealth; 
         isDead = false;
+        
+        onHealthChanged?.Invoke(currentHealth, maxHealth); 
     }
     
     void Update()
@@ -26,8 +34,8 @@ public class Health : MonoBehaviour
             return;
         }
         var prevHealth = currentHealth;
-        currentHealth -= damage;
-        Debug.Log(name + " takes " + damage + " damage" + $" [{prevHealth}->{currentHealth}]"); 
+        ChangeHealth(-damage);
+        // Debug.Log(name + " takes " + damage + " damage" + $" [{prevHealth}->{currentHealth}]"); 
         if (currentHealth <= 0)
         {
             Die(); 
@@ -42,15 +50,21 @@ public class Health : MonoBehaviour
             return;
         }
         var prevHealth = currentHealth;
-        currentHealth += heal;
+        ChangeHealth(+heal);
         Debug.Log(name + " heals for " + heal + $" [{prevHealth}->{currentHealth}]");
     }
     
-    void Die()
+    private void ChangeHealth(float delta)
+    {
+        currentHealth += delta;
+        onHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+    public void Die()
     {
         isDead = true;
         // do any Dying logic here, or use this component to trigger death logic elsewhere.
-        print(name + " died");
+        onDeath?.Invoke(); 
+        Debug.Log(name + " died");
         Destroy(gameObject);
     }
 }

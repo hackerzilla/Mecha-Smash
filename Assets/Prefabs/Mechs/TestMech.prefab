@@ -40,6 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5097939138634229398}
+  - component: {fileID: 4094508965700949465}
   m_Layer: 0
   m_Name: HealthBar
   m_TagString: Untagged
@@ -69,6 +70,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4094508965700949465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1181896200154528645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b105eb32e008b4db2853bcf2a8a9efea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthBar
+  health: {fileID: 1584761926584495825}
+  fillBar: {fileID: 4471548306944403602}
 --- !u!1 &2452661567761805380
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,6 +478,12 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 0
   isDead: 0
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8204084872135605062
 GameObject:
   m_ObjectHideFlags: 0
