@@ -55,20 +55,36 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        Rotate();
     }
-          
+
     private void FixedUpdate()
     {
         // Ground Check
         // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
         // if (isGrounded)
-            jumpsRemaining = maxJumps;
+        jumpsRemaining = maxJumps;
 
         // Movement
         float control = isGrounded ? 1f : airControl;
         // float control = 1f;
         float targetVelocityX = moveInput.x * moveSpeed * control;
         rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
+        
+    }
+    
+    public void Rotate()
+    {
+        if (moveInput.x > 0.01f)
+        {
+            // Face Right
+            mechInstance.transform.localScale = new Vector3(1, 1, 1);
+        }
+        else if (moveInput.x < -0.01f)
+        {
+            // Face Left
+            mechInstance.transform.localScale = new Vector3(-1, 1, 1);
+        }
     }
 
     public void OnMove(InputAction.CallbackContext context)

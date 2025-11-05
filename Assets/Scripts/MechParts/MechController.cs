@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -32,6 +33,11 @@ public class MechController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SpecialAttack();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            BasicAttack();
         }
     }
 

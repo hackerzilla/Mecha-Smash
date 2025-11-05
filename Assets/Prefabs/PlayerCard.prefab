@@ -1598,6 +1598,7 @@ MonoBehaviour:
   - {fileID: 6383253985334823945, guid: de729d02645d3478ba9ad76728eee79b, type: 3}
   armsOptions:
   - {fileID: 8818423925520398678, guid: 35d75e11865a945deb64417d9aa41fb9, type: 3}
+  - {fileID: 4381876461931903809, guid: 1824101702ab54313b12df2b01c24dee, type: 3}
   legsOptions:
   - {fileID: 7231484667331967985, guid: 4a923d49503634f03953024cfe484c4a, type: 3}
   partNameTexts:
