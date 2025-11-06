@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 7792172839861042120}
   - component: {fileID: 7009051257605336652}
   m_Layer: 0
-  m_Name: CobraArms
+  m_Name: Cobra Repeater Arms
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -317,18 +317,12 @@ public class PlayerCard : MonoBehaviour
     {
         if (menuOutlines.Count > slotIndex && menuOutlines[slotIndex] != null)
         {
-            activeFlashCoroutine = StartCoroutine(FlashOutline(menuOutlines[slotIndex]));
+            menuOutlines[slotIndex].enabled = true;
         }
     }
     
     private void StopFlashing()
     {
-        if (activeFlashCoroutine != null)
-        {
-            StopCoroutine(activeFlashCoroutine);
-            activeFlashCoroutine = null;
-        }
-        
         if (menuOutlines.Count > currentMenuSlot && menuOutlines[currentMenuSlot] != null)
         {
             menuOutlines[currentMenuSlot].enabled = false;
@@ -337,10 +331,8 @@ public class PlayerCard : MonoBehaviour
     
     private IEnumerator FlashOutline(Image outline)
     {
-        while (true)
-        {
-            outline.enabled = !outline.enabled;
-            yield return new WaitForSeconds(flashingPeriod);
-        }
+        // No longer flashing - just enable the outline as a solid color
+        outline.enabled = true;
+        yield break;
     }
 }
