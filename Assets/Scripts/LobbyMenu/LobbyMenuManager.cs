@@ -54,10 +54,12 @@ public class LobbyMenuManager : MonoBehaviour
             PlayerController playerController = playerInput.gameObject.GetComponent<PlayerController>();
             // Create Player UI
             GameObject playerCardObject = Instantiate(playerCardPrefab, lobbyMenu.transform);
-            // Attach references 
+            // Attach references
             PlayerCard playerCard = playerCardObject.GetComponent<PlayerCard>();
             playerController.playerCard = playerCard;
             playerCard.playerRef = playerController;
+            // Initialize submit cooldown
+            playerController.OnPlayerJoined();
             // Create Event System and attach to the Player object (not the PlayerCard object!).
             var uiEventSystem = new GameObject($"Player {playerInput.playerIndex} EventSystem");
             var multiplayerEventSystem = uiEventSystem.AddComponent<MultiplayerEventSystem>();

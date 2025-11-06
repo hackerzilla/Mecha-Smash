@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("User Interface")]
     public PlayerCard playerCard;
+    [SerializeField] private float submitCooldownAfterJoin = 1f;
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private bool isFacingRight = true;
     private bool isAbilityOverridingMovement = false;
+    private float canSubmitAfterTime = 0f;
     
     void Start()
     {
@@ -189,10 +191,20 @@ public class PlayerController : MonoBehaviour
         isAbilityOverridingMovement = false;
     }
 
+    public void OnPlayerJoined()
+    {
+        canSubmitAfterTime = Time.time + submitCooldownAfterJoin;
+    }
+
     public void Submit(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
+            if (Time.time < canSubmitAfterTime)
+            {
+                return;
+            }
+
             playerCard.OnSubmit(context);
             Debug.Log($"{gameObject.name} Submit pressed by {GetComponent<PlayerInput>().devices[0].displayName}");
         }
