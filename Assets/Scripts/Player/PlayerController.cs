@@ -212,7 +212,7 @@ public class PlayerController : MonoBehaviour
             this.moveSpeed = mechInstance.legsInstance.moveSpeed;
             this.maxJumps = mechInstance.legsInstance.maxJumps;
             this.jumpsRemaining = this.maxJumps;
-            Debug.Log($"Legs Stats Applied: {mechInstance.legsInstance.name} (Speed: {moveSpeed}, Jumps: {maxJumps})");
+            // Debug.Log($"Legs Stats Applied: {mechInstance.legsInstance.name} (Speed: {moveSpeed}, Jumps: {maxJumps})");
         }
         else
         {
@@ -236,7 +236,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.Log("For some reason the mechInstance was null (from SwapMechPart in PlayerController on "+ name + ")");
+            Debug.LogWarning("For some reason the mechInstance was null (from SwapMechPart in PlayerController on "+ name + ")");
         }
     }
     
@@ -251,13 +251,11 @@ public class PlayerController : MonoBehaviour
         var map = playerInput.actions.FindActionMap(mapName); 
         Debug.Assert(map != null, "Could not find map: " + mapName);
         map.Disable();
-        Debug.Log($"{gameObject.name}: Input mapping {mapName} disabled");
     }
     public void EnableInputMapping(string mapName)
     {
         var map = playerInput.actions.FindActionMap(mapName); 
         Debug.Assert(map != null, "Could not find map: " + mapName);
         map.Enable();
-        Debug.Log($"{gameObject.name}: Input mapping {mapName} enabled");
     }
 }

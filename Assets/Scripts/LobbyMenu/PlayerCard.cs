@@ -42,7 +42,6 @@ public class PlayerCard : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Player ref" + playerRef);
         // Initialize to first option for each part type
         currentPartIndices = new int[PART_SLOT_COUNT];
         for (int i = 0; i < PART_SLOT_COUNT; i++)
@@ -88,7 +87,6 @@ public class PlayerCard : MonoBehaviour
     
             if (!ui.isReady)
             {
-                Debug.Log("Not all players are ready");
                 return;
             }
     

@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class Health : MonoBehaviour
 {
-    public float maxHealth = 100.0f;
-    public float currentHealth = 0.0f;
-    public bool isDead = false;
+    [SerializeField] private float maxHealth = 100.0f;
+    [SerializeField] private float currentHealth = 0.0f;
+    [SerializeField] private bool isDead = false;
     
     [System.Serializable]
     public class HealthChangedEvent : UnityEvent<float, float> { } // new health, max health
@@ -23,7 +24,7 @@ public class Health : MonoBehaviour
     void Update()
     {
         // testing purposes 
-        TakeDamage(Time.deltaTime * 5); 
+        TakeDamage(Time.deltaTime); 
     }
 
     void TakeDamage(float damage)

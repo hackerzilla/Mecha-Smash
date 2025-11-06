@@ -84,7 +84,6 @@ public class MechController : MonoBehaviour
     
     public void AssembleMechParts()
     {
-        Debug.Log(name + " assembling parts (" + headPrefab.name + ", " + torsoPrefab.name + ", " + armsPrefab.name + ", " + legsPrefab.name + ")");
         AttachTorso();
         AttachHead();
         AttachArms();
