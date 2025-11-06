@@ -11,8 +11,6 @@ public class MechMovement : MonoBehaviour
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundRadius = 0.1f;
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
@@ -20,10 +18,16 @@ public class MechMovement : MonoBehaviour
     private bool isGrounded;
     private bool isFacingRight = true;
     private bool isMovementOverridden = false;
+    private ContactFilter2D groundContactFilter;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        // Set up contact filter for ground detection
+        groundContactFilter = new ContactFilter2D();
+        groundContactFilter.useLayerMask = true;
+        groundContactFilter.layerMask = groundLayer;
     }
 
     void FixedUpdate()
@@ -33,14 +37,11 @@ public class MechMovement : MonoBehaviour
             return;
         }
 
-        // Ground Check
-        if (groundCheck != null)
+        // Ground Check using Rigidbody2D collision detection
+        isGrounded = rb.IsTouching(groundContactFilter);
+        if (isGrounded)
         {
-            isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
-            if (isGrounded)
-            {
-                jumpsRemaining = maxJumps;
-            }
+            jumpsRemaining = maxJumps;
         }
 
         // Update facing direction
@@ -117,11 +118,6 @@ public class MechMovement : MonoBehaviour
     {
         maxJumps = jumps;
         jumpsRemaining = jumps;
-    }
-
-    public void SetGroundCheck(Transform groundCheckTransform)
-    {
-        groundCheck = groundCheckTransform;
     }
 
     public Rigidbody2D GetRigidbody()

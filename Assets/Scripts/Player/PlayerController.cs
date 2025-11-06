@@ -39,15 +39,6 @@ public class PlayerController : MonoBehaviour
         }
         Assert.NotNull(mechInstance);
 
-        // Set up ground check transform for MechMovement
-        Transform groundCheck = mechInstance.transform.Find("GroundCheck");
-        Assert.NotNull(groundCheck, "need 'GroundCheck' object in Mech prefab");
-        MechMovement mechMovement = mechInstance.GetComponent<MechMovement>();
-        if (mechMovement != null)
-        {
-            mechMovement.SetGroundCheck(groundCheck);
-        }
-
         // Subscribe to mech's death event
         MechHealth mechHealth = mechInstance.GetComponent<MechHealth>();
         if (mechHealth != null)
