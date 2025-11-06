@@ -23,7 +23,6 @@ public class MechController : MonoBehaviour
 
     public void Jump()
     {
-        Debug.Log(name + " jumped!");
         // TODO implement this
     }
 

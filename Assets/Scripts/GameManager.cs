@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
         if (LobbyMenuManager.instance != null)
         {
             LobbyMenuManager.instance.onPlayerJoinedGame.AddListener(OnPlayerJoinedGame);
-            Debug.Log("GameManager subscribed to player join events");
         }
         else
         {
@@ -52,7 +51,6 @@ public class GameManager : MonoBehaviour
 
     private void OnPlayerJoinedGame(PlayerController player)
     {
-        Debug.Log($"[GameManager] OnPlayerJoinedGame() called for {player.gameObject.name} - Time: {Time.time}");
 
         // Add player to tracked list
         trackedPlayers.Add(player);
@@ -60,10 +58,7 @@ public class GameManager : MonoBehaviour
         alivePlayers++;
 
         // Subscribe to this player's death event
-        Debug.Log($"[GameManager] BEFORE subscribing - {player.gameObject.name}.onPlayerDeath listener count: {player.onPlayerDeath.GetPersistentEventCount()}");
         player.onPlayerDeath.AddListener(OnPlayerDeath);
-        Debug.Log($"[GameManager] AFTER subscribing - {player.gameObject.name}.onPlayerDeath listener count: {player.onPlayerDeath.GetPersistentEventCount()}");
-        Debug.Log($"[GameManager] Successfully subscribed to {player.gameObject.name}.onPlayerDeath (Total: {totalPlayers}, Alive: {alivePlayers})");
 
         // Invoke count changed event
         onPlayerCountChanged.Invoke(totalPlayers, alivePlayers);
@@ -71,7 +66,6 @@ public class GameManager : MonoBehaviour
 
     public void OnPlayerDeath()
     {
-        Debug.Log($"[GameManager] *** OnPlayerDeath() WAS CALLED! *** - Time: {Time.time}");
 
         alivePlayers--;
         Debug.Log($"[GameManager] Player died! Alive players: {alivePlayers}/{totalPlayers}");

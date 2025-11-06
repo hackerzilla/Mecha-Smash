@@ -47,7 +47,6 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
-        Debug.Log($"[{gameObject.name}] PlayerController.Start() beginning - Time: {Time.time}");
 
         // Initialize events
 
@@ -73,7 +72,6 @@ public class PlayerController : MonoBehaviour
         if (mechHealth != null)
         {
             mechHealth.onDeath.AddListener(OnMechDeath);
-            Debug.Log($"[{gameObject.name}] Subscribed to MechHealth.onDeath event");
         }
         else
         {
@@ -85,7 +83,6 @@ public class PlayerController : MonoBehaviour
         DisableInputMapping("Player");
         EnableInputMapping("UI");
 
-        Debug.Log($"[{gameObject.name}] PlayerController.Start() completed - Time: {Time.time}");
     }
 
     public Rigidbody2D GetRigidbody() { return rb; }

@@ -82,7 +82,6 @@ public class LobbyMenuManager : MonoBehaviour
             onPlayerJoinedGame.Invoke(playerController);
         }
 
-        Debug.Log($"Player {playerInput.playerIndex} joined!");
     }
 
     // Called every time a player leaves via Player Input Manager (a new controller is disconnected)

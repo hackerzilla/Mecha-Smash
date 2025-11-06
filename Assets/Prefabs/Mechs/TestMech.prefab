@@ -82,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b105eb32e008b4db2853bcf2a8a9efea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthBar
-  health: {fileID: 747560801272934941}
+  mechHealth: {fileID: 2316152869218607206}
   fillBar: {fileID: 4471548306944403602}
 --- !u!1 &2452661567761805380
 GameObject:
@@ -323,7 +323,6 @@ GameObject:
   - component: {fileID: 8379868751200576304}
   - component: {fileID: 2960981710294402185}
   - component: {fileID: 7941540926429174331}
-  - component: {fileID: 747560801272934941}
   - component: {fileID: 2316152869218607206}
   m_Layer: 0
   m_Name: TestMech
@@ -523,27 +522,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &747560801272934941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7712348289771204258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a398a280761584c4693fbba8156a1fba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Health
-  maxHealth: 100
-  currentHealth: 0
-  isDead: 0
-  onHealthChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  onDeath:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2316152869218607206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,6 +536,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MechHealth
   maxHealth: 100
   currentHealth: 0
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
   onDeath:
     m_PersistentCalls:
       m_Calls: []

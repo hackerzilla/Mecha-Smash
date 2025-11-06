@@ -7,6 +7,11 @@ public class MechHealth : MonoBehaviour
     public float maxHealth = 100f;
     public float currentHealth;
     private bool isDead = false;
+
+    [System.Serializable]
+    public class HealthChangedEvent : UnityEvent<float, float> { } // currentHealth, maxHealth
+
+    public HealthChangedEvent onHealthChanged = new HealthChangedEvent();
     public UnityEvent onDeath;
 
     private float damageMultiplier = 1.0f; // 1.0 = 100% damage
@@ -16,11 +21,12 @@ public class MechHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         onDeath = new UnityEvent();
+        onHealthChanged?.Invoke(currentHealth, maxHealth);
     }
     
     void Update()
     {
-        TakeDamage(25f * Time.deltaTime);
+        TakeDamage(2f * Time.deltaTime);
     }
 
     // ⭐️ Different scripts(bullet, ability stuff) call this method and give damage.
@@ -32,8 +38,8 @@ public class MechHealth : MonoBehaviour
         }
 
         float finalDamage = amount * damageMultiplier; // damage reduction
-        currentHealth -= finalDamage;
-        
+        ChangeHealth(-finalDamage);
+
         // Debug.Log(gameObject.name + "got" + finalDamage);
 
         if (currentHealth <= 0)
@@ -78,12 +84,27 @@ public class MechHealth : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log($"[{gameObject.name}] MechHealth.Die() called - Time: {Time.time}");
-        Debug.Log($"[{gameObject.name}] onDeath listener count: {onDeath.GetPersistentEventCount()}");
         isDead = true;
-        Debug.Log($"[{gameObject.name}] Invoking onDeath event...");
         onDeath.Invoke();
-        Debug.Log($"[{gameObject.name}] onDeath event invoked");
         // Todo : die animation, game over logic, etc..
+    }
+
+    public void Heal(float amount)
+    {
+        if (isDead)
+        {
+            Debug.Log($"{name} is dead, ignoring {amount} healing");
+            return;
+        }
+
+        ChangeHealth(amount);
+        Debug.Log($"{name} heals for {amount} (Current: {currentHealth}/{maxHealth})");
+    }
+
+    private void ChangeHealth(float delta)
+    {
+        currentHealth += delta;
+        currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
+        onHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 }
