@@ -324,6 +324,7 @@ GameObject:
   - component: {fileID: 2960981710294402185}
   - component: {fileID: 7941540926429174331}
   - component: {fileID: 2316152869218607206}
+  - component: {fileID: 1611773581915627989}
   m_Layer: 0
   m_Name: TestMech
   m_TagString: Untagged
@@ -542,6 +543,27 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1611773581915627989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7712348289771204258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e47dc4d2bf67c4b7eb0496ce6f5814d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MechMovement
+  moveSpeed: 8
+  airControl: 0.6
+  jumpForce: 6
+  maxJumps: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheck: {fileID: 0}
+  groundRadius: 0.1
 --- !u!1 &8204084872135605062
 GameObject:
   m_ObjectHideFlags: 0

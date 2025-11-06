@@ -13,17 +13,67 @@ public class MechController : MonoBehaviour
     public LegsPart legsPrefab;
 
     // The game object that will basically be the transform that the torso gets attached to.
-    public GameObject torsoParent;    
+    public GameObject torsoParent;
 
     public HeadPart headInstance;
     public TorsoPart torsoInstance;
     public ArmsPart armsInstance;
     public LegsPart legsInstance;
 
+    private MechMovement mechMovement;
+
+    void Awake()
+    {
+        mechMovement = GetComponent<MechMovement>();
+    }
+
+
+    public void OnMove(Vector2 moveInput)
+    {
+        if (mechMovement != null)
+        {
+            mechMovement.SetMoveInput(moveInput);
+        }
+    }
 
     public void Jump()
     {
-        // TODO implement this
+        if (mechMovement != null)
+        {
+            mechMovement.Jump();
+        }
+        // TODO: Trigger jump animation
+    }
+
+    public void SetMovementOverride(bool isOverriding)
+    {
+        if (mechMovement != null)
+        {
+            mechMovement.SetMovementOverride(isOverriding);
+        }
+    }
+
+    public void SetMovementOverride(bool isOverriding, float duration)
+    {
+        if (mechMovement != null)
+        {
+            mechMovement.SetMovementOverride(isOverriding, duration);
+        }
+    }
+
+    public Rigidbody2D GetRigidbody()
+    {
+        return mechMovement != null ? mechMovement.GetRigidbody() : null;
+    }
+
+    public bool IsGrounded()
+    {
+        return mechMovement != null && mechMovement.IsGrounded();
+    }
+
+    public float GetFacingDirection()
+    {
+        return mechMovement != null ? mechMovement.GetFacingDirection() : 1f;
     }
 
     public void BasicAttack(PlayerController player, InputAction.CallbackContext context)
@@ -87,6 +137,29 @@ public class MechController : MonoBehaviour
         AttachHead();
         AttachArms();
         AttachLegs();
+        ApplyLegStats();
+    }
+
+    public void ApplyLegStats()
+    {
+        if (mechMovement == null)
+        {
+            Debug.LogError("MechMovement component not found!");
+            return;
+        }
+
+        if (legsInstance != null)
+        {
+            mechMovement.SetMoveSpeed(legsInstance.moveSpeed);
+            mechMovement.SetMaxJumps(legsInstance.maxJumps);
+            Debug.Log($"Legs Stats Applied: {legsInstance.name} (Speed: {legsInstance.moveSpeed}, Jumps: {legsInstance.maxJumps})");
+        }
+        else
+        {
+            Debug.LogError("Mech legsInstance is null, cannot apply stats");
+            mechMovement.SetMoveSpeed(5f);
+            mechMovement.SetMaxJumps(1);
+        }
     }
 
     public void SwapPart(MechPart part)
@@ -113,6 +186,7 @@ public class MechController : MonoBehaviour
         {
             legsPrefab = (LegsPart)part;
             AttachLegs();
+            ApplyLegStats();
         }
         else
         {

@@ -17,17 +17,6 @@ public class PlayerController : MonoBehaviour
     
     [Header("Runtime")]
     public MechController mechInstance;
-    
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 8f;
-    [SerializeField] private float airControl = 0.6f;
-    [SerializeField] private float jumpForce = 6f;
-    [SerializeField] private int maxJumps = 1;
-
-    [Header("Ground Check")]
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundRadius = 0.1f;
 
     [Header("User Interface")]
     public PlayerCard playerCard;
@@ -36,20 +25,11 @@ public class PlayerController : MonoBehaviour
     [Header("Events")]
     public UnityEvent onPlayerDeath = new UnityEvent();
 
-    private Rigidbody2D rb;
-    private Vector2 moveInput;
-    private int jumpsRemaining;
-    private bool isGrounded;
     private PlayerInput playerInput;
-    private bool isFacingRight = true;
-    private bool isAbilityOverridingMovement = false;
     private float canSubmitAfterTime = 0f;
     
     void Start()
     {
-
-        // Initialize events
-
         playerInput = GetComponent<PlayerInput>();
         if (mechInstance == null)
         {
@@ -59,12 +39,13 @@ public class PlayerController : MonoBehaviour
         }
         Assert.NotNull(mechInstance);
 
-        rb = mechInstance.GetComponent<Rigidbody2D>();
-
-        if (groundCheck == null)
+        // Set up ground check transform for MechMovement
+        Transform groundCheck = mechInstance.transform.Find("GroundCheck");
+        Assert.NotNull(groundCheck, "need 'GroundCheck' object in Mech prefab");
+        MechMovement mechMovement = mechInstance.GetComponent<MechMovement>();
+        if (mechMovement != null)
         {
-            groundCheck = mechInstance.transform.Find("GroundCheck");
-            Assert.NotNull(groundCheck, "need 'GroundCheck' object in Mech prefab");
+            mechMovement.SetGroundCheck(groundCheck);
         }
 
         // Subscribe to mech's death event
@@ -78,66 +59,38 @@ public class PlayerController : MonoBehaviour
             Debug.LogError($"MechHealth component not found on {mechInstance.name}");
         }
 
-        ApplyLegStats();
-
         DisableInputMapping("Player");
         EnableInputMapping("UI");
-
     }
 
-    public Rigidbody2D GetRigidbody() { return rb; }
-    public bool IsGrounded() { return isGrounded; }
-    public float GetFacingDirection() { return isFacingRight ? 1f : -1f; }
-
-
-    private void FixedUpdate()
+    public Rigidbody2D GetRigidbody()
     {
-        if (isAbilityOverridingMovement)
-        {
-            return;
-        }
+        return mechInstance != null ? mechInstance.GetRigidbody() : null;
+    }
 
-        // Ground Check
-        // TODO: replace this with something to do with using rb to check for any colliding bodies.
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
-        if (isGrounded)
-        {
-            jumpsRemaining = maxJumps;
-        }
+    public bool IsGrounded()
+    {
+        return mechInstance != null && mechInstance.IsGrounded();
+    }
 
-        // Update facing direction
-        if (moveInput.x > 0.1f)
-        {
-            isFacingRight = true;
-        }
-        else if (moveInput.x < -0.1f)
-        {
-            isFacingRight = false;
-        }
-
-        // Apply movement
-        float targetVelocityX;
-        if (isGrounded)
-        {
-            targetVelocityX = moveInput.x * moveSpeed;
-        }
-        else
-        {
-            targetVelocityX = Mathf.Lerp(rb.linearVelocity.x, moveInput.x * moveSpeed, Time.fixedDeltaTime * airControl);
-        }
-        rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
+    public float GetFacingDirection()
+    {
+        return mechInstance != null ? mechInstance.GetFacingDirection() : 1f;
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>();
+        if (mechInstance != null)
+        {
+            mechInstance.OnMove(context.ReadValue<Vector2>());
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && mechInstance != null)
         {
-            Jump();
+            mechInstance.Jump();
         }
     }
 
@@ -187,28 +140,18 @@ public class PlayerController : MonoBehaviour
     
     public void SetMovementOverride(bool isOverriding)
     {
-        isAbilityOverridingMovement = isOverriding;
+        if (mechInstance != null)
+        {
+            mechInstance.SetMovementOverride(isOverriding);
+        }
     }
 
     public void SetMovementOverride(bool isOverriding, float duration)
     {
-        isAbilityOverridingMovement = isOverriding;
-        if (isOverriding && duration > 0)
+        if (mechInstance != null)
         {
-            StartCoroutine(ResetMovementOverride(duration));
+            mechInstance.SetMovementOverride(isOverriding, duration);
         }
-    }
-
-    private IEnumerator ResetMovementOverride(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-
-        if (rb != null)
-        {
-            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-        }
-        
-        isAbilityOverridingMovement = false;
     }
 
     public void OnPlayerJoined()
@@ -240,46 +183,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Jump()
-    {
-        // Check if we have enough jumps
-        if (jumpsRemaining > 0)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            jumpsRemaining -= 1;
-            mechInstance.Jump();
-        }
-    }
-
-    private void ApplyLegStats()
-    {
-        if (mechInstance.legsInstance != null)
-        {
-            this.moveSpeed = mechInstance.legsInstance.moveSpeed;
-            this.maxJumps = mechInstance.legsInstance.maxJumps;
-            this.jumpsRemaining = this.maxJumps;
-            // Debug.Log($"Legs Stats Applied: {mechInstance.legsInstance.name} (Speed: {moveSpeed}, Jumps: {maxJumps})");
-        }
-        else
-        {
-            Debug.LogError("Mech legsInstance가 null이라 스탯을 적용할 수 없습니다.");
-            this.moveSpeed = 5f;
-            this.maxJumps = 1;
-            this.jumpsRemaining = 1;
-        }
-    }
-    
     public void SwapMechPart(MechPart newPartPrefab)
     {
         if (mechInstance != null)
         {
             mechInstance.SwapPart(newPartPrefab);
-
-            if (newPartPrefab is LegsPart)
-            {
-                ApplyLegStats();
-            }
         }
         else
         {
