@@ -8,12 +8,16 @@ public class LobbyMenuManager : MonoBehaviour
 {
     // Singleton
     public static LobbyMenuManager instance { get; private set; }
-    
+
     [FormerlySerializedAs("playerUIPrefab")]
     public GameObject playerCardPrefab;
     public PlayerInputManager playerInputManager;
     public GameObject lobbyMenu;
     public List<PlayerController> players;
+
+    [Header("Spawn Settings")]
+    [SerializeField] private Vector3 spawnStartPosition = new Vector3(-3f, 0f, 0f);
+    [SerializeField] private float spawnSpacing = 2f;
 
     private void Awake()
     {
@@ -61,6 +65,9 @@ public class LobbyMenuManager : MonoBehaviour
             uiInputModule.actionsAsset = playerInput.actions;
             multiplayerEventSystem.playerRoot = playerCardObject;
             uiEventSystem.transform.SetParent(playerInput.transform, false);
+            int i = players.Count - 1;
+            Vector3 spawnPosition = spawnStartPosition + new Vector3(i * spawnSpacing, 0f, 0f);
+            players[i].transform.position = spawnPosition;
         }
 
         Debug.Log($"Player {playerInput.playerIndex} joined!");
@@ -78,7 +85,7 @@ public class LobbyMenuManager : MonoBehaviour
     {
         // make lobby menu invisible
         lobbyMenu.SetActive(false);
-        
+
         // disable the UI input action mapping for all players
         // enable the normal input action mapping for all players
         // any other logic that the player object should run when the game is started goes in PlayerController.OnGameStart
