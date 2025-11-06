@@ -1,0 +1,128 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+
+public class GameManager : MonoBehaviour
+{
+    // Singleton
+    public static GameManager instance { get; private set; }
+
+    [Header("Restart Settings")]
+    [SerializeField] private float restartDelay = 2f;
+
+    [Header("Events")]
+    public UnityEvent<int, int> onPlayerCountChanged; // (total, alive)
+    public UnityEvent onGameOver;
+
+    private List<PlayerController> trackedPlayers;
+    private int totalPlayers = 0;
+    private int alivePlayers = 0;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        // Singleton pattern
+        instance = this;
+
+        // Initialize list and events
+        trackedPlayers = new List<PlayerController>();
+        onPlayerCountChanged = new UnityEvent<int, int>();
+        onGameOver = new UnityEvent();
+    }
+
+    private void Start()
+    {
+        // Subscribe to LobbyMenuManager's player join event
+        if (LobbyMenuManager.instance != null)
+        {
+            LobbyMenuManager.instance.onPlayerJoinedGame.AddListener(OnPlayerJoinedGame);
+            Debug.Log("GameManager subscribed to player join events");
+        }
+        else
+        {
+            Debug.LogError("LobbyMenuManager instance not found!");
+        }
+    }
+
+    private void OnPlayerJoinedGame(PlayerController player)
+    {
+        Debug.Log($"[GameManager] OnPlayerJoinedGame() called for {player.gameObject.name} - Time: {Time.time}");
+
+        // Add player to tracked list
+        trackedPlayers.Add(player);
+        totalPlayers++;
+        alivePlayers++;
+
+        // Subscribe to this player's death event
+        Debug.Log($"[GameManager] BEFORE subscribing - {player.gameObject.name}.onPlayerDeath listener count: {player.onPlayerDeath.GetPersistentEventCount()}");
+        player.onPlayerDeath.AddListener(OnPlayerDeath);
+        Debug.Log($"[GameManager] AFTER subscribing - {player.gameObject.name}.onPlayerDeath listener count: {player.onPlayerDeath.GetPersistentEventCount()}");
+        Debug.Log($"[GameManager] Successfully subscribed to {player.gameObject.name}.onPlayerDeath (Total: {totalPlayers}, Alive: {alivePlayers})");
+
+        // Invoke count changed event
+        onPlayerCountChanged.Invoke(totalPlayers, alivePlayers);
+    }
+
+    public void OnPlayerDeath()
+    {
+        Debug.Log($"[GameManager] *** OnPlayerDeath() WAS CALLED! *** - Time: {Time.time}");
+
+        alivePlayers--;
+        Debug.Log($"[GameManager] Player died! Alive players: {alivePlayers}/{totalPlayers}");
+
+        // Invoke count changed event
+        onPlayerCountChanged.Invoke(totalPlayers, alivePlayers);
+
+        // Check if only one player remains (the winner!)
+        if (alivePlayers <= 1)
+        {
+            PlayerController winner = GetWinningPlayer();
+            if (winner != null)
+            {
+                Debug.Log($"{winner.gameObject.name} wins!");
+            }
+            else
+            {
+                Debug.LogWarning("No players left standing, it's a draw!");
+            }
+
+            onGameOver.Invoke();
+            StartCoroutine(RestartGame());
+        }
+    }
+
+    private PlayerController GetWinningPlayer()
+    {
+        // Find the player whose mech is still alive
+        foreach (var player in trackedPlayers)
+        {
+            if (player.mechInstance != null)
+            {
+                MechHealth mechHealth = player.mechInstance.GetComponent<MechHealth>();
+                if (mechHealth != null && mechHealth.currentHealth > 0)
+                {
+                    return player;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private IEnumerator RestartGame()
+    {
+        // Wait for configured delay
+        yield return new WaitForSeconds(restartDelay);
+
+        // Reload current scene
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        Debug.Log($"Reloading scene: {currentSceneName}");
+        SceneManager.LoadScene(currentSceneName);
+    }
+}

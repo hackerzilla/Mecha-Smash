@@ -1,7 +1,9 @@
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using System.Collections;
+using UnityEditor.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -31,6 +33,9 @@ public class PlayerController : MonoBehaviour
     public PlayerCard playerCard;
     [SerializeField] private float submitCooldownAfterJoin = 1f;
 
+    [Header("Events")]
+    public UnityEvent onPlayerDeath = new UnityEvent();
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private int jumpsRemaining;
@@ -42,6 +47,10 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
+        Debug.Log($"[{gameObject.name}] PlayerController.Start() beginning - Time: {Time.time}");
+
+        // Initialize events
+
         playerInput = GetComponent<PlayerInput>();
         if (mechInstance == null)
         {
@@ -59,10 +68,24 @@ public class PlayerController : MonoBehaviour
             Assert.NotNull(groundCheck, "need 'GroundCheck' object in Mech prefab");
         }
 
+        // Subscribe to mech's death event
+        MechHealth mechHealth = mechInstance.GetComponent<MechHealth>();
+        if (mechHealth != null)
+        {
+            mechHealth.onDeath.AddListener(OnMechDeath);
+            Debug.Log($"[{gameObject.name}] Subscribed to MechHealth.onDeath event");
+        }
+        else
+        {
+            Debug.LogError($"MechHealth component not found on {mechInstance.name}");
+        }
+
         ApplyLegStats();
 
         DisableInputMapping("Player");
         EnableInputMapping("UI");
+
+        Debug.Log($"[{gameObject.name}] PlayerController.Start() completed - Time: {Time.time}");
     }
 
     public Rigidbody2D GetRigidbody() { return rb; }
@@ -194,6 +217,16 @@ public class PlayerController : MonoBehaviour
     public void OnPlayerJoined()
     {
         canSubmitAfterTime = Time.time + submitCooldownAfterJoin;
+    }
+
+    public void OnMechDeath()
+    {
+        // Relay the mech's death event to external listeners
+        Debug.Log($"[{gameObject.name}] OnMechDeath() called - Time: {Time.time}");
+        Debug.Log($"[{gameObject.name}] onPlayerDeath listener count: {onPlayerDeath.GetPersistentEventCount()}");
+        Debug.Log($"[{gameObject.name}] Invoking onPlayerDeath event now...");
+        onPlayerDeath.Invoke();
+        Debug.Log($"[{gameObject.name}] onPlayerDeath event invoked");
     }
 
     public void Submit(InputAction.CallbackContext context)

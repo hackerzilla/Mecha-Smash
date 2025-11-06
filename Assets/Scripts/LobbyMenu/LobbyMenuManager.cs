@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.Serialization;
@@ -19,6 +20,9 @@ public class LobbyMenuManager : MonoBehaviour
     [SerializeField] private Vector3 spawnStartPosition = new Vector3(-3f, 0f, 0f);
     [SerializeField] private float spawnSpacing = 2f;
 
+    [Header("Events")]
+    public UnityEvent<PlayerController> onPlayerJoinedGame;
+
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -28,6 +32,9 @@ public class LobbyMenuManager : MonoBehaviour
         }
         // singleton pattern
         instance = this;
+
+        // Initialize events
+        onPlayerJoinedGame = new UnityEvent<PlayerController>();
     }
 
     private void OnEnable()
@@ -70,6 +77,9 @@ public class LobbyMenuManager : MonoBehaviour
             int i = players.Count - 1;
             Vector3 spawnPosition = spawnStartPosition + new Vector3(i * spawnSpacing, 0f, 0f);
             players[i].transform.position = spawnPosition;
+
+            // Invoke event so other systems can track this player
+            onPlayerJoinedGame.Invoke(playerController);
         }
 
         Debug.Log($"Player {playerInput.playerIndex} joined!");
