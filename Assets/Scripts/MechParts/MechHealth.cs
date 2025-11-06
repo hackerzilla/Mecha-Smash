@@ -24,11 +24,6 @@ public class MechHealth : MonoBehaviour
         onHealthChanged?.Invoke(currentHealth, maxHealth);
     }
     
-    void Update()
-    {
-        TakeDamage(2f * Time.deltaTime);
-    }
-
     // ⭐️ Different scripts(bullet, ability stuff) call this method and give damage.
     public void TakeDamage(float amount)
     {

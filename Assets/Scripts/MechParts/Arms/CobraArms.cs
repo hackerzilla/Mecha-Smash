@@ -8,6 +8,7 @@ public class CobraArms : ArmsPart
     public Transform armPoint;
     public float delay = 2f;
 
+    private PlayerController playerController;
     private MechController mechController;
 
     protected override void Awake()
@@ -18,7 +19,17 @@ public class CobraArms : ArmsPart
 
     override public void BasicAttack(PlayerController player, InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
 
+        if (playerController == null)
+        {
+            playerController = player;
+        }
+        if (mechController == null)
+        {
+            mechController = playerController.mechInstance;
+        }
+        BasicAttack();
     }
 
     public override void BasicAttack()
@@ -40,9 +51,15 @@ public class CobraArms : ArmsPart
         var my_direction = transform.right * Mathf.Sign(mechController.transform.localScale.x);
 
         var cannon1 = Instantiate(cannonPrefab, armPoint.position, Quaternion.identity);
-        cannon1.GetComponent<Cannon>().direction = my_direction;
+        Cannon cannon1Script = cannon1.GetComponent<Cannon>();
+        cannon1Script.direction = my_direction;
+        cannon1Script.SetOwner(mechController.gameObject);
+
         yield return new WaitForSeconds(delay);
+
         var cannon2 = Instantiate(cannonPrefab, armPoint.position, Quaternion.identity);
-        cannon2.GetComponent<Cannon>().direction = my_direction;
+        Cannon cannon2Script = cannon2.GetComponent<Cannon>();
+        cannon2Script.direction = my_direction;
+        cannon2Script.SetOwner(mechController.gameObject);
     }
 }

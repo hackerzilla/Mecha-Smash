@@ -48,18 +48,9 @@ MonoBehaviour:
   mechPrefab: {fileID: 784989681567541876, guid: 9b6708c39061e4faea40dd4cd6c48e93, type: 3}
   headPrefab: {fileID: 3187049979565007219, guid: 966c9d61300e24d33a5e001195060369, type: 3}
   torsoPrefab: {fileID: 6383253985334823945, guid: de729d02645d3478ba9ad76728eee79b, type: 3}
-  armsPrefab: {fileID: 8818423925520398678, guid: 35d75e11865a945deb64417d9aa41fb9, type: 3}
+  armsPrefab: {fileID: 7792172839861042120, guid: 5070fc9734833674b8e8add33e95f393, type: 3}
   legsPrefab: {fileID: 7231484667331967985, guid: 4a923d49503634f03953024cfe484c4a, type: 3}
   mechInstance: {fileID: 0}
-  moveSpeed: 8
-  airControl: 0.6
-  jumpForce: 6
-  maxJumps: 1
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  groundCheck: {fileID: 8209658445924219068}
-  groundRadius: 0
   playerCard: {fileID: 0}
   submitCooldownAfterJoin: 1
   onPlayerDeath:

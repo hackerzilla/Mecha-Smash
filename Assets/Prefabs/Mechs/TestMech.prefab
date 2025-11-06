@@ -363,7 +363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   headPrefab: {fileID: 3187049979565007219, guid: 966c9d61300e24d33a5e001195060369, type: 3}
   torsoPrefab: {fileID: 6383253985334823945, guid: de729d02645d3478ba9ad76728eee79b, type: 3}
-  armsPrefab: {fileID: 4381876461931903809, guid: 1824101702ab54313b12df2b01c24dee, type: 3}
+  armsPrefab: {fileID: 7792172839861042120, guid: 5070fc9734833674b8e8add33e95f393, type: 3}
   legsPrefab: {fileID: 7231484667331967985, guid: 4a923d49503634f03953024cfe484c4a, type: 3}
   torsoParent: {fileID: 305798233812116553}
   headInstance: {fileID: 0}
@@ -453,7 +453,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.19586504}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -463,7 +463,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 4.2412977}
+  m_Size: {x: 1, y: 3.8495677}
   m_EdgeRadius: 0
 --- !u!212 &7941540926429174331
 SpriteRenderer:
@@ -557,13 +557,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MechMovement
   moveSpeed: 8
   airControl: 0.6
-  jumpForce: 6
+  jumpForce: 10
   maxJumps: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  groundCheck: {fileID: 0}
-  groundRadius: 0.1
 --- !u!1 &8204084872135605062
 GameObject:
   m_ObjectHideFlags: 0
