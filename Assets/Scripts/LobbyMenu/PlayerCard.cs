@@ -4,8 +4,6 @@ using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
-using UnityEngine.Rendering;
 
 // Handles per-player mech customization in the lobby using Unity Input System.
 // Players navigate through part slots (Head/Torso/Arms/Legs) and select from available options.
