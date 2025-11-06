@@ -110,8 +110,7 @@ public class PlayerCard : MonoBehaviour
             int direction = input.x > 0 ? 1 : -1;
             CyclePart(direction);
         }
-        
-        if (Mathf.Abs(input.y) > 0.5f)
+        else if (Mathf.Abs(input.y) > 0.2f)
         {
             int direction = input.y > 0 ? -1 : 1; // Up = previous slot, Down = next slot
             SwitchPartSlot(direction);

@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Ground Check
+        // TODO: replace this with something to do with using rb to check for any colliding bodies.
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
         if (isGrounded)
         {
@@ -118,34 +119,38 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void OnHeadAbility(InputAction.CallbackContext context)
+    public void OnSpecialAttack(InputAction.CallbackContext context)
     {
         if (mechInstance != null)
         {
+            Debug.Log("OnSpecialAttack!");
             mechInstance.SpecialAttack(this, context);
         }
     }
 
-    public void OnTorsoAbility(InputAction.CallbackContext context)
+    public void OnDefensiveAbility(InputAction.CallbackContext context)
     {
         if (mechInstance != null)
         {
+            Debug.Log("OnDefensiveAbility!");
             mechInstance.DefensiveAbility(this, context);
         }
     } 
     
-    public void OnArmsAbility(InputAction.CallbackContext context)
+    public void OnBasicAttack(InputAction.CallbackContext context)
     {
         if (mechInstance != null)
         {
+            Debug.Log("OnBasicAttack!");
             mechInstance.BasicAttack(this, context);
         }
     }
 
-    public void OnLegsAbility(InputAction.CallbackContext context)
+    public void OnMovementAbility(InputAction.CallbackContext context)
     {
         if (mechInstance != null)
         {
+            Debug.Log("OnMovementAbility!");
             mechInstance.MovementAbility(this, context);
         }
     }
