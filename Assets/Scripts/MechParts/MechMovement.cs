@@ -12,6 +12,9 @@ public class MechMovement : MonoBehaviour
     [Header("Ground Check")]
     [SerializeField] private LayerMask groundLayer;
 
+    [Header("Death Zone")]
+    [SerializeField] private float deathY = -25f;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private int jumpsRemaining;
@@ -54,6 +57,9 @@ public class MechMovement : MonoBehaviour
             isFacingRight = false;
         }
 
+        // Update sprite direction to match facing
+        UpdateSpriteDirection();
+
         // Apply movement
         float targetVelocityX;
         if (isGrounded)
@@ -65,6 +71,27 @@ public class MechMovement : MonoBehaviour
             targetVelocityX = Mathf.Lerp(rb.linearVelocity.x, moveInput.x * moveSpeed, Time.fixedDeltaTime * airControl);
         }
         rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
+
+        // Check if mech has fallen off the map
+        if (transform.position.y < deathY)
+        {
+            MechHealth mechHealth = GetComponent<MechHealth>();
+            if (mechHealth != null && mechHealth.currentHealth > 0)
+            {
+                mechHealth.Die();
+            }
+        }
+    }
+
+    private void UpdateSpriteDirection()
+    {
+        // Flip the sprite horizontally based on facing direction
+        float scaleX = Mathf.Abs(transform.localScale.x);
+        transform.localScale = new Vector3(
+            isFacingRight ? scaleX : -scaleX,
+            transform.localScale.y,
+            transform.localScale.z
+        );
     }
 
     public void SetMoveInput(Vector2 input)
