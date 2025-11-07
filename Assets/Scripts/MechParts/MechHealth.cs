@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -81,6 +82,7 @@ public class MechHealth : MonoBehaviour
     {
         isDead = true;
         onDeath.Invoke();
+        Destroy(gameObject);
         // Todo : die animation, game over logic, etc..
     }
 

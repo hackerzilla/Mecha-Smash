@@ -23,6 +23,9 @@ public class PlayerCard : MonoBehaviour
     
     [Header("Ready System")]
     public TMP_Text readyButtonText; 
+    public Image readyButtonImage;
+    public Color unreadyColor;
+    public Color readyColor;
     
     // State 
     public PlayerController playerRef;
@@ -229,9 +232,11 @@ public class PlayerCard : MonoBehaviour
         if (isReady)
         {
             StopFlashing();
+            // readyButtonImage.color = readyColor;
         }
         else
         {
+            // readyButtonImage.color = unreadyColor;
             StartFlashing(currentMenuSlot);
         }
         

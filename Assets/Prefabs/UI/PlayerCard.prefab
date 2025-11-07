@@ -1482,6 +1482,9 @@ MonoBehaviour:
   - {fileID: 7334838771377797224}
   flashingPeriod: 0.25
   readyButtonText: {fileID: 8014023922552487056}
+  readyButtonImage: {fileID: 6931402151934398667}
+  unreadyColor: {r: 0.7254902, g: 0.1882353, b: 0.1882353, a: 0}
+  readyColor: {r: 0, g: 0.5471698, b: 0.012017164, a: 0}
   playerRef: {fileID: 0}
   isReady: 0
 --- !u!1 &6171869956222824090
