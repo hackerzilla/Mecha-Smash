@@ -158,11 +158,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LaserBeam
   maxDistance: 20
   duration: 0.3
-  damage: 20
+  damage: 1
   laserTime: 3
   hitLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 129
+  damageInterval: 0.1
+  knockbackForce: 3
 --- !u!114 &5530915039730949832
 MonoBehaviour:
   m_ObjectHideFlags: 0

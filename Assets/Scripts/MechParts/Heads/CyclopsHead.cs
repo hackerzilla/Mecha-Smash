@@ -12,6 +12,13 @@ public class CyclopsHead : HeadPart
         GameObject laser = Instantiate(laserPrefab, eyePoint.position, eyePoint.rotation);
         spawnedLaser = laser.GetComponent<LaserBeam>();
         laser.transform.SetParent(eyePoint);
+
+        // Set the owner to prevent friendly fire
+        var mechController = transform.root.GetComponent<PlayerController>()?.mechInstance;
+        if (mechController != null)
+        {
+            spawnedLaser.SetOwner(mechController.gameObject);
+        }
     }
 
     override public void SpecialAttack(PlayerController player, InputAction.CallbackContext context)
