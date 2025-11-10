@@ -1,8 +1,6 @@
 using NUnit.Framework;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Class <c>MechController</c> holds references to the part slots and has all methods related to mech logic.
@@ -15,44 +13,95 @@ public class MechController : MonoBehaviour
     public LegsPart legsPrefab;
 
     // The game object that will basically be the transform that the torso gets attached to.
-    public GameObject torsoParent;    
+    public GameObject torsoParent;
 
     public HeadPart headInstance;
     public TorsoPart torsoInstance;
     public ArmsPart armsInstance;
     public LegsPart legsInstance;
 
-    void Start()
+    private MechMovement mechMovement;
+
+    void Awake()
     {
-        // bool ready = torsoPrefab && headPrefab && armsPrefab && legsPrefab;
-        // if (ready) AssembleMechParts();
+        mechMovement = GetComponent<MechMovement>();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpecialAttack();
-        }
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            BasicAttack();
-        }
-    }
-
-    public void MoveFromInput(float xAxisInput)
+    public void OnMove(Vector2 moveInput)
     {
-        Vector3 walkMovement = new Vector3(xAxisInput, 0, 0);
-        transform.position += walkMovement * Time.deltaTime;
+        if (mechMovement != null)
+        {
+            mechMovement.SetMoveInput(moveInput);
+        }
     }
 
     public void Jump()
     {
-        Debug.Log(name + " jumped!");
-        // TODO implement this
+        if (mechMovement != null)
+        {
+            mechMovement.Jump();
+        }
+        // TODO: Trigger jump animation
     }
 
+    public void SetMovementOverride(bool isOverriding)
+    {
+        if (mechMovement != null)
+        {
+            mechMovement.SetMovementOverride(isOverriding);
+        }
+    }
+
+    public void SetMovementOverride(bool isOverriding, float duration)
+    {
+        if (mechMovement != null)
+        {
+            mechMovement.SetMovementOverride(isOverriding, duration);
+        }
+    }
+
+    public Rigidbody2D GetRigidbody()
+    {
+        return mechMovement != null ? mechMovement.GetRigidbody() : null;
+    }
+
+    public bool IsGrounded()
+    {
+        return mechMovement != null && mechMovement.IsGrounded();
+    }
+
+    public float GetFacingDirection()
+    {
+        return mechMovement != null ? mechMovement.GetFacingDirection() : 1f;
+    }
+
+    public void BasicAttack(PlayerController player, InputAction.CallbackContext context)
+    {
+        if (armsInstance != null)
+            armsInstance.BasicAttack(player, context);
+    }
+
+    public void SpecialAttack(PlayerController player, InputAction.CallbackContext context)
+    {
+        if (headInstance != null)
+            headInstance.SpecialAttack(player, context);
+    }
+
+    public void DefensiveAbility(PlayerController player, InputAction.CallbackContext context)
+    {
+        if (torsoInstance != null)
+            torsoInstance.DefensiveAbility(player, context);
+    }
+
+    public void MovementAbility(PlayerController player, InputAction.CallbackContext context)
+    {
+        if(legsInstance != null)
+        {
+            legsInstance.MovementAbility(player, context);
+        }
+    }
+    
     public void BasicAttack()
     {
         armsInstance.BasicAttack();
@@ -84,48 +133,64 @@ public class MechController : MonoBehaviour
     
     public void AssembleMechParts()
     {
-        Debug.Log(name + " assembling parts (" + headPrefab.name + ", " + torsoPrefab.name + ", " + armsPrefab.name + ", " + legsPrefab.name + ")");
         AttachTorso();
         AttachHead();
         AttachArms();
         AttachLegs();
+        ApplyLegStats();
+    }
+
+    public void ApplyLegStats()
+    {
+        if (mechMovement == null)
+        {
+            Debug.LogError("MechMovement component not found!");
+            return;
+        }
+
+        if (legsInstance != null)
+        {
+            mechMovement.SetMoveSpeed(legsInstance.moveSpeed);
+            mechMovement.SetMaxJumps(legsInstance.maxJumps);
+            Debug.Log($"Legs Stats Applied: {legsInstance.name} (Speed: {legsInstance.moveSpeed}, Jumps: {legsInstance.maxJumps})");
+        }
+        else
+        {
+            Debug.LogError("Mech legsInstance is null, cannot apply stats");
+            mechMovement.SetMoveSpeed(5f);
+            mechMovement.SetMaxJumps(1);
+        }
     }
 
     public void SwapPart(MechPart part)
     {
-        Debug.Log("SwapPart called on " + part.name);
         if (part is HeadPart)
         {
-            Debug.Log(part.name + " is a HeadPart");
             headPrefab = (HeadPart)part;
             AttachHead();
-            Debug.Log("After swapping, headInstance is now: " + headInstance.name); 
-            
         }
         else if (part is TorsoPart)
         {
-            Debug.Log(part.name + " is a TorsoPart");
             torsoPrefab = (TorsoPart)part;
             AttachTorso();
-            headInstance.transform.SetParent(torsoInstance.headAttachmentPoint); 
+            headInstance.transform.SetParent(torsoInstance.headAttachmentPoint);
             armsInstance.transform.SetParent(torsoInstance.armsAttachmentPoint);
             legsInstance.transform.SetParent(torsoInstance.legsAttachmentPoint);
         }
         else if (part is ArmsPart)
         {
-            Debug.Log(part.name + " is a ArmsPart");
             armsPrefab = (ArmsPart)part;
             AttachArms();
         }
         else if (part is LegsPart)
         {
-            Debug.Log(part.name + " is a LegsPart");
             legsPrefab = (LegsPart)part;
             AttachLegs();
+            ApplyLegStats();
         }
         else
         {
-            Debug.Log(part.name + " is not a valid MechPart subclass!");
+            Debug.LogWarning($"Cannot swap part '{part.name}' - not a valid MechPart subclass");
         }
     }
 
@@ -133,19 +198,17 @@ public class MechController : MonoBehaviour
     {
         if (headInstance != null)
         {
-            Debug.Log(name + " is already attached! Destroying...");
             Destroy(headInstance.gameObject);
         }
         Assert.AreNotEqual(headPrefab, null);
         headInstance = Instantiate(headPrefab, torsoInstance.headAttachmentPoint);
         headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-        Debug.Log("torso head attachment point child: " + torsoInstance.headAttachmentPoint.transform.GetChild(0).gameObject.name);
     }
     protected void AttachTorso()
     {
         if (torsoInstance != null)
         {
-            Destroy(torsoInstance);
+            Destroy(torsoInstance.gameObject);
         }
         Assert.AreNotEqual(torsoPrefab, null);
         torsoInstance = Instantiate(torsoPrefab);
@@ -156,7 +219,7 @@ public class MechController : MonoBehaviour
     {
         if (armsInstance != null)
         {
-            Destroy(armsInstance);
+            Destroy(armsInstance.gameObject);
         }
         Assert.AreNotEqual(armsPrefab, null);
         armsInstance = Instantiate(armsPrefab);
@@ -167,7 +230,7 @@ public class MechController : MonoBehaviour
     {
         if (legsInstance != null)
         {
-            Destroy(legsInstance);
+            Destroy(legsInstance.gameObject);
         }
         Assert.AreNotEqual(legsPrefab, null);
         legsInstance = Instantiate(legsPrefab);

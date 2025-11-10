@@ -4,8 +4,6 @@ using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
-using UnityEngine.Rendering;
 
 // Handles per-player mech customization in the lobby using Unity Input System.
 // Players navigate through part slots (Head/Torso/Arms/Legs) and select from available options.
@@ -25,6 +23,9 @@ public class PlayerCard : MonoBehaviour
     
     [Header("Ready System")]
     public TMP_Text readyButtonText; 
+    public Image readyButtonImage;
+    public Color unreadyColor;
+    public Color readyColor;
     
     // State 
     public PlayerController playerRef;
@@ -42,7 +43,6 @@ public class PlayerCard : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Player ref" + playerRef);
         // Initialize to first option for each part type
         currentPartIndices = new int[PART_SLOT_COUNT];
         for (int i = 0; i < PART_SLOT_COUNT; i++)
@@ -88,7 +88,6 @@ public class PlayerCard : MonoBehaviour
     
             if (!ui.isReady)
             {
-                Debug.Log("Not all players are ready");
                 return;
             }
     
@@ -114,8 +113,7 @@ public class PlayerCard : MonoBehaviour
             int direction = input.x > 0 ? 1 : -1;
             CyclePart(direction);
         }
-        
-        if (Mathf.Abs(input.y) > 0.5f)
+        else if (Mathf.Abs(input.y) > 0.2f)
         {
             int direction = input.y > 0 ? -1 : 1; // Up = previous slot, Down = next slot
             SwitchPartSlot(direction);
@@ -234,9 +232,11 @@ public class PlayerCard : MonoBehaviour
         if (isReady)
         {
             StopFlashing();
+            // readyButtonImage.color = readyColor;
         }
         else
         {
+            // readyButtonImage.color = unreadyColor;
             StartFlashing(currentMenuSlot);
         }
         
@@ -322,18 +322,12 @@ public class PlayerCard : MonoBehaviour
     {
         if (menuOutlines.Count > slotIndex && menuOutlines[slotIndex] != null)
         {
-            activeFlashCoroutine = StartCoroutine(FlashOutline(menuOutlines[slotIndex]));
+            menuOutlines[slotIndex].enabled = true;
         }
     }
     
     private void StopFlashing()
     {
-        if (activeFlashCoroutine != null)
-        {
-            StopCoroutine(activeFlashCoroutine);
-            activeFlashCoroutine = null;
-        }
-        
         if (menuOutlines.Count > currentMenuSlot && menuOutlines[currentMenuSlot] != null)
         {
             menuOutlines[currentMenuSlot].enabled = false;
@@ -342,10 +336,8 @@ public class PlayerCard : MonoBehaviour
     
     private IEnumerator FlashOutline(Image outline)
     {
-        while (true)
-        {
-            outline.enabled = !outline.enabled;
-            yield return new WaitForSeconds(flashingPeriod);
-        }
+        // No longer flashing - just enable the outline as a solid color
+        outline.enabled = true;
+        yield break;
     }
 }

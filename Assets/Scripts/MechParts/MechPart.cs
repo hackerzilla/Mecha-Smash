@@ -23,6 +23,8 @@ abstract public class MechPart : MonoBehaviour
     // public AnimatorOverrideController overrideAnimController = null;
 
     public Animator animator; 
+    public MechController mech;
+    public PlayerController player;
 
     // This function will run for all mech parts regardless of type.
     protected virtual void Awake()
@@ -30,4 +32,9 @@ abstract public class MechPart : MonoBehaviour
         animator = GetComponent<Animator>();
         Assert.NotNull(animator);
     }
+    // protected void OnEnable()
+    // {
+    //     mech = GetComponent<MechController>();
+    //     player = GetComponentInParent<PlayerController>();
+    // }
 }

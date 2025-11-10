@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6440714264977151159}
-  - component: {fileID: 3187049979565007219}
   - component: {fileID: 5824245975385387738}
+  - component: {fileID: 6405211684309647682}
   m_Layer: 0
   m_Name: BatteringRamHead
   m_TagString: Untagged
@@ -34,19 +34,6 @@ Transform:
   - {fileID: 829548791038413682}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3187049979565007219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1808851970761600467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1b2f77f508f74968b3518c37a137231, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 5824245975385387738}
 --- !u!95 &5824245975385387738
 Animator:
   serializedVersion: 7
@@ -69,6 +56,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6405211684309647682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808851970761600467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ecd5ec477fbe4489b70dce9f3ed540b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HammerHead
+  animator: {fileID: 0}
+  mech: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &3011813520905144576
 GameObject:
   m_ObjectHideFlags: 0

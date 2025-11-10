@@ -1,10 +1,20 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BoosterLegs : LegsPart
 {
-    public override void MovementAbility()
+
+    protected override void Awake()
     {
-        Debug.Log("Booster movement ability!");
-        animator.SetTrigger("MovementAbility");
+        base.Awake();
+        AbilityName = "Gas Boosters";
+        maxJumps = 2;
     }
+
+    public override void MovementAbility(PlayerController player, InputAction.CallbackContext context)
+    {
+        return;
+    }
+    public override void MovementAbility()
+    {}
 }
