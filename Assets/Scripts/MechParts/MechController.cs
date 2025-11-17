@@ -27,6 +27,11 @@ public class MechController : MonoBehaviour
         mechMovement = GetComponent<MechMovement>();
     }
 
+    void Start()
+    {
+        AssembleMechParts();
+    }
+
 
     public void OnMove(Vector2 moveInput)
     {
@@ -202,7 +207,9 @@ public class MechController : MonoBehaviour
         }
         Assert.AreNotEqual(headPrefab, null);
         headInstance = Instantiate(headPrefab, torsoInstance.headAttachmentPoint);
+        headInstance.transform.localScale = Vector3.one;
         headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+        
     }
     protected void AttachTorso()
     {
@@ -211,8 +218,8 @@ public class MechController : MonoBehaviour
             Destroy(torsoInstance.gameObject);
         }
         Assert.AreNotEqual(torsoPrefab, null);
-        torsoInstance = Instantiate(torsoPrefab);
-        torsoInstance.transform.SetParent(torsoParent.transform);
+        torsoInstance = Instantiate(torsoPrefab, torsoParent.transform);
+        torsoInstance.transform.localScale = Vector3.one;
         torsoInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
     }
     protected void AttachArms()
@@ -222,8 +229,8 @@ public class MechController : MonoBehaviour
             Destroy(armsInstance.gameObject);
         }
         Assert.AreNotEqual(armsPrefab, null);
-        armsInstance = Instantiate(armsPrefab);
-        armsInstance.transform.SetParent(torsoInstance.armsAttachmentPoint);
+        armsInstance = Instantiate(armsPrefab, torsoInstance.armsAttachmentPoint);
+        armsInstance.transform.localScale = Vector3.one;
         armsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
     }
     protected void AttachLegs()
@@ -233,8 +240,8 @@ public class MechController : MonoBehaviour
             Destroy(legsInstance.gameObject);
         }
         Assert.AreNotEqual(legsPrefab, null);
-        legsInstance = Instantiate(legsPrefab);
-        legsInstance.transform.SetParent(torsoInstance.legsAttachmentPoint);
+        legsInstance = Instantiate(legsPrefab, torsoInstance.legsAttachmentPoint);
+        legsInstance.transform.localScale = Vector3.one;
         legsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
     }
 }

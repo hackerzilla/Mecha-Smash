@@ -34,8 +34,7 @@ public class PlayerController : MonoBehaviour
         if (mechInstance == null)
         {
             Assert.NotNull(mechPrefab);
-            mechInstance = Instantiate(mechPrefab, this.transform);
-            mechInstance.AssembleMechFromPrefabParts(torsoPrefab, headPrefab, armsPrefab, legsPrefab);
+            mechInstance = Instantiate(mechPrefab, this.transform); // mech assembles itself on start
         }
         Assert.NotNull(mechInstance);
 
