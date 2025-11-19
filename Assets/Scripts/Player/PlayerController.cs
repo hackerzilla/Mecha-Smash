@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInput playerInput;
     private float canSubmitAfterTime = 0f;
+    public bool canMove;
     
     void Start()
     {
