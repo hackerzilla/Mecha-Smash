@@ -1460,6 +1460,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCard
   headOptions:
   - {fileID: 3187049979565007219, guid: 966c9d61300e24d33a5e001195060369, type: 3}
+  - {fileID: 8883455109374618525, guid: cfcef107f92854278904a7a5e8b29ea3, type: 3}
+  - {fileID: 2695945620902010889, guid: 920341aa2ac145141afd7b5855c5ccfe, type: 3}
   torsoOptions:
   - {fileID: 6383253985334823945, guid: de729d02645d3478ba9ad76728eee79b, type: 3}
   - {fileID: 4844601560884746498, guid: dfaff084f93945e44882f78e4d0149b1, type: 3}

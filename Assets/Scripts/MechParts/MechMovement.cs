@@ -4,7 +4,7 @@ using UnityEngine;
 public class MechMovement : MonoBehaviour
 {
     [Header("Movement Stats")]
-    [SerializeField] private float moveSpeed = 8f;
+    [SerializeField] public float moveSpeed = 8f;
     [SerializeField] private float airControl = 0.6f;
     [SerializeField] private float jumpForce = 6f;
     [SerializeField] private int maxJumps = 1;
