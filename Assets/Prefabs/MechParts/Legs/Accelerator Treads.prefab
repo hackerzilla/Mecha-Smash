@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 1231206722717785952}
   - component: {fileID: 2406029091777068606}
   m_Layer: 0
-  m_Name: AcceleratorLegs
+  m_Name: Accelerator Treads
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

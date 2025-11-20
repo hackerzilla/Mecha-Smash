@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5312594864399356600, guid: e1c4e3fbfa8024806bd470dd94f0ef56, type: 3}
+  m_Sprite: {fileID: -2976329513916044185, guid: 586181bd250ae4b0b954a3b7d79b9f5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -162,9 +162,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4476546449460581878}
   - component: {fileID: 4881430075759506094}
-  - component: {fileID: 4844601560884746498}
+  - component: {fileID: 7053203569227135626}
   m_Layer: 0
-  m_Name: ForceTorso
+  m_Name: Unstable Quantum Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -186,8 +186,8 @@ Transform:
   - {fileID: 7801946298727187254}
   - {fileID: 3160128164384302576}
   - {fileID: 823752873677759229}
-  - {fileID: 2744144715331152829}
   - {fileID: 1880945618575060995}
+  - {fileID: 2744144715331152829}
   - {fileID: 3611628800630983039}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -213,7 +213,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4844601560884746498
+--- !u!114 &7053203569227135626
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -222,19 +222,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5667582769369169224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85b09f4fba9ea4101aad9b42a7c9a251, type: 3}
+  m_Script: {fileID: 11500000, guid: 14170ac292eb647aeb5bea9c6aba8923, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ForceTorso
+  m_EditorClassIdentifier: Assembly-CSharp::QuantumTorso
   animator: {fileID: 0}
   cooldown: 1
   headAttachmentPoint: {fileID: 2744144715331152829}
   armsAttachmentPoint: {fileID: 1880945618575060995}
   legsAttachmentPoint: {fileID: 3611628800630983039}
-  blastRadius: 10
-  blastForce: 20
-  blastLayerMask:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!1 &6180736187146676777
 GameObject:
   m_ObjectHideFlags: 0
@@ -314,7 +309,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5312594864399356600, guid: e1c4e3fbfa8024806bd470dd94f0ef56, type: 3}
+  m_Sprite: {fileID: -2976329513916044185, guid: 586181bd250ae4b0b954a3b7d79b9f5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -435,7 +430,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -5312594864399356600, guid: e1c4e3fbfa8024806bd470dd94f0ef56, type: 3}
+  m_Sprite: {fileID: -2976329513916044185, guid: 586181bd250ae4b0b954a3b7d79b9f5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

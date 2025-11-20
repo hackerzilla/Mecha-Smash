@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3187049979565007219}
   - component: {fileID: 5824245975385387738}
   m_Layer: 0
-  m_Name: CyclopsHead
+  m_Name: Cyclops Eye Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -71,13 +71,17 @@ public class PlayerCard : MonoBehaviour
     private void FindUIReferences()
     {
         // Find player-specific UI elements
-        Transform playerNameTransform = transform.Find("Player_Name_Sprite");
+        Transform playerNameTransform = transform.Find("Player Name Sprite");
         if (playerNameTransform != null)
             playerNameImage = playerNameTransform.GetComponent<Image>();
+        else
+            Debug.LogWarning("[PlayerCard] Could not find 'Player Name Sprite' GameObject");
 
-        Transform cardBackgroundTransform = transform.Find("Card_Background");
+        Transform cardBackgroundTransform = transform.Find("Card Background");
         if (cardBackgroundTransform != null)
             cardBackgroundImage = cardBackgroundTransform.GetComponent<Image>();
+        else
+            Debug.LogWarning("[PlayerCard] Could not find 'Card Background' GameObject");
 
         // Find description text
         Transform descriptionPanelTransform = transform.Find("Text_Description_Panel");
@@ -89,13 +93,17 @@ public class PlayerCard : MonoBehaviour
         }
 
         // Find ready indicator images
-        Transform readyTopLeftTransform = transform.Find("Ready_Top_Left");
+        Transform readyTopLeftTransform = transform.Find("Ready Top Left");
         if (readyTopLeftTransform != null)
             readyTopLeftImage = readyTopLeftTransform.GetComponent<Image>();
+        else
+            Debug.LogWarning("[PlayerCard] Could not find 'Ready Top Left' GameObject");
 
-        Transform readyBotRightTransform = transform.Find("Ready_Bot_Right");
+        Transform readyBotRightTransform = transform.Find("Ready Bot Right");
         if (readyBotRightTransform != null)
             readyBotRightImage = readyBotRightTransform.GetComponent<Image>();
+        else
+            Debug.LogWarning("[PlayerCard] Could not find 'Ready Bot Right' GameObject");
 
         // Find arrows for each part slot
         string[] partSlotNames = { "Helmet", "Torso", "Arms", "Legs" };
@@ -108,7 +116,17 @@ public class PlayerCard : MonoBehaviour
             if (leftArrowTransform != null)
                 leftArrows[i] = leftArrowTransform.GetComponent<Image>();
 
+            // NOTE: The prefab has a typo - "RIghtArrow" (capital I) instead of "RightArrow"
+            // Try both spellings to handle the typo
             Transform rightArrowTransform = transform.Find($"{menuPath}/RightArrow");
+            if (rightArrowTransform == null)
+            {
+                rightArrowTransform = transform.Find($"{menuPath}/RIghtArrow");
+                if (rightArrowTransform != null)
+                {
+                    Debug.LogWarning($"[PlayerCard] Found 'RIghtArrow' (with typo) for {partSlotNames[i]}. Please rename to 'RightArrow' in the prefab.");
+                }
+            }
             if (rightArrowTransform != null)
                 rightArrows[i] = rightArrowTransform.GetComponent<Image>();
         }

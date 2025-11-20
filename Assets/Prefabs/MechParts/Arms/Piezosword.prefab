@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 8818423925520398678}
   - component: {fileID: 7009051257605336652}
   m_Layer: 0
-  m_Name: UltraSwordArms
+  m_Name: Piezosword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
