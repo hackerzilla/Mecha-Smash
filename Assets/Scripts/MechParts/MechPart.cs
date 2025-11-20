@@ -22,9 +22,12 @@ abstract public class MechPart : MonoBehaviour
     /// </summary>
     // public AnimatorOverrideController overrideAnimController = null;
 
-    public Animator animator; 
+    public Animator animator;
     public MechController mech;
     public PlayerController player;
+
+    [SerializeField] protected string description;
+    public string Description => description;
 
     // This function will run for all mech parts regardless of type.
     protected virtual void Awake()

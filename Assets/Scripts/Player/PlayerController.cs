@@ -28,10 +28,13 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private float canSubmitAfterTime = 0f;
     public bool canMove;
-    
+
+    public int playerNumber { get; private set; }
+
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
+        playerNumber = playerInput.playerIndex + 1; // Convert 0-based index to 1-based player number
         if (mechInstance == null)
         {
             Assert.NotNull(mechPrefab);

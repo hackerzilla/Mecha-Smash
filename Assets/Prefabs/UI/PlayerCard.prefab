@@ -1855,6 +1855,26 @@ MonoBehaviour:
   readyButtonImage: {fileID: 0}
   unreadyColor: {r: 0.7254902, g: 0.1882353, b: 0.1882353, a: 0}
   readyColor: {r: 0, g: 0.5471698, b: 0.012017164, a: 0}
+  readySprite: {fileID: 0}
+  unreadySprite: {fileID: 0}
+  readyIndicatorSprite: {fileID: -6781883326257060066, guid: 28d5004eab2d23243be8ec65e6364a71, type: 3}
+  unreadyIndicatorSprite: {fileID: 6467690299017807581, guid: 0355313f873a52443bc362adc0d7faa6, type: 3}
+  playerNameSprites:
+  - {fileID: 21300000, guid: cc08985d342db4744a8c09d8aef12f3b, type: 3}
+  - {fileID: 21300000, guid: 3910819a14445c2498f28b38329e49eb, type: 3}
+  - {fileID: 21300000, guid: f460889293a33b64b963428363bcddf8, type: 3}
+  - {fileID: 21300000, guid: c4513773decdeb54580c66d95638f830, type: 3}
+  cardBackgroundSprites:
+  - {fileID: -390860952762160600, guid: bbe3fa6ac18e0a943a20bcd81cdca10d, type: 3}
+  - {fileID: 3820506616886834742, guid: 21f6419cf2fcdae4f904ba0776fec109, type: 3}
+  - {fileID: -8283824712992967838, guid: 2cee0d491499eff40861075a1dbbec74, type: 3}
+  - {fileID: -6692065462287851853, guid: 7be40f4ae4c52b34cb2cba1c36126dae, type: 3}
+  darkOutlineSprite: {fileID: 2319779613719499045, guid: 8a8f9118dda40de469adb2ec930a4b05, type: 3}
+  highlightedOutlineSprite: {fileID: -4123457420701349582, guid: 64043a334fcff8c44bc8a4743afabdae, type: 3}
+  leftArrowDarkSprite: {fileID: 7819632722158155713, guid: 7f3b4f4c2d85080418c4c3fda3138957, type: 3}
+  leftArrowHighlightedSprite: {fileID: -6341560778589013017, guid: 7c323c2a2ecf5fc429e537646784a973, type: 3}
+  rightArrowDarkSprite: {fileID: 1604030790967819844, guid: 954728244d7d48047b48fe3d5c8e1f52, type: 3}
+  rightArrowHighlightedSprite: {fileID: -9166833231823821753, guid: 8f860fba61d8f55438de2912d3d615d5, type: 3}
   playerRef: {fileID: 0}
   isReady: 0
 --- !u!1 &7891199660527461723

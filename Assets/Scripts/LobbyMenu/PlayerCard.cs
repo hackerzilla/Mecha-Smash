@@ -17,32 +17,132 @@ public class PlayerCard : MonoBehaviour
     public List<LegsPart> legsOptions = new List<LegsPart>();
 
     [Header("UI Elements - Part Display")]
-    public List<TMP_Text> partNameTexts; 
-    public List<Image> menuOutlines; 
+    public List<TMP_Text> partNameTexts;
+    public List<Image> menuOutlines;
     public float flashingPeriod = 0.25f;
-    
+
     [Header("Ready System")]
-    public TMP_Text readyButtonText; 
+    public TMP_Text readyButtonText;
     public Image readyButtonImage;
     public Color unreadyColor;
     public Color readyColor;
+    public Sprite readySprite;
+    public Sprite unreadySprite;
+    public Sprite readyIndicatorSprite;
+    public Sprite unreadyIndicatorSprite;
+
+    [Header("Player-Specific Sprites")]
+    public Sprite[] playerNameSprites = new Sprite[4];
+    public Sprite[] cardBackgroundSprites = new Sprite[4];
+
+    [Header("Outline Sprites")]
+    public Sprite darkOutlineSprite;
+    public Sprite highlightedOutlineSprite;
+
+    [Header("Arrow Sprites")]
+    public Sprite leftArrowDarkSprite;
+    public Sprite leftArrowHighlightedSprite;
+    public Sprite rightArrowDarkSprite;
+    public Sprite rightArrowHighlightedSprite;
     
-    // State 
+    // State
     public PlayerController playerRef;
     private int currentMenuSlot = 0; // Which part slot is currently selected (corresponds to vertical movement)
     private int[] currentPartIndices; // Index into each part list (corresponds to horizontal movement)
     public bool isReady = false;
     private Coroutine activeFlashCoroutine;
-    
+
     // Input debouncing
     private float lastInputTime = 0f;
-    private float inputCooldown = 0.15f; // Prevent accidental double-inputs 
+    private float inputCooldown = 0.15f; // Prevent accidental double-inputs
+
+    // UI Component References (found at runtime)
+    private Image playerNameImage;
+    private Image cardBackgroundImage;
+    private TMP_Text descriptionText;
+    private Image readyTopLeftImage;
+    private Image readyBotRightImage;
+    private Image[] leftArrows = new Image[4];
+    private Image[] rightArrows = new Image[4]; 
     
     
-    private const int PART_SLOT_COUNT = 4; // Head, Torso, Arms, Legs 
+    private const int PART_SLOT_COUNT = 4; // Head, Torso, Arms, Legs
+
+    private void FindUIReferences()
+    {
+        // Find player-specific UI elements
+        Transform playerNameTransform = transform.Find("Player_Name_Sprite");
+        if (playerNameTransform != null)
+            playerNameImage = playerNameTransform.GetComponent<Image>();
+
+        Transform cardBackgroundTransform = transform.Find("Card_Background");
+        if (cardBackgroundTransform != null)
+            cardBackgroundImage = cardBackgroundTransform.GetComponent<Image>();
+
+        // Find description text
+        Transform descriptionPanelTransform = transform.Find("Text_Description_Panel");
+        if (descriptionPanelTransform != null)
+        {
+            Transform textTransform = descriptionPanelTransform.Find("Text (TMP)");
+            if (textTransform != null)
+                descriptionText = textTransform.GetComponent<TMP_Text>();
+        }
+
+        // Find ready indicator images
+        Transform readyTopLeftTransform = transform.Find("Ready_Top_Left");
+        if (readyTopLeftTransform != null)
+            readyTopLeftImage = readyTopLeftTransform.GetComponent<Image>();
+
+        Transform readyBotRightTransform = transform.Find("Ready_Bot_Right");
+        if (readyBotRightTransform != null)
+            readyBotRightImage = readyBotRightTransform.GetComponent<Image>();
+
+        // Find arrows for each part slot
+        string[] partSlotNames = { "Helmet", "Torso", "Arms", "Legs" };
+        for (int i = 0; i < PART_SLOT_COUNT; i++)
+        {
+            string outlinePath = $"P1_{partSlotNames[i]}_OutLine";
+            string menuPath = $"{outlinePath}/P1_{partSlotNames[i]}_Menu";
+
+            Transform leftArrowTransform = transform.Find($"{menuPath}/LeftArrow");
+            if (leftArrowTransform != null)
+                leftArrows[i] = leftArrowTransform.GetComponent<Image>();
+
+            Transform rightArrowTransform = transform.Find($"{menuPath}/RightArrow");
+            if (rightArrowTransform != null)
+                rightArrows[i] = rightArrowTransform.GetComponent<Image>();
+        }
+    }
+
+    private void SetPlayerSpecificUI()
+    {
+        if (playerRef == null)
+        {
+            Debug.LogWarning("PlayerRef is null, cannot set player-specific UI");
+            return;
+        }
+
+        int playerIndex = playerRef.playerNumber - 1; // Convert 1-based to 0-based
+
+        // Set player name sprite
+        if (playerNameImage != null && playerIndex >= 0 && playerIndex < playerNameSprites.Length)
+        {
+            if (playerNameSprites[playerIndex] != null)
+                playerNameImage.sprite = playerNameSprites[playerIndex];
+        }
+
+        // Set card background sprite
+        if (cardBackgroundImage != null && playerIndex >= 0 && playerIndex < cardBackgroundSprites.Length)
+        {
+            if (cardBackgroundSprites[playerIndex] != null)
+                cardBackgroundImage.sprite = cardBackgroundSprites[playerIndex];
+        }
+    }
 
     void Start()
     {
+        FindUIReferences();
+        SetPlayerSpecificUI();
         // Initialize to first option for each part type
         currentPartIndices = new int[PART_SLOT_COUNT];
         for (int i = 0; i < PART_SLOT_COUNT; i++)
@@ -51,13 +151,32 @@ public class PlayerCard : MonoBehaviour
         }
         
         UpdateAllPartDisplays();
-        
-        // Disable all outlines initially
-        foreach (var outline in menuOutlines)
+
+        // Initialize all outlines and arrows with dark sprites
+        for (int i = 0; i < PART_SLOT_COUNT; i++)
         {
-            if (outline != null) outline.enabled = false;
+            if (menuOutlines.Count > i && menuOutlines[i] != null)
+            {
+                menuOutlines[i].sprite = darkOutlineSprite;
+            }
+
+            if (i < leftArrows.Length && leftArrows[i] != null)
+            {
+                leftArrows[i].sprite = leftArrowDarkSprite;
+            }
+
+            if (i < rightArrows.Length && rightArrows[i] != null)
+            {
+                rightArrows[i].sprite = rightArrowDarkSprite;
+            }
         }
-        
+
+        // Initialize ready indicators to unready state
+        if (readyTopLeftImage != null)
+            readyTopLeftImage.sprite = unreadyIndicatorSprite;
+        if (readyBotRightImage != null)
+            readyBotRightImage.sprite = unreadyIndicatorSprite;
+
         StartFlashing(currentMenuSlot);
         
         if (readyButtonText != null)
@@ -222,24 +341,38 @@ public class PlayerCard : MonoBehaviour
     private void ToggleReady()
     {
         isReady = !isReady;
-        
+
         if (readyButtonText != null)
         {
             readyButtonText.text = isReady ? "Ready" : "Unready";
         }
-        
+
+        // Swap ready button sprite
+        if (readyButtonImage != null)
+        {
+            readyButtonImage.sprite = isReady ? readySprite : unreadySprite;
+        }
+
+        // Swap ready indicator sprites
+        if (readyTopLeftImage != null)
+        {
+            readyTopLeftImage.sprite = isReady ? readyIndicatorSprite : unreadyIndicatorSprite;
+        }
+        if (readyBotRightImage != null)
+        {
+            readyBotRightImage.sprite = isReady ? readyIndicatorSprite : unreadyIndicatorSprite;
+        }
+
         // Stop part selection when ready
         if (isReady)
         {
             StopFlashing();
-            // readyButtonImage.color = readyColor;
         }
         else
         {
-            // readyButtonImage.color = unreadyColor;
             StartFlashing(currentMenuSlot);
         }
-        
+
         CheckAllPlayersReady();
     }
     
@@ -284,30 +417,49 @@ public class PlayerCard : MonoBehaviour
     {
         if (partNameTexts.Count <= slotIndex || partNameTexts[slotIndex] == null)
             return;
-        
+
         string partName = "None";
-        
+        MechPart selectedPart = null;
+
         switch (slotIndex)
         {
             case 0: // Head
                 if (headOptions.Count > 0 && currentPartIndices[0] < headOptions.Count)
-                    partName = headOptions[currentPartIndices[0]].name;
+                {
+                    selectedPart = headOptions[currentPartIndices[0]];
+                    partName = selectedPart.name;
+                }
                 break;
             case 1: // Torso
                 if (torsoOptions.Count > 0 && currentPartIndices[1] < torsoOptions.Count)
-                    partName = torsoOptions[currentPartIndices[1]].name;
+                {
+                    selectedPart = torsoOptions[currentPartIndices[1]];
+                    partName = selectedPart.name;
+                }
                 break;
             case 2: // Arms
                 if (armsOptions.Count > 0 && currentPartIndices[2] < armsOptions.Count)
-                    partName = armsOptions[currentPartIndices[2]].name;
+                {
+                    selectedPart = armsOptions[currentPartIndices[2]];
+                    partName = selectedPart.name;
+                }
                 break;
             case 3: // Legs
                 if (legsOptions.Count > 0 && currentPartIndices[3] < legsOptions.Count)
-                    partName = legsOptions[currentPartIndices[3]].name;
+                {
+                    selectedPart = legsOptions[currentPartIndices[3]];
+                    partName = selectedPart.name;
+                }
                 break;
         }
-        
+
         partNameTexts[slotIndex].text = partName;
+
+        // Update description text to show the selected part's description
+        if (descriptionText != null && selectedPart != null)
+        {
+            descriptionText.text = selectedPart.Description;
+        }
     }
     
     private void UpdateAllPartDisplays()
@@ -320,17 +472,39 @@ public class PlayerCard : MonoBehaviour
     
     private void StartFlashing(int slotIndex)
     {
+        // Swap outline sprite to highlighted version
         if (menuOutlines.Count > slotIndex && menuOutlines[slotIndex] != null)
         {
-            menuOutlines[slotIndex].enabled = true;
+            menuOutlines[slotIndex].sprite = highlightedOutlineSprite;
+        }
+
+        // Swap arrow sprites to highlighted versions
+        if (slotIndex >= 0 && slotIndex < leftArrows.Length)
+        {
+            if (leftArrows[slotIndex] != null)
+                leftArrows[slotIndex].sprite = leftArrowHighlightedSprite;
+
+            if (rightArrows[slotIndex] != null)
+                rightArrows[slotIndex].sprite = rightArrowHighlightedSprite;
         }
     }
-    
+
     private void StopFlashing()
     {
+        // Swap outline sprite to dark version
         if (menuOutlines.Count > currentMenuSlot && menuOutlines[currentMenuSlot] != null)
         {
-            menuOutlines[currentMenuSlot].enabled = false;
+            menuOutlines[currentMenuSlot].sprite = darkOutlineSprite;
+        }
+
+        // Swap arrow sprites to dark versions
+        if (currentMenuSlot >= 0 && currentMenuSlot < leftArrows.Length)
+        {
+            if (leftArrows[currentMenuSlot] != null)
+                leftArrows[currentMenuSlot].sprite = leftArrowDarkSprite;
+
+            if (rightArrows[currentMenuSlot] != null)
+                rightArrows[currentMenuSlot].sprite = rightArrowDarkSprite;
         }
     }
     
