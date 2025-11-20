@@ -15,6 +15,8 @@ public class PlatingTorso : TorsoPart
         AbilityName = "Reactive Plating";
     }
 
+    override public void DefensiveAbility() {}
+    
     override public void DefensiveAbility(PlayerController player, InputAction.CallbackContext context)
     {
         if (context.performed)

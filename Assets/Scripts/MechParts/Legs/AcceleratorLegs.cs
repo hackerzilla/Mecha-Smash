@@ -35,4 +35,6 @@ public class AcceleratorLegs : LegsPart
             StartCooldown();
         }
     }
+    public override void MovementAbility()
+    {} 
 }

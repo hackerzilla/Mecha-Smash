@@ -5,8 +5,6 @@ using UnityEngine.InputSystem;
 
 abstract public class LegsPart : MechPart
 {
-
-    
     [SerializeField]
     protected string AbilityName;
     [SerializeField]
@@ -28,9 +26,5 @@ abstract public class LegsPart : MechPart
     {
         lastUseTime = Time.time;
     }
-using UnityEngine;
-
-abstract public class LegsPart : MechPart 
-{
     abstract public void MovementAbility();
 }

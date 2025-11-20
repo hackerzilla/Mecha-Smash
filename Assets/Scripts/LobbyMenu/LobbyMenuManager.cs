@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.Serialization;
@@ -8,12 +9,19 @@ public class LobbyMenuManager : MonoBehaviour
 {
     // Singleton
     public static LobbyMenuManager instance { get; private set; }
-    
+
     [FormerlySerializedAs("playerUIPrefab")]
     public GameObject playerCardPrefab;
     public PlayerInputManager playerInputManager;
     public GameObject lobbyMenu;
     public List<PlayerController> players;
+
+    [Header("Spawn Settings")]
+    [SerializeField] private Vector3 spawnStartPosition = new Vector3(-3f, 0f, 0f);
+    [SerializeField] private float spawnSpacing = 2f;
+
+    [Header("Events")]
+    public UnityEvent<PlayerController> onPlayerJoinedGame;
 
     private void Awake()
     {
@@ -24,6 +32,9 @@ public class LobbyMenuManager : MonoBehaviour
         }
         // singleton pattern
         instance = this;
+
+        // Initialize events
+        onPlayerJoinedGame = new UnityEvent<PlayerController>();
     }
 
     private void OnEnable()
@@ -50,10 +61,12 @@ public class LobbyMenuManager : MonoBehaviour
             PlayerController playerController = playerInput.gameObject.GetComponent<PlayerController>();
             // Create Player UI
             GameObject playerCardObject = Instantiate(playerCardPrefab, lobbyMenu.transform);
-            // Attach references 
+            // Attach references
             PlayerCard playerCard = playerCardObject.GetComponent<PlayerCard>();
             playerController.playerCard = playerCard;
             playerCard.playerRef = playerController;
+            // Initialize submit cooldown
+            playerController.OnPlayerJoined();
             // Create Event System and attach to the Player object (not the PlayerCard object!).
             var uiEventSystem = new GameObject($"Player {playerInput.playerIndex} EventSystem");
             var multiplayerEventSystem = uiEventSystem.AddComponent<MultiplayerEventSystem>();
@@ -61,9 +74,14 @@ public class LobbyMenuManager : MonoBehaviour
             uiInputModule.actionsAsset = playerInput.actions;
             multiplayerEventSystem.playerRoot = playerCardObject;
             uiEventSystem.transform.SetParent(playerInput.transform, false);
+            int i = players.Count - 1;
+            Vector3 spawnPosition = spawnStartPosition + new Vector3(i * spawnSpacing, 0f, 0f);
+            players[i].transform.position = spawnPosition;
+
+            // Invoke event so other systems can track this player
+            onPlayerJoinedGame.Invoke(playerController);
         }
 
-        Debug.Log($"Player {playerInput.playerIndex} joined!");
     }
 
     // Called every time a player leaves via Player Input Manager (a new controller is disconnected)
@@ -78,7 +96,7 @@ public class LobbyMenuManager : MonoBehaviour
     {
         // make lobby menu invisible
         lobbyMenu.SetActive(false);
-        
+
         // disable the UI input action mapping for all players
         // enable the normal input action mapping for all players
         // any other logic that the player object should run when the game is started goes in PlayerController.OnGameStart

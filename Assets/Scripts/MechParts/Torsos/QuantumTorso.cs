@@ -10,8 +10,10 @@ public class QuantumTorso : TorsoPart
     protected override void Awake()
     {
         base.Awake();
-        AbilityName = "Quantom Core";
+        AbilityName = "Quantum Core";
     }
+    
+    override public void DefensiveAbility() {}
     
     override public void DefensiveAbility(PlayerController player, InputAction.CallbackContext context)
     {

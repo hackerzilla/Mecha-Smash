@@ -1,11 +1,9 @@
-using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using System.Collections;
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEditor.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -19,33 +17,21 @@ public class PlayerController : MonoBehaviour
     
     [Header("Runtime")]
     public MechController mechInstance;
-    
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 8f;
-    [SerializeField] private float airControl = 0.6f;
-    [SerializeField] private float jumpForce = 6f;
-    [SerializeField] private int maxJumps = 1;
-
-    [Header("Ground Check")]
-    [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundRadius = 0.1f;
 
     [Header("User Interface")]
     public PlayerCard playerCard;
+    [SerializeField] private float submitCooldownAfterJoin = 1f;
 
-    private Rigidbody2D rb;
-    private Vector2 moveInput;
-    private int jumpsRemaining;
-    private bool isGrounded;
+    [Header("Events")]
+    public UnityEvent onPlayerDeath = new UnityEvent();
+
     private PlayerInput playerInput;
-    private bool isFacingRight = true;
-    private bool isAbilityOverridingMovement = false;
+    private float canSubmitAfterTime = 0f;
+    public bool canMove;
     
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        // playerInput.currentActionMap.Enable();
         if (mechInstance == null)
         {
             Assert.NotNull(mechPrefab);
@@ -54,144 +40,85 @@ public class PlayerController : MonoBehaviour
         }
         Assert.NotNull(mechInstance);
 
-        rb = mechInstance.GetComponent<Rigidbody2D>();
-
-        if (groundCheck == null)
+        // Subscribe to mech's death event
+        MechHealth mechHealth = mechInstance.GetComponent<MechHealth>();
+        if (mechHealth != null)
         {
-            groundCheck = mechInstance.transform.Find("GroundCheck");
-            Assert.NotNull(groundCheck, "need 'GroundCheck' object in Mech prefab");
-        }
-
-        ApplyLegStats();
-        
-        DisableInputMapping("Player");
-        EnableInputMapping("UI"); 
-    }
-
-    void Update()
-    {
-    }
-          
-    private void FixedUpdate()
-    {
-        if (isAbilityOverridingMovement)
-        {
-            return;
-        }
-
-        // Ground Check
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
-        if (isGrounded)
-        {
-            jumpsRemaining = maxJumps;
-        }
-
-        if (moveInput.x > 0.1f)
-        {
-            isFacingRight = true;
-        }
-        else if (moveInput.x < -0.1f)
-        {
-            isFacingRight = false;
-        }
-
-        float targetVelocityX;
-        if(isGrounded)
-        {
-            targetVelocityX = moveInput.x * moveSpeed; 
+            mechHealth.onDeath.AddListener(OnMechDeath);
         }
         else
         {
-            targetVelocityX = Mathf.Lerp(rb.linearVelocity.x, moveInput.x * moveSpeed, Time.fixedDeltaTime * airControl);
+            Debug.LogError($"MechHealth component not found on {mechInstance.name}");
         }
-        rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
+
+        DisableInputMapping("Player");
+        EnableInputMapping("UI");
     }
 
-    public Rigidbody2D GetRigidbody() { return rb; }
-    public bool IsGrounded() { return isGrounded; }
-    public float GetFacingDirection() { return isFacingRight ? 1f : -1f; }
-
-        Rotate();
-    }
-
-    private void FixedUpdate()
+    public Rigidbody2D GetRigidbody()
     {
-        // Ground Check
-        // isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
-        // if (isGrounded)
-        jumpsRemaining = maxJumps;
-
-        // Movement
-        float control = isGrounded ? 1f : airControl;
-        // float control = 1f;
-        float targetVelocityX = moveInput.x * moveSpeed * control;
-        rb.linearVelocity = new Vector2(targetVelocityX, rb.linearVelocity.y);
-        
+        return mechInstance != null ? mechInstance.GetRigidbody() : null;
     }
-    
-    public void Rotate()
+
+    public bool IsGrounded()
     {
-        if (moveInput.x > 0.01f)
-        {
-            // Face Right
-            mechInstance.transform.localScale = new Vector3(1, 1, 1);
-        }
-        else if (moveInput.x < -0.01f)
-        {
-            // Face Left
-            mechInstance.transform.localScale = new Vector3(-1, 1, 1);
-        }
+        return mechInstance != null && mechInstance.IsGrounded();
+    }
+
+    public float GetFacingDirection()
+    {
+        return mechInstance != null ? mechInstance.GetFacingDirection() : 1f;
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        // Debug.Log("Move pressed via: " + context.control.device.displayName);
-        moveInput = context.ReadValue<Vector2>();
+        if (mechInstance != null)
+        {
+            mechInstance.OnMove(context.ReadValue<Vector2>());
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && mechInstance != null)
         {
-            Jump();
+            mechInstance.Jump();
         }
     }
 
-    public void OnHeadAbility(InputAction.CallbackContext context)
+    public void OnSpecialAttack(InputAction.CallbackContext context)
     {
         if (mechInstance != null)
         {
+            Debug.Log("OnSpecialAttack!");
             mechInstance.SpecialAttack(this, context);
         }
     }
 
-    public void OnTorsoAbility(InputAction.CallbackContext context)
+    public void OnDefensiveAbility(InputAction.CallbackContext context)
     {
         if (mechInstance != null)
         {
+            Debug.Log("OnDefensiveAbility!");
             mechInstance.DefensiveAbility(this, context);
         }
     } 
     
-    public void OnArmsAbility(InputAction.CallbackContext context)
+    public void OnBasicAttack(InputAction.CallbackContext context)
     {
         if (mechInstance != null)
         {
+            Debug.Log("OnBasicAttack!");
             mechInstance.BasicAttack(this, context);
         }
     }
 
-    public void OnLegsAbility(InputAction.CallbackContext context)
+    public void OnMovementAbility(InputAction.CallbackContext context)
     {
-        Debug.Log("legability perform!");
         if (mechInstance != null)
         {
+            Debug.Log("OnMovementAbility!");
             mechInstance.MovementAbility(this, context);
-        }
-    }
-
-            Debug.Log("Jump pressed via: " + context.control.device.displayName);
-            Jump();
         }
     }
     
@@ -205,106 +132,65 @@ public class PlayerController : MonoBehaviour
     
     public void SetMovementOverride(bool isOverriding)
     {
-        isAbilityOverridingMovement = isOverriding;
+        if (mechInstance != null)
+        {
+            mechInstance.SetMovementOverride(isOverriding);
+        }
     }
 
     public void SetMovementOverride(bool isOverriding, float duration)
     {
-        isAbilityOverridingMovement = isOverriding;
-        if (isOverriding && duration > 0)
+        if (mechInstance != null)
         {
-            StartCoroutine(ResetMovementOverride(duration));
+            mechInstance.SetMovementOverride(isOverriding, duration);
         }
     }
 
-    private IEnumerator ResetMovementOverride(float duration)
+    public void OnPlayerJoined()
     {
-        yield return new WaitForSeconds(duration);
+        canSubmitAfterTime = Time.time + submitCooldownAfterJoin;
+    }
 
-        if (rb != null)
-        {
-            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-        }
-        
-        isAbilityOverridingMovement = false;
+    public void OnMechDeath()
+    {
+        // Relay the mech's death event to external listeners
+        Debug.Log($"[{gameObject.name}] OnMechDeath() called - Time: {Time.time}");
+        Debug.Log($"[{gameObject.name}] onPlayerDeath listener count: {onPlayerDeath.GetPersistentEventCount()}");
+        Debug.Log($"[{gameObject.name}] Invoking onPlayerDeath event now...");
+        onPlayerDeath.Invoke();
+        Debug.Log($"[{gameObject.name}] onPlayerDeath event invoked");
     }
 
     public void Submit(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
+            if (Time.time < canSubmitAfterTime)
+            {
+                return;
+            }
+
             playerCard.OnSubmit(context);
             Debug.Log($"{gameObject.name} Submit pressed by {GetComponent<PlayerInput>().devices[0].displayName}");
         }
     }
 
-    private void Jump()
-    {
-        // Check if we have enough jumps
-        if (jumpsRemaining > 0)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-            jumpsRemaining -= 1;
-        }
-        mechInstance.Jump();
-    }
-
-    private void ApplyLegStats()
-    {
-        if (mechInstance.legsInstance != null)
-        {
-            this.moveSpeed = mechInstance.legsInstance.moveSpeed;
-            this.maxJumps = mechInstance.legsInstance.maxJumps;
-            this.jumpsRemaining = this.maxJumps;
-            Debug.Log($"Legs Stats Applied: {mechInstance.legsInstance.name} (Speed: {moveSpeed}, Jumps: {maxJumps})");
-        }
-        else
-        {
-            Debug.LogError("Mech legsInstance가 null이라 스탯을 적용할 수 없습니다.");
-            this.moveSpeed = 5f;
-            this.maxJumps = 1;
-            this.jumpsRemaining = 1;
-        }
-    }
-    
     public void SwapMechPart(MechPart newPartPrefab)
     {
         if (mechInstance != null)
         {
             mechInstance.SwapPart(newPartPrefab);
-
-            if (newPartPrefab is LegsPart)
-            {
-                ApplyLegStats();
-            }
         }
         else
         {
-            Debug.Log("For some reason the mechInstance was null (from SwapMechPart in PlayerController on "+ name + ")");
+            Debug.LogWarning("For some reason the mechInstance was null (from SwapMechPart in PlayerController on "+ name + ")");
         }
     }
     
     public void OnGameStart()
     {
-        DisableInputMapping("UI"); 
+        DisableInputMapping("UI");
         EnableInputMapping("Player");
-    }
-    public void EnableUIInputMapping()
-    {
-        if (playerInput != null && playerInput.actions != null)
-        {
-            var uiMap = playerInput.actions.FindActionMap("UI");
-            if (uiMap != null)
-            {
-                uiMap.Enable();
-                Debug.Log($"{gameObject.name}: UI input mapping enabled");
-            }
-            else
-            {
-                Debug.LogWarning($"{gameObject.name}: Could not find 'UI' action map");
-            }
-        }
     }
 
     public void DisableInputMapping(string mapName)
@@ -312,13 +198,11 @@ public class PlayerController : MonoBehaviour
         var map = playerInput.actions.FindActionMap(mapName); 
         Debug.Assert(map != null, "Could not find map: " + mapName);
         map.Disable();
-        Debug.Log($"{gameObject.name}: Input mapping {mapName} disabled");
     }
     public void EnableInputMapping(string mapName)
     {
         var map = playerInput.actions.FindActionMap(mapName); 
         Debug.Assert(map != null, "Could not find map: " + mapName);
         map.Enable();
-        Debug.Log($"{gameObject.name}: Input mapping {mapName} enabled");
     }
 }

@@ -4,8 +4,5 @@ using UnityEngine.InputSystem;
 abstract public class HeadPart : MechPart
 {
     abstract public void SpecialAttack(PlayerController player, InputAction.CallbackContext context);
-
-abstract public class HeadPart : MechPart
-{
     abstract public void SpecialAttack();
 }

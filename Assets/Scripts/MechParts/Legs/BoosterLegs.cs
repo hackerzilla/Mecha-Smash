@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-//By Jae
 public class BoosterLegs : LegsPart
 {
 
@@ -16,4 +15,6 @@ public class BoosterLegs : LegsPart
     {
         return;
     }
+    public override void MovementAbility()
+    {}
 }
