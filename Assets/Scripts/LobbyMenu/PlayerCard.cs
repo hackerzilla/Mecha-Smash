@@ -136,24 +136,39 @@ public class PlayerCard : MonoBehaviour
     {
         if (playerRef == null)
         {
-            Debug.LogWarning("PlayerRef is null, cannot set player-specific UI");
+            Debug.LogWarning("[PlayerCard] PlayerRef is null, cannot set player-specific UI");
             return;
         }
 
-        int playerIndex = playerRef.playerNumber - 1; // Convert 1-based to 0-based
+        // Get playerIndex directly from PlayerInput component (always available when playerRef is set)
+        // This avoids race condition with PlayerController.Start() setting playerNumber
+        PlayerInput playerInput = playerRef.GetComponent<PlayerInput>();
+        if (playerInput == null)
+        {
+            Debug.LogError("[PlayerCard] PlayerInput component not found on playerRef");
+            return;
+        }
+
+        int playerIndex = playerInput.playerIndex; // Already 0-based (Player 1 = 0, Player 2 = 1, etc.)
 
         // Set player name sprite
         if (playerNameImage != null && playerIndex >= 0 && playerIndex < playerNameSprites.Length)
         {
             if (playerNameSprites[playerIndex] != null)
+            {
                 playerNameImage.sprite = playerNameSprites[playerIndex];
+                Debug.Log($"[PlayerCard] Set player name sprite for Player {playerIndex + 1}");
+            }
         }
 
         // Set card background sprite
         if (cardBackgroundImage != null && playerIndex >= 0 && playerIndex < cardBackgroundSprites.Length)
         {
             if (cardBackgroundSprites[playerIndex] != null)
+            {
                 cardBackgroundImage.sprite = cardBackgroundSprites[playerIndex];
+                Debug.Log($"[PlayerCard] Set card background sprite for Player {playerIndex + 1}");
+            }
         }
     }
 
