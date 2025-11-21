@@ -15,6 +15,21 @@ public class MechController : MonoBehaviour
     // The game object that will basically be the transform that the torso gets attached to.
     public GameObject torsoParent;
 
+    // Skeleton rig reference
+    public Transform skeletonRig;
+
+    // Part slot transforms - where part instances get parented
+    public Transform headSlot;
+    public Transform torsoSlot;
+    public Transform armsSlot;
+    public Transform legsSlot;
+
+    // Attachment points on skeleton - where part sprites get attached
+    public Transform leftHandAttachment;
+    public Transform rightHandAttachment;
+    public Transform leftFootAttachment;
+    public Transform rightFootAttachment;
+
     public HeadPart headInstance;
     public TorsoPart torsoInstance;
     public ArmsPart armsInstance;
@@ -178,9 +193,8 @@ public class MechController : MonoBehaviour
         {
             torsoPrefab = (TorsoPart)part;
             AttachTorso();
-            headInstance.transform.SetParent(torsoInstance.headAttachmentPoint);
-            armsInstance.transform.SetParent(torsoInstance.armsAttachmentPoint);
-            legsInstance.transform.SetParent(torsoInstance.legsAttachmentPoint);
+            // Note: Parts are now attached to slots on the skeleton rig,
+            // not to the torso's attachment points, so no re-parenting needed
         }
         else if (part is ArmsPart)
         {
@@ -206,10 +220,14 @@ public class MechController : MonoBehaviour
             Destroy(headInstance.gameObject);
         }
         Assert.AreNotEqual(headPrefab, null);
-        headInstance = Instantiate(headPrefab, torsoInstance.headAttachmentPoint);
+
+        // Instantiate part at slot
+        headInstance = Instantiate(headPrefab, headSlot);
         headInstance.transform.localScale = Vector3.one;
         headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-        
+
+        // Attach sprites to skeleton rig
+        headInstance.AttachSprites(headSlot);
     }
     protected void AttachTorso()
     {
@@ -218,9 +236,14 @@ public class MechController : MonoBehaviour
             Destroy(torsoInstance.gameObject);
         }
         Assert.AreNotEqual(torsoPrefab, null);
-        torsoInstance = Instantiate(torsoPrefab, torsoParent.transform);
+
+        // Instantiate part at slot
+        torsoInstance = Instantiate(torsoPrefab, torsoSlot);
         torsoInstance.transform.localScale = Vector3.one;
         torsoInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+
+        // Attach sprites to skeleton rig
+        torsoInstance.AttachSprites(torsoSlot);
     }
     protected void AttachArms()
     {
@@ -229,9 +252,14 @@ public class MechController : MonoBehaviour
             Destroy(armsInstance.gameObject);
         }
         Assert.AreNotEqual(armsPrefab, null);
-        armsInstance = Instantiate(armsPrefab, torsoInstance.armsAttachmentPoint);
+
+        // Instantiate part at slot
+        armsInstance = Instantiate(armsPrefab, armsSlot);
         armsInstance.transform.localScale = Vector3.one;
         armsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+
+        // Attach sprites to skeleton rig hand attachment points
+        armsInstance.AttachSprites(leftHandAttachment, rightHandAttachment);
     }
     protected void AttachLegs()
     {
@@ -240,8 +268,13 @@ public class MechController : MonoBehaviour
             Destroy(legsInstance.gameObject);
         }
         Assert.AreNotEqual(legsPrefab, null);
-        legsInstance = Instantiate(legsPrefab, torsoInstance.legsAttachmentPoint);
+
+        // Instantiate part at slot
+        legsInstance = Instantiate(legsPrefab, legsSlot);
         legsInstance.transform.localScale = Vector3.one;
         legsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+
+        // Attach sprites to skeleton rig foot attachment points
+        legsInstance.AttachSprites(leftFootAttachment, rightFootAttachment);
     }
 }

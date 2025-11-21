@@ -26,11 +26,11 @@ Transform:
   m_GameObject: {fileID: 540017567962045126}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.06999999, y: -0.61, z: 0}
+  m_LocalPosition: {x: -0.34, y: -0.69, z: 0}
   m_LocalScale: {x: 0.171875, y: 0.775, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1058187239863369831}
+  m_Father: {fileID: 5325494256253815947}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &273467644330555594
 SpriteRenderer:
@@ -100,7 +100,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5325494256253815947}
   - component: {fileID: 7792172839861042120}
-  - component: {fileID: 7009051257605336652}
   m_Layer: 0
   m_Name: Cobra Repeaters
   m_TagString: Untagged
@@ -121,9 +120,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1058187239863369831}
-  - {fileID: 1545011240800367877}
-  - {fileID: 7847692379905374664}
+  - {fileID: 7080248931284305331}
+  - {fileID: 1981084945275075122}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7792172839861042120
@@ -138,97 +136,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ddc00a6459f34ba280fa9f48d7df953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CobraArms
-  animator: {fileID: 7009051257605336652}
+  animator: {fileID: 0}
   mech: {fileID: 0}
   player: {fileID: 0}
+  description: 
+  leftHandSpritePrefab: {fileID: 5439943170978486742}
+  rightHandSpritePrefab: {fileID: 540017567962045126}
   cannonPrefab: {fileID: 5922184444859364030, guid: a3edb525641004071b0e3890d8534005, type: 3}
-  armPoint: {fileID: 7847692379905374664}
+  armPoint: {fileID: 0}
   delay: 2
---- !u!95 &7009051257605336652
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2658669609666925969}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 97a9041761501496bb860be4ab1197cb, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!1 &3497599168698436866
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7847692379905374664}
-  m_Layer: 0
-  m_Name: Arm Point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7847692379905374664
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3497599168698436866}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.77, y: -0.56, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5325494256253815947}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5092747359907347319
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1058187239863369831}
-  m_Layer: 0
-  m_Name: RightShoulder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1058187239863369831
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5092747359907347319}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.41, y: -0.08, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1981084945275075122}
-  m_Father: {fileID: 5325494256253815947}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5439943170978486742
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +155,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7080248931284305331}
   - component: {fileID: 6426702056074128161}
-  - component: {fileID: 4280011672526445298}
   m_Layer: 0
   m_Name: LeftArmSprite
   m_TagString: Untagged
@@ -256,11 +171,11 @@ Transform:
   m_GameObject: {fileID: 5439943170978486742}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.01000002, y: -0.64, z: 0}
+  m_LocalPosition: {x: 0.3, y: -0.65, z: 0}
   m_LocalScale: {x: 0.171875, y: 0.775, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1545011240800367877}
+  m_Father: {fileID: 5325494256253815947}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6426702056074128161
 SpriteRenderer:
@@ -320,57 +235,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &4280011672526445298
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5439943170978486742}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 932de9e6da6f24f13bb4804a3bca3160, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!1 &5702729339885205218
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1545011240800367877}
-  m_Layer: 0
-  m_Name: LeftShoulder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1545011240800367877
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5702729339885205218}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.29, y: -0.01, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7080248931284305331}
-  m_Father: {fileID: 5325494256253815947}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
