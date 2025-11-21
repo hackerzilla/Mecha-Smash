@@ -16,10 +16,8 @@ abstract public class LegsPart : MechPart
 
     // Sprite management for skeleton rig system
     [Header("Sprite Configuration")]
-    [SerializeField] protected GameObject leftFootSpritePrefab;
-    [SerializeField] protected GameObject rightFootSpritePrefab;
-    protected GameObject leftFootSpriteInstance;
-    protected GameObject rightFootSpriteInstance;
+    [SerializeField] protected GameObject leftFootSprite;
+    [SerializeField] protected GameObject rightFootSprite;
 
     abstract public void MovementAbility(PlayerController player, InputAction.CallbackContext context);
 
@@ -40,45 +38,33 @@ abstract public class LegsPart : MechPart
     /// </summary>
     public virtual void AttachSprites(Transform leftFootAttachment, Transform rightFootAttachment)
     {
-        // Clean up existing sprites if any
-        if (leftFootSpriteInstance != null)
+        // Reparent left foot sprite
+        if (leftFootSprite != null && leftFootAttachment != null)
         {
-            Destroy(leftFootSpriteInstance);
-        }
-        if (rightFootSpriteInstance != null)
-        {
-            Destroy(rightFootSpriteInstance);
+            leftFootSprite.transform.SetParent(leftFootAttachment);
+            leftFootSprite.transform.localPosition = Vector2.zero;
         }
 
-        // Instantiate left foot sprite
-        if (leftFootSpritePrefab != null && leftFootAttachment != null)
+        // Reparent right foot sprite
+        if (rightFootSprite != null && rightFootAttachment != null)
         {
-            leftFootSpriteInstance = Instantiate(leftFootSpritePrefab, leftFootAttachment);
-            leftFootSpriteInstance.transform.localScale = Vector3.one;
-            leftFootSpriteInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-        }
-
-        // Instantiate right foot sprite
-        if (rightFootSpritePrefab != null && rightFootAttachment != null)
-        {
-            rightFootSpriteInstance = Instantiate(rightFootSpritePrefab, rightFootAttachment);
-            rightFootSpriteInstance.transform.localScale = Vector3.one;
-            rightFootSpriteInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+            rightFootSprite.transform.SetParent(rightFootAttachment);
+            rightFootSprite.transform.localPosition = Vector2.zero;
         }
     }
 
     /// <summary>
-    /// Cleanup sprite instances when this part is destroyed.
+    /// Cleanup sprites when this part is destroyed.
     /// </summary>
     protected virtual void OnDestroy()
     {
-        if (leftFootSpriteInstance != null)
+        if (leftFootSprite != null)
         {
-            Destroy(leftFootSpriteInstance);
+            Destroy(leftFootSprite);
         }
-        if (rightFootSpriteInstance != null)
+        if (rightFootSprite != null)
         {
-            Destroy(rightFootSpriteInstance);
+            Destroy(rightFootSprite);
         }
     }
 }

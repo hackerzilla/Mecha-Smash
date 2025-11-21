@@ -5,8 +5,7 @@ abstract public class HeadPart : MechPart
 {
     // Sprite management for skeleton rig system
     [Header("Sprite Configuration")]
-    [SerializeField] protected GameObject headSpritePrefab;
-    protected GameObject headSpriteInstance;
+    [SerializeField] protected GameObject headSprite;
 
     abstract public void SpecialAttack(PlayerController player, InputAction.CallbackContext context);
     abstract public void SpecialAttack();
@@ -17,29 +16,22 @@ abstract public class HeadPart : MechPart
     /// </summary>
     public virtual void AttachSprites(Transform headAttachment)
     {
-        // Clean up existing sprite if any
-        if (headSpriteInstance != null)
+        // Reparent sprite to attachment point
+        if (headSprite != null && headAttachment != null)
         {
-            Destroy(headSpriteInstance);
-        }
-
-        // Instantiate sprite at attachment point
-        if (headSpritePrefab != null && headAttachment != null)
-        {
-            headSpriteInstance = Instantiate(headSpritePrefab, headAttachment);
-            headSpriteInstance.transform.localScale = Vector3.one;
-            headSpriteInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+            headSprite.transform.SetParent(headAttachment);
+            headSprite.transform.localPosition = Vector2.zero;
         }
     }
 
     /// <summary>
-    /// Cleanup sprite instances when this part is destroyed.
+    /// Cleanup sprite when this part is destroyed.
     /// </summary>
     protected virtual void OnDestroy()
     {
-        if (headSpriteInstance != null)
+        if (headSprite != null)
         {
-            Destroy(headSpriteInstance);
+            Destroy(headSprite);
         }
     }
 }

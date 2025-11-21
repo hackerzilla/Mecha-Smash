@@ -10,8 +10,7 @@ abstract public class TorsoPart : MechPart
 
     // Sprite management for skeleton rig system
     [Header("Sprite Configuration")]
-    [SerializeField] protected List<GameObject> torsoSpritePrefabs = new List<GameObject>();
-    protected List<GameObject> torsoSpriteInstances = new List<GameObject>();
+    [SerializeField] protected List<GameObject> torsoSprites = new List<GameObject>();
 
     // Legacy attachment points - no longer used with skeleton rig system
     // Kept for backwards compatibility with existing prefabs
@@ -38,44 +37,31 @@ abstract public class TorsoPart : MechPart
     /// </summary>
     public virtual void AttachSprites(Transform torsoAttachment)
     {
-        // Clean up existing sprites if any
-        foreach (GameObject sprite in torsoSpriteInstances)
-        {
-            if (sprite != null)
-            {
-                Destroy(sprite);
-            }
-        }
-        torsoSpriteInstances.Clear();
-
-        // Instantiate all torso sprite prefabs at attachment point
+        // Reparent all torso sprites to attachment point
         if (torsoAttachment != null)
         {
-            foreach (GameObject spritePrefab in torsoSpritePrefabs)
+            foreach (GameObject sprite in torsoSprites)
             {
-                if (spritePrefab != null)
+                if (sprite != null)
                 {
-                    GameObject spriteInstance = Instantiate(spritePrefab, torsoAttachment);
-                    spriteInstance.transform.localScale = Vector3.one;
-                    spriteInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
-                    torsoSpriteInstances.Add(spriteInstance);
+                    sprite.transform.SetParent(torsoAttachment);
+                    sprite.transform.localPosition = Vector2.zero;
                 }
             }
         }
     }
 
     /// <summary>
-    /// Cleanup sprite instances when this part is destroyed.
+    /// Cleanup sprites when this part is destroyed.
     /// </summary>
     protected virtual void OnDestroy()
     {
-        foreach (GameObject sprite in torsoSpriteInstances)
+        foreach (GameObject sprite in torsoSprites)
         {
             if (sprite != null)
             {
                 Destroy(sprite);
             }
         }
-        torsoSpriteInstances.Clear();
     }
 }
