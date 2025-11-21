@@ -1875,6 +1875,11 @@ MonoBehaviour:
   leftArrowHighlightedSprite: {fileID: -6341560778589013017, guid: 7c323c2a2ecf5fc429e537646784a973, type: 3}
   rightArrowDarkSprite: {fileID: 1604030790967819844, guid: 954728244d7d48047b48fe3d5c8e1f52, type: 3}
   rightArrowHighlightedSprite: {fileID: -9166833231823821753, guid: 8f860fba61d8f55438de2912d3d615d5, type: 3}
+  playerOutlineColors:
+  - {r: 0.007843138, g: 0.49803922, b: 0.99215686, a: 1}
+  - {r: 0.90588236, g: 0.2784314, b: 0.25490198, a: 1}
+  - {r: 0.94509804, g: 0.79607844, b: 0.29411766, a: 1}
+  - {r: 0.81960785, g: 0.11764706, b: 0.85882354, a: 1}
   playerRef: {fileID: 0}
   isReady: 0
 --- !u!1 &7891199660527461723

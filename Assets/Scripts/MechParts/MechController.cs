@@ -30,12 +30,16 @@ public class MechController : MonoBehaviour
     public Transform leftFootAttachment;
     public Transform rightFootAttachment;
 
+    [Header("Visual Settings")]
+    [SerializeField] private Material outlineMaterialTemplate;
+
     public HeadPart headInstance;
     public TorsoPart torsoInstance;
     public ArmsPart armsInstance;
     public LegsPart legsInstance;
 
     private MechMovement mechMovement;
+    private Color currentOutlineColor = Color.white;
 
     void Awake()
     {
@@ -158,6 +162,12 @@ public class MechController : MonoBehaviour
         AttachArms();
         AttachLegs();
         ApplyLegStats();
+
+        // Apply outline material to newly assembled parts
+        if (currentOutlineColor != Color.white)
+        {
+            ApplyOutlineMaterial();
+        }
     }
 
     public void ApplyLegStats()
@@ -188,6 +198,7 @@ public class MechController : MonoBehaviour
         {
             headPrefab = (HeadPart)part;
             AttachHead();
+            ApplyOutlineMaterial();
         }
         else if (part is TorsoPart)
         {
@@ -195,17 +206,20 @@ public class MechController : MonoBehaviour
             AttachTorso();
             // Note: Parts are now attached to slots on the skeleton rig,
             // not to the torso's attachment points, so no re-parenting needed
+            ApplyOutlineMaterial();
         }
         else if (part is ArmsPart)
         {
             armsPrefab = (ArmsPart)part;
             AttachArms();
+            ApplyOutlineMaterial();
         }
         else if (part is LegsPart)
         {
             legsPrefab = (LegsPart)part;
             AttachLegs();
             ApplyLegStats();
+            ApplyOutlineMaterial();
         }
         else
         {
@@ -276,5 +290,39 @@ public class MechController : MonoBehaviour
 
         // Attach sprites to skeleton rig foot attachment points
         legsInstance.AttachSprites(leftFootAttachment, rightFootAttachment);
+    }
+
+    /// <summary>
+    /// Sets the outline color for this mech and applies it to all sprite renderers.
+    /// </summary>
+    public void SetOutlineColor(Color color)
+    {
+        currentOutlineColor = color;
+        ApplyOutlineMaterial();
+    }
+
+    /// <summary>
+    /// Applies the outline material with the current color to all sprite renderers on the skeleton and parts.
+    /// </summary>
+    private void ApplyOutlineMaterial()
+    {
+        if (outlineMaterialTemplate == null || skeletonRig == null)
+        {
+            Debug.LogWarning("[MechController] Cannot apply outline material - template or skeleton rig is null");
+            return;
+        }
+
+        // Get all sprite renderers on skeleton and attached parts
+        SpriteRenderer[] renderers = skeletonRig.GetComponentsInChildren<SpriteRenderer>(true);
+
+        foreach (SpriteRenderer renderer in renderers)
+        {
+            // Create material instance to avoid sharing between players
+            Material matInstance = new Material(outlineMaterialTemplate);
+            matInstance.SetColor("_OutlineColor", currentOutlineColor);
+            renderer.material = matInstance;
+        }
+
+        Debug.Log($"[MechController] Applied outline material to {renderers.Length} sprite renderers with color {currentOutlineColor}");
     }
 }

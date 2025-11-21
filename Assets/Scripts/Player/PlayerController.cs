@@ -14,9 +14,12 @@ public class PlayerController : MonoBehaviour
     public TorsoPart torsoPrefab;
     public ArmsPart armsPrefab;
     public LegsPart legsPrefab;
-    
+
     [Header("Runtime")]
     public MechController mechInstance;
+
+    [Header("Visual Identification")]
+    [SerializeField] private Color outlineColor = Color.white;
 
     [Header("User Interface")]
     public PlayerCard playerCard;
@@ -41,6 +44,9 @@ public class PlayerController : MonoBehaviour
             mechInstance = Instantiate(mechPrefab, this.transform); // mech assembles itself on start
         }
         Assert.NotNull(mechInstance);
+
+        // Apply outline color to mech
+        mechInstance.SetOutlineColor(outlineColor);
 
         // Subscribe to mech's death event
         MechHealth mechHealth = mechInstance.GetComponent<MechHealth>();
@@ -151,6 +157,12 @@ public class PlayerController : MonoBehaviour
     public void OnPlayerJoined()
     {
         canSubmitAfterTime = Time.time + submitCooldownAfterJoin;
+
+        // Get outline color from player card
+        if (playerCard != null)
+        {
+            outlineColor = playerCard.GetOutlineColor();
+        }
     }
 
     public void OnMechDeath()
@@ -203,8 +215,22 @@ public class PlayerController : MonoBehaviour
     }
     public void EnableInputMapping(string mapName)
     {
-        var map = playerInput.actions.FindActionMap(mapName); 
+        var map = playerInput.actions.FindActionMap(mapName);
         Debug.Assert(map != null, "Could not find map: " + mapName);
         map.Enable();
+    }
+
+    public void SetOutlineColor(Color color)
+    {
+        outlineColor = color;
+        if (mechInstance != null)
+        {
+            mechInstance.SetOutlineColor(color);
+        }
+    }
+
+    public Color GetOutlineColor()
+    {
+        return outlineColor;
     }
 }

@@ -44,7 +44,16 @@ public class PlayerCard : MonoBehaviour
     public Sprite leftArrowHighlightedSprite;
     public Sprite rightArrowDarkSprite;
     public Sprite rightArrowHighlightedSprite;
-    
+
+    [Header("Player Identification")]
+    [SerializeField] private Color[] playerOutlineColors = new Color[4]
+    {
+        new Color(1f, 0f, 0f, 1f),  // Player 1 - Red
+        new Color(0f, 0f, 1f, 1f),  // Player 2 - Blue
+        new Color(0f, 1f, 0f, 1f),  // Player 3 - Green
+        new Color(1f, 1f, 0f, 1f)   // Player 4 - Yellow
+    };
+
     // State
     public PlayerController playerRef;
     private int currentMenuSlot = 0; // Which part slot is currently selected (corresponds to vertical movement)
@@ -546,5 +555,33 @@ public class PlayerCard : MonoBehaviour
         // No longer flashing - just enable the outline as a solid color
         outline.enabled = true;
         yield break;
+    }
+
+    public Color GetOutlineColor()
+    {
+        if (playerRef == null)
+        {
+            Debug.LogWarning("[PlayerCard] PlayerRef is null, returning white");
+            return Color.white;
+        }
+
+        // Get playerIndex from PlayerInput component
+        PlayerInput playerInput = playerRef.GetComponent<PlayerInput>();
+        if (playerInput == null)
+        {
+            Debug.LogError("[PlayerCard] PlayerInput component not found on playerRef");
+            return Color.white;
+        }
+
+        int playerIndex = playerInput.playerIndex; // 0-based index
+
+        // Return color for this player, with bounds checking
+        if (playerIndex >= 0 && playerIndex < playerOutlineColors.Length)
+        {
+            return playerOutlineColors[playerIndex];
+        }
+
+        Debug.LogWarning($"[PlayerCard] Player index {playerIndex} out of bounds for outline colors array");
+        return Color.white;
     }
 }

@@ -596,6 +596,7 @@ MonoBehaviour:
   rightHandAttachment: {fileID: 1385113369728769941}
   leftFootAttachment: {fileID: 3050034893677839425}
   rightFootAttachment: {fileID: 8341275534599299266}
+  outlineMaterialTemplate: {fileID: 2100000, guid: 47cf6da9a9166b4428a4ccd310bc8cb3, type: 2}
   headInstance: {fileID: 0}
   torsoInstance: {fileID: 0}
   armsInstance: {fileID: 0}
