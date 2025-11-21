@@ -31,7 +31,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4431492141025575206}
+  - {fileID: 4052715761664414068}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3187049979565007219
@@ -50,8 +50,8 @@ MonoBehaviour:
   mech: {fileID: 0}
   player: {fileID: 0}
   description: Laser beam coming out of your eye!
-  headSpritePrefab: {fileID: 0}
-  eyePoint: {fileID: 4431492141025575206}
+  headSprite: {fileID: 0}
+  eyePoint: {fileID: 4052715761664414068}
   laserPrefab: {fileID: 2431078766104938468, guid: b396bd8ffe6bd4402942cceba6c8771f, type: 3}
 --- !u!95 &5824245975385387738
 Animator:
@@ -75,7 +75,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &8577610255946896215
+--- !u!1 &5891538323386170761
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -83,24 +83,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4431492141025575206}
+  - component: {fileID: 4052715761664414068}
   m_Layer: 0
-  m_Name: EyePoint
+  m_Name: Eye Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4431492141025575206
+--- !u!4 &4052715761664414068
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8577610255946896215}
+  m_GameObject: {fileID: 5891538323386170761}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.019, y: 0.067, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.56, y: 2.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

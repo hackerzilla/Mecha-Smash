@@ -12,12 +12,16 @@ public class CyclopsHead : HeadPart
         GameObject laser = Instantiate(laserPrefab, eyePoint.position, eyePoint.rotation);
         spawnedLaser = laser.GetComponent<LaserBeam>();
         laser.transform.SetParent(eyePoint);
+        laser.transform.localPosition = Vector3.zero;
 
         // Set the owner to prevent friendly fire
         var mechController = transform.root.GetComponent<PlayerController>()?.mechInstance;
+        Debug.Log("MechController: " + mechController);
         if (mechController != null)
         {
             spawnedLaser.SetOwner(mechController.gameObject);
+            eyePoint = mechController.eyePoint;
+            Debug.Log("here");
         }
     }
 
@@ -39,8 +43,7 @@ public class CyclopsHead : HeadPart
 
         StartCoroutine(spawnedLaser.ShootLaser_());
     }
- 
-    
+
 }
 
 

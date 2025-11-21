@@ -29,6 +29,7 @@ public class MechController : MonoBehaviour
     public Transform rightHandAttachment;
     public Transform leftFootAttachment;
     public Transform rightFootAttachment;
+    public Transform eyePoint;
 
     [Header("Visual Settings")]
     [SerializeField] private Material outlineMaterialTemplate;
