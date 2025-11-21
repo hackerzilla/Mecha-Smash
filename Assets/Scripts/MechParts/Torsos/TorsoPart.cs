@@ -12,12 +12,6 @@ abstract public class TorsoPart : MechPart
     [Header("Sprite Configuration")]
     [SerializeField] protected List<GameObject> torsoSprites = new List<GameObject>();
 
-    // Legacy attachment points - no longer used with skeleton rig system
-    // Kept for backwards compatibility with existing prefabs
-    public Transform headAttachmentPoint;
-    public Transform armsAttachmentPoint;
-    public Transform legsAttachmentPoint;
-
     abstract public void DefensiveAbility(PlayerController player, InputAction.CallbackContext context);
 
     public virtual bool CanUseAbility()

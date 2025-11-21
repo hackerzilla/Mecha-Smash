@@ -183,7 +183,6 @@ public class MechController : MonoBehaviour
         {
             mechMovement.SetMoveSpeed(legsInstance.moveSpeed);
             mechMovement.SetMaxJumps(legsInstance.maxJumps);
-            Debug.Log($"Legs Stats Applied: {legsInstance.name} (Speed: {legsInstance.moveSpeed}, Jumps: {legsInstance.maxJumps})");
         }
         else
         {
@@ -323,7 +322,5 @@ public class MechController : MonoBehaviour
             matInstance.SetColor("_OutlineColor", currentOutlineColor);
             renderer.material = matInstance;
         }
-
-        Debug.Log($"[MechController] Applied outline material to {renderers.Length} sprite renderers with color {currentOutlineColor}");
     }
 }

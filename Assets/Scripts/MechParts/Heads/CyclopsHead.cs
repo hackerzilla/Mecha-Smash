@@ -16,12 +16,10 @@ public class CyclopsHead : HeadPart
 
         // Set the owner to prevent friendly fire
         var mechController = transform.root.GetComponent<PlayerController>()?.mechInstance;
-        Debug.Log("MechController: " + mechController);
         if (mechController != null)
         {
             spawnedLaser.SetOwner(mechController.gameObject);
             eyePoint = mechController.eyePoint;
-            Debug.Log("here");
         }
     }
 
@@ -38,7 +36,6 @@ public class CyclopsHead : HeadPart
         // TODO: Do the cyclops laser attack logic.
         // Spawn laser pointing in facing direction, originating at eye.
         // Make the head look in the controlling player's joystick direction.
-        Debug.Log("Cyclops special attack!");
         animator.SetTrigger("SpecialAttack");
 
         StartCoroutine(spawnedLaser.ShootLaser_());

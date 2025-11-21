@@ -22,11 +22,9 @@ public class ForceTorso : TorsoPart
         {
             if (!CanUseAbility())
             {
-                Debug.Log(AbilityName + "Cool Down");
                 return;
             }
 
-            Debug.Log(AbilityName + "Perform");
             animator.SetTrigger("DefensiveAbility");
 
             Vector2 blastOrigin = player.mechInstance.transform.position;

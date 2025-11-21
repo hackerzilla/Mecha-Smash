@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using System.Collections;
-using UnityEditor.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -98,7 +97,6 @@ public class PlayerController : MonoBehaviour
     {
         if (mechInstance != null)
         {
-            Debug.Log("OnSpecialAttack!");
             mechInstance.SpecialAttack(this, context);
         }
     }
@@ -107,7 +105,6 @@ public class PlayerController : MonoBehaviour
     {
         if (mechInstance != null)
         {
-            Debug.Log("OnDefensiveAbility!");
             mechInstance.DefensiveAbility(this, context);
         }
     } 
@@ -116,7 +113,6 @@ public class PlayerController : MonoBehaviour
     {
         if (mechInstance != null)
         {
-            Debug.Log("OnBasicAttack!");
             mechInstance.BasicAttack(this, context);
         }
     }
@@ -125,7 +121,6 @@ public class PlayerController : MonoBehaviour
     {
         if (mechInstance != null)
         {
-            Debug.Log("OnMovementAbility!");
             mechInstance.MovementAbility(this, context);
         }
     }
@@ -168,11 +163,7 @@ public class PlayerController : MonoBehaviour
     public void OnMechDeath()
     {
         // Relay the mech's death event to external listeners
-        Debug.Log($"[{gameObject.name}] OnMechDeath() called - Time: {Time.time}");
-        Debug.Log($"[{gameObject.name}] onPlayerDeath listener count: {onPlayerDeath.GetPersistentEventCount()}");
-        Debug.Log($"[{gameObject.name}] Invoking onPlayerDeath event now...");
         onPlayerDeath.Invoke();
-        Debug.Log($"[{gameObject.name}] onPlayerDeath event invoked");
     }
 
     public void Submit(InputAction.CallbackContext context)
@@ -185,7 +176,6 @@ public class PlayerController : MonoBehaviour
             }
 
             playerCard.OnSubmit(context);
-            Debug.Log($"{gameObject.name} Submit pressed by {GetComponent<PlayerInput>().devices[0].displayName}");
         }
     }
 

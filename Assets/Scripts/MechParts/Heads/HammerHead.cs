@@ -23,7 +23,6 @@ public class HammerHead : HeadPart
     {
         owner = player;
 
-        Debug.Log("HammerHead charge");
         animator.SetTrigger("SpecialAttack");
 
         // Disable controller
@@ -79,7 +78,6 @@ public class HammerHead : HeadPart
             // Hit a wall stuns the player
             if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
             {
-                Debug.Log("Stunned!");
                 owner.SetMovementOverride(true);
                 owner.SetMovementOverride(true, stunDuration);
             }
