@@ -10,6 +10,10 @@ public class StrikerArms : ArmsPart
     }
     public override void BasicAttack()
     {
-        animator.SetTrigger("BasicAttack");
+        Animator skeletonAnimator = mech.skeletonRig.GetComponent<Animator>();
+        if (skeletonAnimator != null)
+        {
+            skeletonAnimator.SetTrigger("punch");
+        }
     }
 }

@@ -40,11 +40,16 @@ public class MechController : MonoBehaviour
     public LegsPart legsInstance;
 
     private MechMovement mechMovement;
+    private Animator skeletonAnimator;
     private Color currentOutlineColor = Color.white;
 
     void Awake()
     {
         mechMovement = GetComponent<MechMovement>();
+        if (skeletonRig != null)
+        {
+            skeletonAnimator = skeletonRig.GetComponent<Animator>();
+        }
     }
 
     void Start()
@@ -99,6 +104,11 @@ public class MechController : MonoBehaviour
     public float GetFacingDirection()
     {
         return mechMovement != null ? mechMovement.GetFacingDirection() : 1f;
+    }
+
+    public Animator GetSkeletonAnimator()
+    {
+        return skeletonAnimator;
     }
 
     public void BasicAttack(PlayerController player, InputAction.CallbackContext context)

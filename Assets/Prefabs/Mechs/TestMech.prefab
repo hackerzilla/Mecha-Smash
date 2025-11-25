@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 687212159138828696}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.892452, w: 0.45114228}
+  m_LocalRotation: {x: -0, y: -0, z: 0.77695113, w: 0.6295609}
   m_LocalPosition: {x: 0.13283409, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -558,7 +558,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4929333764992189717}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.87649786, w: 0.48140576}
+  m_LocalRotation: {x: -0, y: -0, z: -0.00000029802317, w: 1}
   m_LocalPosition: {x: 0.138, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -791,7 +791,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6380198714848910901}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.8502917, w: 0.52631176}
+  m_LocalRotation: {x: -0, y: -0, z: 0.74795765, w: 0.6637465}
   m_LocalPosition: {x: 0.146, y: -0.001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -887,7 +887,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7067493055696470113}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.658387, w: 0.7526795}
+  m_LocalRotation: {x: -0, y: -0, z: -0.0000011622903, w: 1}
   m_LocalPosition: {x: 0.131, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1421,6 +1421,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2790832145959573354}
     m_Modifications:
+    - target: {fileID: -9014629685260051643, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
+      propertyPath: m_SortingOrder
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -8653719598885068355, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
       propertyPath: m_Name
       value: ninth_draft_cut_up (1)
@@ -1500,6 +1504,10 @@ PrefabInstance:
     - target: {fileID: -2100433674345319598, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 177.978
+      objectReference: {fileID: 0}
+    - target: {fileID: -1824536489023010450, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -485990856666115531, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
       propertyPath: m_LocalRotation.w
