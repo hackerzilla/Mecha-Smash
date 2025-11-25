@@ -6,7 +6,8 @@ public class StrikerArms : ArmsPart
 {
     public override void BasicAttack(PlayerController player, InputAction.CallbackContext context)
     {
-        
+        if (!context.performed) return;
+        BasicAttack();
     }
     public override void BasicAttack()
     {

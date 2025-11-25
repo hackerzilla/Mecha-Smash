@@ -247,6 +247,7 @@ public class MechController : MonoBehaviour
 
         // Instantiate part at slot
         headInstance = Instantiate(headPrefab, headSlot);
+        headInstance.mech = this;
         headInstance.transform.localScale = Vector3.one;
         headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
@@ -263,6 +264,7 @@ public class MechController : MonoBehaviour
 
         // Instantiate part at slot
         torsoInstance = Instantiate(torsoPrefab, torsoSlot);
+        torsoInstance.mech = this;
         torsoInstance.transform.localScale = Vector3.one;
         torsoInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
@@ -279,6 +281,7 @@ public class MechController : MonoBehaviour
 
         // Instantiate part at slot
         armsInstance = Instantiate(armsPrefab, armsSlot);
+        armsInstance.mech = this;
         armsInstance.transform.localScale = Vector3.one;
         armsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
@@ -295,6 +298,7 @@ public class MechController : MonoBehaviour
 
         // Instantiate part at slot
         legsInstance = Instantiate(legsPrefab, legsSlot);
+        legsInstance.mech = this;
         legsInstance.transform.localScale = Vector3.one;
         legsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
