@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,7 +15,7 @@ public class MechHealth : MonoBehaviour
     public UnityEvent onDeath;
 
     private float damageMultiplier = 1.0f; // 1.0 = 100% damage
-    private bool isInvincible = false;  // for Quantom Core
+    private bool isInvincible = false;  // for Quantum Core
 
     void Awake()
     {
@@ -35,8 +34,6 @@ public class MechHealth : MonoBehaviour
 
         float finalDamage = amount * damageMultiplier; // damage reduction
         ChangeHealth(-finalDamage);
-
-        // Debug.Log(gameObject.name + "got" + finalDamage);
 
         if (currentHealth <= 0)
         {

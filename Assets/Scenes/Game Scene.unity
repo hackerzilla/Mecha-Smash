@@ -357,7 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1bc3df13143d4ab5826b1a02df08b63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LobbyMenuManager
-  playerCardPrefab: {fileID: 5901416972420248410, guid: cbb9cbd53b6d2554d9031ae877d93e14, type: 3}
+  playerCardPrefab: {fileID: 6505245448570216793, guid: cbb9cbd53b6d2554d9031ae877d93e14, type: 3}
   playerInputManager: {fileID: 348030159}
   lobbyMenu: {fileID: 1114999245}
   players: []

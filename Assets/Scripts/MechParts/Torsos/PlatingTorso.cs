@@ -23,7 +23,6 @@ public class PlatingTorso : TorsoPart
         {
             if (!CanUseAbility())
             {
-                Debug.Log(AbilityName + "Cool Down");
                 return;
             }
 
@@ -37,7 +36,6 @@ public class PlatingTorso : TorsoPart
                 }
             }
 
-            Debug.Log(AbilityName + "On");
             animator.SetTrigger("DefensiveAbility");
 
             mechHealth.ApplyDamageReduction(damageMultiplier, duration);

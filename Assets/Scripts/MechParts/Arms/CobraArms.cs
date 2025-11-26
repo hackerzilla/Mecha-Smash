@@ -34,7 +34,6 @@ public class CobraArms : ArmsPart
 
     public override void BasicAttack()
     {
-        Debug.Log("Cobra basic attack!");
         animator.SetTrigger("BasicAttack");
 
         StartCoroutine(FireBothCannons());

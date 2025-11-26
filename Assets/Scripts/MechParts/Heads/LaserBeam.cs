@@ -79,30 +79,23 @@ public class LaserBeam : MonoBehaviour
 
     private void ApplyDamageAndKnockback(RaycastHit2D hit)
     {
-        Debug.Log($"ApplyDamageAndKnockback called! Hit object: {hit.collider.gameObject.name}, Owner: {(owner != null ? owner.name : "null")}");
-
         // Ignore collisions with the owner mech
         if (owner != null && (hit.collider.gameObject == owner || hit.transform.root.gameObject == owner))
         {
-            Debug.Log("Skipping damage - hit owner mech");
             return;
         }
 
         // Try to find MechHealth component on the collision or its parent
         MechHealth mechHealth = hit.collider.GetComponentInParent<MechHealth>();
-        Debug.Log($"MechHealth found: {mechHealth != null}, searching from: {hit.collider.gameObject.name}");
 
         if (mechHealth != null)
         {
             // Deal damage
-            Debug.Log($"Applying {damage} damage to {mechHealth.gameObject.name}");
             mechHealth.TakeDamage(damage);
 
             // Apply knockback - get components from the mech root
             Rigidbody2D rb = mechHealth.GetComponent<Rigidbody2D>();
             MechMovement mechMovement = mechHealth.GetComponent<MechMovement>();
-
-            Debug.Log($"Knockback components - RB: {rb != null}, MechMovement: {mechMovement != null}");
 
             if (rb != null && mechMovement != null)
             {
@@ -118,8 +111,6 @@ public class LaserBeam : MonoBehaviour
 
                 // Re-enable movement after 0.2 seconds (with velocity reset)
                 mechMovement.SetMovementOverride(true, 0.2f);
-
-                Debug.Log($"Applied knockback velocity: {knockbackVelocity}");
             }
         }
         else
@@ -141,7 +132,5 @@ public class LaserBeam : MonoBehaviour
 
         lr.SetPosition(0, start);
         lr.SetPosition(1, end);
-
-        Debug.Log($"Drawing laser from {start} to {end}, LR enabled: {lr.enabled}");
     }
 }
