@@ -68,13 +68,23 @@ public class MechController : MonoBehaviour
 
     public void Jump()
     {
+        if (mechMovement != null && mechMovement.TryInitiateJump())
+        {
+            if (skeletonAnimator != null)
+            {
+                skeletonAnimator.SetTrigger("jump");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when jump animation reaches the launch frame.
+    /// </summary>
+    public void OnJumpAnimationEvent()
+    {
         if (mechMovement != null)
         {
-            mechMovement.Jump();
-        }
-        if (skeletonAnimator != null)
-        {
-            skeletonAnimator.SetTrigger("jump");
+            mechMovement.ApplyJumpForce();
         }
     }
 
