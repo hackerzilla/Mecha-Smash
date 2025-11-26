@@ -72,7 +72,10 @@ public class MechController : MonoBehaviour
         {
             mechMovement.Jump();
         }
-        // TODO: Trigger jump animation
+        if (skeletonAnimator != null)
+        {
+            skeletonAnimator.SetTrigger("jump");
+        }
     }
 
     public void SetMovementOverride(bool isOverriding)
