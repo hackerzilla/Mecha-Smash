@@ -1,64 +1,66 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CobraArms : ArmsPart
 {
-    public GameObject cannonPrefab;
-    public Transform armPoint;
-    public float delay = 2f;
+    [Header("Projectile Settings")]
+    public GameObject projectilePrefab;
 
-    private PlayerController playerController;
-    private MechController mechController;
+    private bool isShooting = false;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        mechController = transform.root.GetComponent<PlayerController>()?.mechInstance;
-    }
-
-    override public void BasicAttack(PlayerController player, InputAction.CallbackContext context)
+    public override void BasicAttack(PlayerController player, InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-
-        if (playerController == null)
-        {
-            playerController = player;
-        }
-        if (mechController == null)
-        {
-            mechController = playerController.mechInstance;
-        }
+        if (isShooting) return;
         BasicAttack();
     }
 
     public override void BasicAttack()
     {
-        animator.SetTrigger("BasicAttack");
+        if (isShooting) return;
 
-        StartCoroutine(FireBothCannons());
+        isShooting = true;
+
+        // Trigger shoot animation on skeleton - animation events will call ShootRightHandGun/ShootLeftHandGun
+        Animator skeletonAnimator = mech.GetSkeletonAnimator();
+        if (skeletonAnimator != null)
+        {
+            skeletonAnimator.SetTrigger("shoot-pistols");
+        }
     }
 
-    private IEnumerator FireBothCannons()
+    public override void ShootRightHandGun()
     {
-        if (mechController == null)
+        FireProjectile(mech.rightHandAttachment);
+    }
+
+    public override void ShootLeftHandGun()
+    {
+        FireProjectile(mech.leftHandAttachment);
+    }
+
+    public override void OnShootComplete()
+    {
+        isShooting = false;
+    }
+
+    private void FireProjectile(Transform handAttachment)
+    {
+        if (projectilePrefab == null || handAttachment == null || mech == null)
         {
-            Debug.LogWarning("MechController not found for CobraArms");
-            yield break;
+            Debug.LogWarning("CobraArms: Missing required references for firing");
+            return;
         }
 
-        var my_direction = transform.right * Mathf.Sign(mechController.transform.localScale.x);
+        Vector2 direction = Vector2.right * mech.GetFacingDirection();
+        Vector3 spawnPosition = handAttachment.position;
 
-        var cannon1 = Instantiate(cannonPrefab, armPoint.position, Quaternion.identity);
-        Cannon cannon1Script = cannon1.GetComponent<Cannon>();
-        cannon1Script.direction = my_direction;
-        cannon1Script.SetOwner(mechController.gameObject);
-
-        yield return new WaitForSeconds(delay);
-
-        var cannon2 = Instantiate(cannonPrefab, armPoint.position, Quaternion.identity);
-        Cannon cannon2Script = cannon2.GetComponent<Cannon>();
-        cannon2Script.direction = my_direction;
-        cannon2Script.SetOwner(mechController.gameObject);
+        GameObject projectile = Instantiate(projectilePrefab, spawnPosition, Quaternion.identity);
+        Cannon cannon = projectile.GetComponent<Cannon>();
+        if (cannon != null)
+        {
+            cannon.direction = direction;
+            cannon.SetOwner(mech.gameObject);
+        }
     }
 }

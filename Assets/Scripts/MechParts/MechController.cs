@@ -88,6 +88,39 @@ public class MechController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when shoot animation triggers right hand gun.
+    /// </summary>
+    public void OnShootRightHandGunEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.ShootRightHandGun();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when shoot animation triggers left hand gun.
+    /// </summary>
+    public void OnShootLeftHandGunEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.ShootLeftHandGun();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when shoot animation completes.
+    /// </summary>
+    public void OnShootAnimationCompleteEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnShootComplete();
+        }
+    }
+
     public void SetMovementOverride(bool isOverriding)
     {
         if (mechMovement != null)

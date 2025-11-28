@@ -116,9 +116,7 @@ MonoBehaviour:
   description: 
   leftHandSprite: {fileID: 2043850512506809174}
   rightHandSprite: {fileID: 7296702528308406}
-  cannonPrefab: {fileID: 5922184444859364030, guid: a3edb525641004071b0e3890d8534005, type: 3}
-  armPoint: {fileID: 0}
-  delay: 2
+  projectilePrefab: {fileID: 5922184444859364030, guid: a3edb525641004071b0e3890d8534005, type: 3}
 --- !u!1 &4022614960081556367
 GameObject:
   m_ObjectHideFlags: 0

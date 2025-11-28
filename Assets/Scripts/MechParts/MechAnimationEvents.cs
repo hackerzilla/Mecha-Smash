@@ -23,4 +23,37 @@ public class MechAnimationEvents : MonoBehaviour
             mechController.OnJumpAnimationEvent();
         }
     }
+
+    /// <summary>
+    /// Called by Animation Event on shoot animation to fire the right hand gun.
+    /// </summary>
+    public void OnShootRightHandGun()
+    {
+        if (mechController != null)
+        {
+            mechController.OnShootRightHandGunEvent();
+        }
+    }
+
+    /// <summary>
+    /// Called by Animation Event on shoot animation to fire the left hand gun.
+    /// </summary>
+    public void OnShootLeftHandGun()
+    {
+        if (mechController != null)
+        {
+            mechController.OnShootLeftHandGunEvent();
+        }
+    }
+
+    /// <summary>
+    /// Called by Animation Event when shoot animation completes.
+    /// </summary>
+    public void OnShootAnimationComplete()
+    {
+        if (mechController != null)
+        {
+            mechController.OnShootAnimationCompleteEvent();
+        }
+    }
 }

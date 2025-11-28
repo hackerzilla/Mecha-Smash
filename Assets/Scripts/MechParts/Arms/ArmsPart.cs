@@ -12,6 +12,21 @@ abstract public class ArmsPart : MechPart
     abstract public void BasicAttack();
 
     /// <summary>
+    /// Called by animation event to fire the right hand gun. Override in arms that use guns.
+    /// </summary>
+    public virtual void ShootRightHandGun() { }
+
+    /// <summary>
+    /// Called by animation event to fire the left hand gun. Override in arms that use guns.
+    /// </summary>
+    public virtual void ShootLeftHandGun() { }
+
+    /// <summary>
+    /// Called by animation event when shoot animation completes. Override to clear shooting state.
+    /// </summary>
+    public virtual void OnShootComplete() { }
+
+    /// <summary>
     /// Attaches the arm sprites to the skeleton rig at the specified hand attachment points.
     /// Called by MechController during part assembly.
     /// </summary>
