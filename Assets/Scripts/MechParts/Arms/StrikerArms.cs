@@ -6,11 +6,15 @@ public class StrikerArms : ArmsPart
 {
     public override void BasicAttack(PlayerController player, InputAction.CallbackContext context)
     {
-        
+        if (!context.performed) return;
+        BasicAttack();
     }
     public override void BasicAttack()
     {
-        Debug.Log("Striker basic attack!");
-        animator.SetTrigger("BasicAttack");
+        Animator skeletonAnimator = mech.skeletonRig.GetComponent<Animator>();
+        if (skeletonAnimator != null)
+        {
+            skeletonAnimator.SetTrigger("punch");
+        }
     }
 }

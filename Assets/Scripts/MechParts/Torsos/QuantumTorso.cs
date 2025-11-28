@@ -21,7 +21,6 @@ public class QuantumTorso : TorsoPart
         {
             if (!CanUseAbility())
             {
-                Debug.Log(AbilityName + "Cool Down");
                 return;
             }
 
@@ -35,7 +34,7 @@ public class QuantumTorso : TorsoPart
                 }
             }
 
-            Debug.Log(AbilityName + "On");
+            TorsoDissolveVFX();
             animator.SetTrigger("DefensiveAbility");
 
             mechHealth.SetInvincible(invincibleDuration);

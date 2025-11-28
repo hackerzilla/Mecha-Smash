@@ -21,11 +21,9 @@ public class AcceleratorLegs : LegsPart
         {
             if (!CanUseAbility())
             {
-                Debug.Log("CoolDown!");
                 return;
             }
 
-            Debug.Log(AbilityName + " perform!");
             animator.SetTrigger("MovementAbility"); 
 
             player.SetMovementOverride(true, dashDuration);

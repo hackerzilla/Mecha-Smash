@@ -1,10 +1,49 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-
-
 abstract public class ArmsPart : MechPart
 {
+    // Sprite management for skeleton rig system
+    [Header("Sprite Configuration")]
+    [SerializeField] protected GameObject leftHandSprite;
+    [SerializeField] protected GameObject rightHandSprite;
+
     abstract public void BasicAttack(PlayerController player, InputAction.CallbackContext context);
     abstract public void BasicAttack();
+
+    /// <summary>
+    /// Attaches the arm sprites to the skeleton rig at the specified hand attachment points.
+    /// Called by MechController during part assembly.
+    /// </summary>
+    public virtual void AttachSprites(Transform leftHandAttachment, Transform rightHandAttachment)
+    {
+        // Reparent left hand sprite
+        if (leftHandSprite != null && leftHandAttachment != null)
+        {
+            leftHandSprite.transform.SetParent(leftHandAttachment);
+            leftHandSprite.transform.localPosition = Vector2.zero;
+        }
+
+        // Reparent right hand sprite
+        if (rightHandSprite != null && rightHandAttachment != null)
+        {
+            rightHandSprite.transform.SetParent(rightHandAttachment);
+            rightHandSprite.transform.localPosition = Vector2.zero;
+        }
+    }
+
+    /// <summary>
+    /// Cleanup sprites when this part is destroyed.
+    /// </summary>
+    protected virtual void OnDestroy()
+    {
+        if (leftHandSprite != null)
+        {
+            Destroy(leftHandSprite);
+        }
+        if (rightHandSprite != null)
+        {
+            Destroy(rightHandSprite);
+        }
+    }
 }

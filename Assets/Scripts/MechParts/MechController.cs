@@ -1,3 +1,4 @@
+using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,16 +16,47 @@ public class MechController : MonoBehaviour
     // The game object that will basically be the transform that the torso gets attached to.
     public GameObject torsoParent;
 
+    // Skeleton rig reference
+    public Transform skeletonRig;
+
+    // Part slot transforms - where part instances get parented
+    public Transform headSlot;
+    public Transform torsoSlot;
+    public Transform armsSlot;
+    public Transform legsSlot;
+
+    // Attachment points on skeleton - where part sprites get attached
+    public Transform leftHandAttachment;
+    public Transform rightHandAttachment;
+    public Transform leftFootAttachment;
+    public Transform rightFootAttachment;
+    public Transform eyePoint;
+
+    [Header("Visual Settings")]
+    public Material outlineMaterialTemplate;
+    public Material torsoMaterialTemplate;
+
     public HeadPart headInstance;
     public TorsoPart torsoInstance;
     public ArmsPart armsInstance;
     public LegsPart legsInstance;
 
     private MechMovement mechMovement;
+    private Animator skeletonAnimator;
+    private Color currentOutlineColor = Color.white;
 
     void Awake()
     {
         mechMovement = GetComponent<MechMovement>();
+        if (skeletonRig != null)
+        {
+            skeletonAnimator = skeletonRig.GetComponent<Animator>();
+        }
+    }
+
+    void Start()
+    {
+        AssembleMechParts();
     }
 
 
@@ -42,7 +74,10 @@ public class MechController : MonoBehaviour
         {
             mechMovement.Jump();
         }
-        // TODO: Trigger jump animation
+        if (skeletonAnimator != null)
+        {
+            skeletonAnimator.SetTrigger("jump");
+        }
     }
 
     public void SetMovementOverride(bool isOverriding)
@@ -74,6 +109,11 @@ public class MechController : MonoBehaviour
     public float GetFacingDirection()
     {
         return mechMovement != null ? mechMovement.GetFacingDirection() : 1f;
+    }
+
+    public Animator GetSkeletonAnimator()
+    {
+        return skeletonAnimator;
     }
 
     public void BasicAttack(PlayerController player, InputAction.CallbackContext context)
@@ -138,6 +178,12 @@ public class MechController : MonoBehaviour
         AttachArms();
         AttachLegs();
         ApplyLegStats();
+
+        // Apply outline material to newly assembled parts
+        if (currentOutlineColor != Color.white)
+        {
+            ApplyOutlineMaterial();
+        }
     }
 
     public void ApplyLegStats()
@@ -152,7 +198,6 @@ public class MechController : MonoBehaviour
         {
             mechMovement.SetMoveSpeed(legsInstance.moveSpeed);
             mechMovement.SetMaxJumps(legsInstance.maxJumps);
-            Debug.Log($"Legs Stats Applied: {legsInstance.name} (Speed: {legsInstance.moveSpeed}, Jumps: {legsInstance.maxJumps})");
         }
         else
         {
@@ -168,25 +213,28 @@ public class MechController : MonoBehaviour
         {
             headPrefab = (HeadPart)part;
             AttachHead();
+            ApplyOutlineMaterial();
         }
         else if (part is TorsoPart)
         {
             torsoPrefab = (TorsoPart)part;
             AttachTorso();
-            headInstance.transform.SetParent(torsoInstance.headAttachmentPoint);
-            armsInstance.transform.SetParent(torsoInstance.armsAttachmentPoint);
-            legsInstance.transform.SetParent(torsoInstance.legsAttachmentPoint);
+            // Note: Parts are now attached to slots on the skeleton rig,
+            // not to the torso's attachment points, so no re-parenting needed
+            ApplyOutlineMaterial();
         }
         else if (part is ArmsPart)
         {
             armsPrefab = (ArmsPart)part;
             AttachArms();
+            ApplyOutlineMaterial();
         }
         else if (part is LegsPart)
         {
             legsPrefab = (LegsPart)part;
             AttachLegs();
             ApplyLegStats();
+            ApplyOutlineMaterial();
         }
         else
         {
@@ -201,8 +249,15 @@ public class MechController : MonoBehaviour
             Destroy(headInstance.gameObject);
         }
         Assert.AreNotEqual(headPrefab, null);
-        headInstance = Instantiate(headPrefab, torsoInstance.headAttachmentPoint);
+
+        // Instantiate part at slot
+        headInstance = Instantiate(headPrefab, headSlot);
+        headInstance.mech = this;
+        headInstance.transform.localScale = Vector3.one;
         headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+
+        // Attach sprites to skeleton rig
+        headInstance.AttachSprites(headSlot);
     }
     protected void AttachTorso()
     {
@@ -211,9 +266,15 @@ public class MechController : MonoBehaviour
             Destroy(torsoInstance.gameObject);
         }
         Assert.AreNotEqual(torsoPrefab, null);
-        torsoInstance = Instantiate(torsoPrefab);
-        torsoInstance.transform.SetParent(torsoParent.transform);
+
+        // Instantiate part at slot
+        torsoInstance = Instantiate(torsoPrefab, torsoSlot);
+        torsoInstance.mech = this;
+        torsoInstance.transform.localScale = Vector3.one;
         torsoInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+
+        // Attach sprites to skeleton rig
+        torsoInstance.AttachSprites(torsoSlot);
     }
     protected void AttachArms()
     {
@@ -222,9 +283,15 @@ public class MechController : MonoBehaviour
             Destroy(armsInstance.gameObject);
         }
         Assert.AreNotEqual(armsPrefab, null);
-        armsInstance = Instantiate(armsPrefab);
-        armsInstance.transform.SetParent(torsoInstance.armsAttachmentPoint);
+
+        // Instantiate part at slot
+        armsInstance = Instantiate(armsPrefab, armsSlot);
+        armsInstance.mech = this;
+        armsInstance.transform.localScale = Vector3.one;
         armsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+
+        // Attach sprites to skeleton rig hand attachment points
+        armsInstance.AttachSprites(leftHandAttachment, rightHandAttachment);
     }
     protected void AttachLegs()
     {
@@ -233,8 +300,46 @@ public class MechController : MonoBehaviour
             Destroy(legsInstance.gameObject);
         }
         Assert.AreNotEqual(legsPrefab, null);
-        legsInstance = Instantiate(legsPrefab);
-        legsInstance.transform.SetParent(torsoInstance.legsAttachmentPoint);
+
+        // Instantiate part at slot
+        legsInstance = Instantiate(legsPrefab, legsSlot);
+        legsInstance.mech = this;
+        legsInstance.transform.localScale = Vector3.one;
         legsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
+
+        // Attach sprites to skeleton rig foot attachment points
+        legsInstance.AttachSprites(leftFootAttachment, rightFootAttachment);
+    }
+
+    /// <summary>
+    /// Sets the outline color for this mech and applies it to all sprite renderers.
+    /// </summary>
+    public void SetOutlineColor(Color color)
+    {
+        currentOutlineColor = color;
+        ApplyOutlineMaterial();
+    }
+
+    /// <summary>
+    /// Applies the outline material with the current color to all sprite renderers on the skeleton and parts.
+    /// </summary>
+    public void ApplyOutlineMaterial()
+    {
+        if (outlineMaterialTemplate == null || skeletonRig == null)
+        {
+            Debug.LogWarning("[MechController] Cannot apply outline material - template or skeleton rig is null");
+            return;
+        }
+
+        // Get all sprite renderers on skeleton and attached parts
+        SpriteRenderer[] renderers = skeletonRig.GetComponentsInChildren<SpriteRenderer>(true);
+
+        foreach (SpriteRenderer renderer in renderers)
+        {
+            // Create material instance to avoid sharing between players
+            Material matInstance = new Material(outlineMaterialTemplate);
+            matInstance.SetColor("_OutlineColor", currentOutlineColor);
+            renderer.material = matInstance;
+        }
     }
 }

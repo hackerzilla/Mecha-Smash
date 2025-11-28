@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent<int, int> onPlayerCountChanged; // (total, alive)
-    public UnityEvent onGameOver;
+    public UnityEvent<string> onGameOver;
 
     private List<PlayerController> trackedPlayers;
     private int totalPlayers = 0;
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
         // Initialize list and events
         trackedPlayers = new List<PlayerController>();
         onPlayerCountChanged = new UnityEvent<int, int>();
-        onGameOver = new UnityEvent();
+        onGameOver = new UnityEvent<string>();
     }
 
     private void Start()
@@ -77,17 +77,17 @@ public class GameManager : MonoBehaviour
         if (alivePlayers <= 1)
         {
             PlayerController winner = GetWinningPlayer();
+            string winnerName = "Draw";
+
             if (winner != null)
             {
-                Debug.Log($"{winner.gameObject.name} wins!");
-            }
-            else
-            {
-                Debug.LogWarning("No players left standing, it's a draw!");
+                int playerIndex = winner.GetComponent<UnityEngine.InputSystem.PlayerInput>().playerIndex + 1;
+                winnerName = $"Player {playerIndex}";
             }
 
-            onGameOver.Invoke();
-            StartCoroutine(RestartGame());
+            Debug.Log($"Game Over! Winner: {winnerName}");
+
+            onGameOver.Invoke(winnerName);
         }
     }
 

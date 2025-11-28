@@ -22,6 +22,8 @@ public class MechMovement : MonoBehaviour
     private bool isFacingRight = true;
     private bool isMovementOverridden = false;
     private ContactFilter2D groundContactFilter;
+    private Animator skeletonAnimator;
+    private const float MOVING_THRESHOLD = 1.0f;
 
     void Awake()
     {
@@ -31,6 +33,13 @@ public class MechMovement : MonoBehaviour
         groundContactFilter = new ContactFilter2D();
         groundContactFilter.useLayerMask = true;
         groundContactFilter.layerMask = groundLayer;
+
+        // Get skeleton animator reference
+        MechController mechController = GetComponent<MechController>();
+        if (mechController != null && mechController.skeletonRig != null)
+        {
+            skeletonAnimator = mechController.skeletonRig.GetComponent<Animator>();
+        }
     }
 
     void FixedUpdate()
@@ -46,6 +55,9 @@ public class MechMovement : MonoBehaviour
         {
             jumpsRemaining = maxJumps;
         }
+
+        // Update animator parameters
+        UpdateAnimatorParameters();
 
         // Update facing direction
         if (moveInput.x > 0.1f)
@@ -160,5 +172,17 @@ public class MechMovement : MonoBehaviour
     public float GetFacingDirection()
     {
         return isFacingRight ? 1f : -1f;
+    }
+
+    private void UpdateAnimatorParameters()
+    {
+        if (skeletonAnimator == null) return;
+
+        // isMoving: true when horizontal speed exceeds threshold
+        bool isMoving = Mathf.Abs(rb.linearVelocity.x) > MOVING_THRESHOLD;
+        skeletonAnimator.SetBool("isMoving", isMoving);
+
+        // isOnGround: directly uses existing ground check
+        skeletonAnimator.SetBool("isOnGround", isGrounded);
     }
 }

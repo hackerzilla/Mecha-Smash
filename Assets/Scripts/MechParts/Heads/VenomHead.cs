@@ -35,7 +35,6 @@ public class VenomHead : HeadPart
     {
         owner = player;
 
-        Debug.Log("VenomHead bite!");
         animator.SetTrigger("SpecialAttack");
 
         // Disable Controller
