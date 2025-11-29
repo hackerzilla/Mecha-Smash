@@ -3,11 +3,11 @@ using UnityEngine.InputSystem;
 
 public class HammerHead : HeadPart
 {
-    // Charge Settings
-    public float chargeForce = 20f;
+    [Header("Charge Settings")]
     public float chargeDuration = 0.5f;
+    public float chargeForce = 20f;
 
-    // Damage & Knockback
+    [Header("Damage & Knockback")]
     public float damage = 30f;
     public float knockbackForce = 10f;
     public float stunDuration = 1.5f;
@@ -23,27 +23,53 @@ public class HammerHead : HeadPart
     {
         owner = player;
 
-        animator.SetTrigger("SpecialAttack");
+        // Trigger windup animation - charge will start when OnHeadbuttStart is called by animation event
+        Animator skeletonAnimator = mech.GetSkeletonAnimator();
+        if (skeletonAnimator != null)
+        {
+            skeletonAnimator.SetTrigger("headbutt-initiate");
+        }
 
-        // Disable controller
-        player.SetMovementOverride(true, chargeDuration);
+        // Disable movement indefinitely until animation event triggers charge
+        player.SetMovementOverride(true);
+    }
 
-        Vector2 direction = new Vector2(player.GetFacingDirection(), 0);
-        player.GetRigidbody().linearVelocity = new Vector2(direction.x * chargeForce, player.GetRigidbody().linearVelocity.y);
+    public override void OnHeadbuttStart()
+    {
+        if (owner == null) return;
+
+        // Apply charge velocity when animation event fires (after windup)
+        Vector2 direction = new Vector2(owner.GetFacingDirection(), 0);
+        Rigidbody2D rb = owner.GetRigidbody();
+        if (rb != null)
+        {
+            rb.linearVelocity = new Vector2(direction.x * chargeForce, rb.linearVelocity.y);
+        }
+
+        // Start charge duration timer - movement re-enabled after this
+        owner.SetMovementOverride(true, chargeDuration);
     }
 
     public override void SpecialAttack()
     {
-        
+
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
         if (owner == null) return;
 
         // Ignore collisions with the owner mech
         if (collision.gameObject == owner || collision.transform.root.gameObject == owner)
         {
             return;
+        }
+
+        // Trigger collision animation
+        Animator skeletonAnimator = mech.GetSkeletonAnimator();
+        if (skeletonAnimator != null)
+        {
+            skeletonAnimator.SetTrigger("headbutt-collided");
         }
 
         // Try to find MechHealth component on the collision or its parent
@@ -69,7 +95,7 @@ public class HammerHead : HeadPart
                 // Apply instant velocity change
                 rb.linearVelocity = knockbackVelocity;
 
-                // Re-enable movement after 0.2 seconds
+                // Re-enable movement after charge duration
                 mechMovement.SetMovementOverride(true, chargeDuration);
             }
         }

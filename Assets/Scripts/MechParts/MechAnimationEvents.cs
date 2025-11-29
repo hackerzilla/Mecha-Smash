@@ -56,4 +56,15 @@ public class MechAnimationEvents : MonoBehaviour
             mechController.OnShootAnimationCompleteEvent();
         }
     }
+
+    /// <summary>
+    /// Called by Animation Event when headbutt windup ends and charge should begin.
+    /// </summary>
+    public void OnHeadbuttStart()
+    {
+        if (mechController != null)
+        {
+            mechController.OnHeadbuttStartEvent();
+        }
+    }
 }

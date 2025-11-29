@@ -121,6 +121,17 @@ public class MechController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when headbutt windup ends and charge should begin.
+    /// </summary>
+    public void OnHeadbuttStartEvent()
+    {
+        if (headInstance != null)
+        {
+            headInstance.OnHeadbuttStart();
+        }
+    }
+
     public void SetMovementOverride(bool isOverriding)
     {
         if (mechMovement != null)

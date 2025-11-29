@@ -11,6 +11,11 @@ abstract public class HeadPart : MechPart
     abstract public void SpecialAttack();
 
     /// <summary>
+    /// Called by animation event when headbutt windup ends. Override in heads that use headbutt.
+    /// </summary>
+    public virtual void OnHeadbuttStart() { }
+
+    /// <summary>
     /// Attaches the head sprite to the skeleton rig at the specified attachment point.
     /// Called by MechController during part assembly.
     /// </summary>
