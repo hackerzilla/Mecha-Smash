@@ -9,9 +9,6 @@ public class MechMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 6f;
     [SerializeField] private int maxJumps = 1;
 
-    [Header("Ground Check")]
-    [SerializeField] private LayerMask groundLayer;
-
     [Header("Death Zone")]
     [SerializeField] private float deathY = -25f;
 
@@ -21,18 +18,12 @@ public class MechMovement : MonoBehaviour
     private bool isGrounded;
     private bool isFacingRight = true;
     private bool isMovementOverridden = false;
-    private ContactFilter2D groundContactFilter;
     private Animator skeletonAnimator;
     private const float MOVING_THRESHOLD = 1.0f;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-
-        // Set up contact filter for ground detection
-        groundContactFilter = new ContactFilter2D();
-        groundContactFilter.useLayerMask = true;
-        groundContactFilter.layerMask = groundLayer;
 
         // Get skeleton animator reference
         MechController mechController = GetComponent<MechController>();
@@ -49,8 +40,8 @@ public class MechMovement : MonoBehaviour
             return;
         }
 
-        // Ground Check using Rigidbody2D collision detection
-        isGrounded = rb.IsTouching(groundContactFilter);
+        // Ground Check - any contact means grounded (MVP)
+        isGrounded = rb.IsTouchingLayers();
         if (isGrounded)
         {
             jumpsRemaining = maxJumps;
