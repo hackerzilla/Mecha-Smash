@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnSpecialAttack(InputAction.CallbackContext context)
     {
-        if (mechInstance != null)
+        if (context.performed && mechInstance != null)
         {
             mechInstance.SpecialAttack(this, context);
         }
@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnDefensiveAbility(InputAction.CallbackContext context)
     {
-        if (mechInstance != null)
+        if (context.performed && mechInstance != null)
         {
             mechInstance.DefensiveAbility(this, context);
         }
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
     
     public void OnBasicAttack(InputAction.CallbackContext context)
     {
-        if (mechInstance != null)
+        if (context.performed && mechInstance != null)
         {
             mechInstance.BasicAttack(this, context);
         }
@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMovementAbility(InputAction.CallbackContext context)
     {
-        if (mechInstance != null)
+        if (context.performed && mechInstance != null)
         {
             mechInstance.MovementAbility(this, context);
         }

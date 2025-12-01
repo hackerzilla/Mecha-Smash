@@ -67,4 +67,15 @@ public class MechAnimationEvents : MonoBehaviour
             mechController.OnHeadbuttStartEvent();
         }
     }
+
+    /// <summary>
+    /// Called by Animation Event when bite animation reaches the bite frame.
+    /// </summary>
+    public void OnBiteStart()
+    {
+        if (mechController != null)
+        {
+            mechController.OnBiteStartEvent();
+        }
+    }
 }

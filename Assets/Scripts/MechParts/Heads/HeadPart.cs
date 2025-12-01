@@ -16,6 +16,11 @@ abstract public class HeadPart : MechPart
     public virtual void OnHeadbuttStart() { }
 
     /// <summary>
+    /// Called by animation event when bite animation reaches the bite frame. Override in heads that use bite.
+    /// </summary>
+    public virtual void OnBiteStart() { }
+
+    /// <summary>
     /// Attaches the head sprite to the skeleton rig at the specified attachment point.
     /// Called by MechController during part assembly.
     /// </summary>

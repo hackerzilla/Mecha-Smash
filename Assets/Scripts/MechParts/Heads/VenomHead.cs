@@ -34,19 +34,30 @@ public class VenomHead : HeadPart
     private void BitePlayer(PlayerController player)
     {
         owner = player;
+        // Trigger bite animation on skeleton animator
+        Animator skeletonAnimator = mech.GetSkeletonAnimator();
+        if (skeletonAnimator != null)
+        {
+            // Debug.Log("in bite, found skeleton animator");
+            skeletonAnimator.SetTrigger("bite");
+        }
 
-        animator.SetTrigger("SpecialAttack");
-
-        // Disable Controller
+        // Disable movement during bite
         player.SetMovementOverride(true, biteDuration);
-
-        StartCoroutine(VenomOn());
     }
 
-    private IEnumerator VenomOn()
+    public override void OnBiteStart()
     {
+        // Enable venom hitbox when animation event fires
         venom.GetComponent<BoxCollider2D>().enabled = true;
         venom.GetComponent<SpriteRenderer>().enabled = true;
+
+        // Disable after bite duration
+        StartCoroutine(DisableVenomAfterDelay());
+    }
+
+    private IEnumerator DisableVenomAfterDelay()
+    {
         yield return new WaitForSeconds(biteDuration);
         venom.GetComponent<BoxCollider2D>().enabled = false;
         venom.GetComponent<SpriteRenderer>().enabled = false;

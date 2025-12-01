@@ -132,6 +132,17 @@ public class MechController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when bite animation reaches the bite frame.
+    /// </summary>
+    public void OnBiteStartEvent()
+    {
+        if (headInstance != null)
+        {
+            headInstance.OnBiteStart();
+        }
+    }
+
     public void SetMovementOverride(bool isOverriding)
     {
         if (mechMovement != null)
