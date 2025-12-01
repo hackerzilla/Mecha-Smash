@@ -16,12 +16,20 @@ public class MechHealth : MonoBehaviour
 
     private float damageMultiplier = 1.0f; // 1.0 = 100% damage
     private bool isInvincible = false;  // for Quantum Core
+    private Animator skeletonAnimator;
 
     void Awake()
     {
         currentHealth = maxHealth;
         onDeath = new UnityEvent();
         onHealthChanged?.Invoke(currentHealth, maxHealth);
+
+        // Get skeleton animator for flinch animation
+        MechController mechController = GetComponent<MechController>();
+        if (mechController != null && mechController.skeletonRig != null)
+        {
+            skeletonAnimator = mechController.skeletonRig.GetComponent<Animator>();
+        }
     }
     
     // ⭐️ Different scripts(bullet, ability stuff) call this method and give damage.
@@ -34,6 +42,12 @@ public class MechHealth : MonoBehaviour
 
         float finalDamage = amount * damageMultiplier; // damage reduction
         ChangeHealth(-finalDamage);
+
+        // Trigger flinch animation
+        if (skeletonAnimator != null)
+        {
+            skeletonAnimator.SetTrigger("flinch");
+        }
 
         if (currentHealth <= 0)
         {
