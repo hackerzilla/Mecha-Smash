@@ -12,13 +12,22 @@ public class VenomHead : HeadPart
     public float healPerTick = 5f;
 
     private PlayerController owner;
-    private MechController mechController;
 
-    protected override void Awake()
+    public override void AttachSprites(Transform headAttachment)
     {
-        base.Awake();
-        mechController = transform.root.GetComponent<PlayerController>()?.mechInstance;
-        venom.SetOwner(mechController.gameObject);
+        base.AttachSprites(headAttachment);
+
+        // Reparent venom hitbox to eyepoint for correct collision position
+        if (venom != null && mech.eyePoint != null)
+        {
+            venom.transform.SetParent(mech.eyePoint);
+            venom.transform.localPosition = Vector3.zero;
+            venom.SetOwner(mech.gameObject);
+
+            // Start disabled
+            venom.GetComponent<BoxCollider2D>().enabled = false;
+            venom.GetComponent<SpriteRenderer>().enabled = false;
+        }
     }
 
     public override void SpecialAttack(PlayerController player, InputAction.CallbackContext context)
@@ -82,6 +91,15 @@ public class VenomHead : HeadPart
             owner.mechInstance.GetComponent<MechHealth>().Heal(healPerTick);
             ticks++;
             yield return new WaitForSeconds(tickInterval);
+        }
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        if (venom != null)
+        {
+            Destroy(venom.gameObject);
         }
     }
 }
