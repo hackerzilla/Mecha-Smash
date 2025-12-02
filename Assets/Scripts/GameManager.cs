@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance { get; private set; }
 
     [Header("Restart Settings")]
-    [SerializeField] private float restartDelay = 2f;
+    [SerializeField] private float restartDelay = 3f;
 
     [Header("Events")]
     public UnityEvent<int, int> onPlayerCountChanged; // (total, alive)
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         // Invoke count changed event
         onPlayerCountChanged.Invoke(totalPlayers, alivePlayers);
 
-        // Check if only one player remains (the winner!)
+        // Check if only one player remains
         if (alivePlayers <= 1)
         {
             PlayerController winner = GetWinningPlayer();
@@ -85,9 +85,12 @@ public class GameManager : MonoBehaviour
                 winnerName = $"Player {playerIndex}";
             }
 
+            winner.mechInstance.GetComponent<MechHealth>().SetInvincible(restartDelay);
+
             Debug.Log($"Game Over! Winner: {winnerName}");
 
             onGameOver.Invoke(winnerName);
+            StartCoroutine(RestartGame());
         }
     }
 
@@ -99,7 +102,7 @@ public class GameManager : MonoBehaviour
             if (player.mechInstance != null)
             {
                 MechHealth mechHealth = player.mechInstance.GetComponent<MechHealth>();
-                if (mechHealth != null && mechHealth.currentHealth > 0)
+                if (mechHealth != null && !mechHealth.isDead && mechHealth.currentHealth > 0)
                 {
                     return player;
                 }

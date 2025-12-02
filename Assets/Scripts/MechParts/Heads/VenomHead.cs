@@ -12,13 +12,22 @@ public class VenomHead : HeadPart
     public float healPerTick = 5f;
 
     private PlayerController owner;
-    private MechController mechController;
 
-    protected override void Awake()
+    public override void AttachSprites(Transform headAttachment)
     {
-        base.Awake();
-        mechController = transform.root.GetComponent<PlayerController>()?.mechInstance;
-        venom.SetOwner(mechController.gameObject);
+        base.AttachSprites(headAttachment);
+
+        // Reparent venom hitbox to eyepoint for correct collision position
+        if (venom != null && mech.eyePoint != null)
+        {
+            venom.transform.SetParent(mech.eyePoint);
+            venom.transform.localPosition = Vector3.zero;
+            venom.SetOwner(mech.gameObject);
+
+            // Start disabled
+            venom.GetComponent<BoxCollider2D>().enabled = false;
+            venom.GetComponent<SpriteRenderer>().enabled = false;
+        }
     }
 
     public override void SpecialAttack(PlayerController player, InputAction.CallbackContext context)
@@ -34,20 +43,30 @@ public class VenomHead : HeadPart
     private void BitePlayer(PlayerController player)
     {
         owner = player;
+        // Trigger bite animation on skeleton animator
+        Animator skeletonAnimator = mech.GetSkeletonAnimator();
+        if (skeletonAnimator != null)
+        {
+            // Debug.Log("in bite, found skeleton animator");
+            skeletonAnimator.SetTrigger("bite");
+        }
 
-        Debug.Log("VenomHead bite!");
-        animator.SetTrigger("SpecialAttack");
-
-        // Disable Controller
+        // Disable movement during bite
         player.SetMovementOverride(true, biteDuration);
-
-        StartCoroutine(VenomOn());
     }
 
-    private IEnumerator VenomOn()
+    public override void OnBiteStart()
     {
+        // Enable venom hitbox when animation event fires
         venom.GetComponent<BoxCollider2D>().enabled = true;
         venom.GetComponent<SpriteRenderer>().enabled = true;
+
+        // Disable after bite duration
+        StartCoroutine(DisableVenomAfterDelay());
+    }
+
+    private IEnumerator DisableVenomAfterDelay()
+    {
         yield return new WaitForSeconds(biteDuration);
         venom.GetComponent<BoxCollider2D>().enabled = false;
         venom.GetComponent<SpriteRenderer>().enabled = false;
@@ -72,6 +91,15 @@ public class VenomHead : HeadPart
             owner.mechInstance.GetComponent<MechHealth>().Heal(healPerTick);
             ticks++;
             yield return new WaitForSeconds(tickInterval);
+        }
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        if (venom != null)
+        {
+            Destroy(venom.gameObject);
         }
     }
 }

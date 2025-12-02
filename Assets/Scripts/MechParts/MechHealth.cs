@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,7 +6,7 @@ public class MechHealth : MonoBehaviour
 {
     public float maxHealth = 100f;
     public float currentHealth;
-    private bool isDead = false;
+    public bool isDead = false;
 
     [System.Serializable]
     public class HealthChangedEvent : UnityEvent<float, float> { } // currentHealth, maxHealth
@@ -16,13 +15,21 @@ public class MechHealth : MonoBehaviour
     public UnityEvent onDeath;
 
     private float damageMultiplier = 1.0f; // 1.0 = 100% damage
-    private bool isInvincible = false;  // for Quantom Core
+    private bool isInvincible = false;  // for Quantum Core
+    private Animator skeletonAnimator;
 
     void Awake()
     {
         currentHealth = maxHealth;
         onDeath = new UnityEvent();
         onHealthChanged?.Invoke(currentHealth, maxHealth);
+
+        // Get skeleton animator for flinch animation
+        MechController mechController = GetComponent<MechController>();
+        if (mechController != null && mechController.skeletonRig != null)
+        {
+            skeletonAnimator = mechController.skeletonRig.GetComponent<Animator>();
+        }
     }
     
     // ⭐️ Different scripts(bullet, ability stuff) call this method and give damage.
@@ -36,7 +43,11 @@ public class MechHealth : MonoBehaviour
         float finalDamage = amount * damageMultiplier; // damage reduction
         ChangeHealth(-finalDamage);
 
-        // Debug.Log(gameObject.name + "got" + finalDamage);
+        // Trigger flinch animation
+        if (skeletonAnimator != null)
+        {
+            skeletonAnimator.SetTrigger("flinch");
+        }
 
         if (currentHealth <= 0)
         {

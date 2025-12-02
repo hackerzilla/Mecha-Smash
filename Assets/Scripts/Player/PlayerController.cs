@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using System.Collections;
-using UnityEditor.Rendering;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,9 +13,12 @@ public class PlayerController : MonoBehaviour
     public TorsoPart torsoPrefab;
     public ArmsPart armsPrefab;
     public LegsPart legsPrefab;
-    
+
     [Header("Runtime")]
     public MechController mechInstance;
+
+    [Header("Visual Identification")]
+    [SerializeField] private Color outlineColor = Color.white;
 
     [Header("User Interface")]
     public PlayerCard playerCard;
@@ -28,17 +30,22 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private float canSubmitAfterTime = 0f;
     public bool canMove;
-    
+
+    public int playerNumber { get; private set; }
+
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
+        playerNumber = playerInput.playerIndex + 1; // Convert 0-based index to 1-based player number
         if (mechInstance == null)
         {
             Assert.NotNull(mechPrefab);
-            mechInstance = Instantiate(mechPrefab, this.transform);
-            mechInstance.AssembleMechFromPrefabParts(torsoPrefab, headPrefab, armsPrefab, legsPrefab);
+            mechInstance = Instantiate(mechPrefab, this.transform); // mech assembles itself on start
         }
         Assert.NotNull(mechInstance);
+
+        // Apply outline color to mech
+        mechInstance.SetOutlineColor(outlineColor);
 
         // Subscribe to mech's death event
         MechHealth mechHealth = mechInstance.GetComponent<MechHealth>();
@@ -88,36 +95,32 @@ public class PlayerController : MonoBehaviour
 
     public void OnSpecialAttack(InputAction.CallbackContext context)
     {
-        if (mechInstance != null)
+        if (context.performed && mechInstance != null)
         {
-            Debug.Log("OnSpecialAttack!");
             mechInstance.SpecialAttack(this, context);
         }
     }
 
     public void OnDefensiveAbility(InputAction.CallbackContext context)
     {
-        if (mechInstance != null)
+        if (context.performed && mechInstance != null)
         {
-            Debug.Log("OnDefensiveAbility!");
             mechInstance.DefensiveAbility(this, context);
         }
     } 
     
     public void OnBasicAttack(InputAction.CallbackContext context)
     {
-        if (mechInstance != null)
+        if (context.performed && mechInstance != null)
         {
-            Debug.Log("OnBasicAttack!");
             mechInstance.BasicAttack(this, context);
         }
     }
 
     public void OnMovementAbility(InputAction.CallbackContext context)
     {
-        if (mechInstance != null)
+        if (context.performed && mechInstance != null)
         {
-            Debug.Log("OnMovementAbility!");
             mechInstance.MovementAbility(this, context);
         }
     }
@@ -149,16 +152,18 @@ public class PlayerController : MonoBehaviour
     public void OnPlayerJoined()
     {
         canSubmitAfterTime = Time.time + submitCooldownAfterJoin;
+
+        // Get outline color from player card
+        if (playerCard != null)
+        {
+            outlineColor = playerCard.GetOutlineColor();
+        }
     }
 
     public void OnMechDeath()
     {
         // Relay the mech's death event to external listeners
-        Debug.Log($"[{gameObject.name}] OnMechDeath() called - Time: {Time.time}");
-        Debug.Log($"[{gameObject.name}] onPlayerDeath listener count: {onPlayerDeath.GetPersistentEventCount()}");
-        Debug.Log($"[{gameObject.name}] Invoking onPlayerDeath event now...");
         onPlayerDeath.Invoke();
-        Debug.Log($"[{gameObject.name}] onPlayerDeath event invoked");
     }
 
     public void Submit(InputAction.CallbackContext context)
@@ -171,7 +176,6 @@ public class PlayerController : MonoBehaviour
             }
 
             playerCard.OnSubmit(context);
-            Debug.Log($"{gameObject.name} Submit pressed by {GetComponent<PlayerInput>().devices[0].displayName}");
         }
     }
 
@@ -201,8 +205,22 @@ public class PlayerController : MonoBehaviour
     }
     public void EnableInputMapping(string mapName)
     {
-        var map = playerInput.actions.FindActionMap(mapName); 
+        var map = playerInput.actions.FindActionMap(mapName);
         Debug.Assert(map != null, "Could not find map: " + mapName);
         map.Enable();
+    }
+
+    public void SetOutlineColor(Color color)
+    {
+        outlineColor = color;
+        if (mechInstance != null)
+        {
+            mechInstance.SetOutlineColor(color);
+        }
+    }
+
+    public Color GetOutlineColor()
+    {
+        return outlineColor;
     }
 }

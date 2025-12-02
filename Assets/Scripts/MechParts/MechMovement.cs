@@ -9,9 +9,6 @@ public class MechMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 6f;
     [SerializeField] private int maxJumps = 1;
 
-    [Header("Ground Check")]
-    [SerializeField] private LayerMask groundLayer;
-
     [Header("Death Zone")]
     [SerializeField] private float deathY = -25f;
 
@@ -21,16 +18,19 @@ public class MechMovement : MonoBehaviour
     private bool isGrounded;
     private bool isFacingRight = true;
     private bool isMovementOverridden = false;
-    private ContactFilter2D groundContactFilter;
+    private Animator skeletonAnimator;
+    private const float MOVING_THRESHOLD = 1.0f;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
 
-        // Set up contact filter for ground detection
-        groundContactFilter = new ContactFilter2D();
-        groundContactFilter.useLayerMask = true;
-        groundContactFilter.layerMask = groundLayer;
+        // Get skeleton animator reference
+        MechController mechController = GetComponent<MechController>();
+        if (mechController != null && mechController.skeletonRig != null)
+        {
+            skeletonAnimator = mechController.skeletonRig.GetComponent<Animator>();
+        }
     }
 
     void FixedUpdate()
@@ -40,12 +40,15 @@ public class MechMovement : MonoBehaviour
             return;
         }
 
-        // Ground Check using Rigidbody2D collision detection
-        isGrounded = rb.IsTouching(groundContactFilter);
+        // Ground Check - any contact means grounded (MVP)
+        isGrounded = rb.IsTouchingLayers();
         if (isGrounded)
         {
             jumpsRemaining = maxJumps;
         }
+
+        // Update animator parameters
+        UpdateAnimatorParameters();
 
         // Update facing direction
         if (moveInput.x > 0.1f)
@@ -99,15 +102,27 @@ public class MechMovement : MonoBehaviour
         moveInput = input;
     }
 
-    public void Jump()
+    /// <summary>
+    /// Checks if jump is available and decrements jump counter.
+    /// Returns true if jump can proceed (animation should play).
+    /// </summary>
+    public bool TryInitiateJump()
     {
-        // Check if we have enough jumps
         if (jumpsRemaining > 0)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             jumpsRemaining -= 1;
+            return true;
         }
+        return false;
+    }
+
+    /// <summary>
+    /// Applies the actual jump physics force. Called by Animation Event via MechController.
+    /// </summary>
+    public void ApplyJumpForce()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 
     public void SetMovementOverride(bool isOverriding)
@@ -160,5 +175,17 @@ public class MechMovement : MonoBehaviour
     public float GetFacingDirection()
     {
         return isFacingRight ? 1f : -1f;
+    }
+
+    private void UpdateAnimatorParameters()
+    {
+        if (skeletonAnimator == null) return;
+
+        // isMoving: true when horizontal speed exceeds threshold
+        bool isMoving = Mathf.Abs(rb.linearVelocity.x) > MOVING_THRESHOLD;
+        skeletonAnimator.SetBool("isMoving", isMoving);
+
+        // isOnGround: directly uses existing ground check
+        skeletonAnimator.SetBool("isOnGround", isGrounded);
     }
 }
