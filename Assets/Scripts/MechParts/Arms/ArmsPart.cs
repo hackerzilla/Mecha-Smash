@@ -27,6 +27,16 @@ abstract public class ArmsPart : MechPart
     public virtual void OnShootComplete() { }
 
     /// <summary>
+    /// Called by animation event when sword swing hits. Override in arms that use swords.
+    /// </summary>
+    public virtual void OnSwordSwingHit() { }
+
+    /// <summary>
+    /// Called by animation event when sword swing ends. Override in arms that use swords.
+    /// </summary>
+    public virtual void OnSwordSwingEnd() { }
+
+    /// <summary>
     /// Attaches the arm sprites to the skeleton rig at the specified hand attachment points.
     /// Called by MechController during part assembly.
     /// </summary>

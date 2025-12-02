@@ -78,4 +78,26 @@ public class MechAnimationEvents : MonoBehaviour
             mechController.OnBiteStartEvent();
         }
     }
+
+    /// <summary>
+    /// Called by Animation Event when sword swing hits.
+    /// </summary>
+    public void OnSwordSwingHit()
+    {
+        if (mechController != null)
+        {
+            mechController.OnSwordSwingHitEvent();
+        }
+    }
+
+    /// <summary>
+    /// Called by Animation Event when sword swing ends.
+    /// </summary>
+    public void OnSwordSwingEnd()
+    {
+        if (mechController != null)
+        {
+            mechController.OnSwordSwingEndEvent();
+        }
+    }
 }

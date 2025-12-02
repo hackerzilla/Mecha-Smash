@@ -143,6 +143,28 @@ public class MechController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when sword swing hits.
+    /// </summary>
+    public void OnSwordSwingHitEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnSwordSwingHit();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when sword swing ends.
+    /// </summary>
+    public void OnSwordSwingEndEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnSwordSwingEnd();
+        }
+    }
+
     public void SetMovementOverride(bool isOverriding)
     {
         if (mechMovement != null)
