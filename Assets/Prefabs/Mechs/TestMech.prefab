@@ -1505,6 +1505,11 @@ MonoBehaviour:
   leftFootAttachment: {fileID: 2979789792642197933}
   rightFootAttachment: {fileID: 1691860909750532774}
   eyePoint: {fileID: 5773688314967553947}
+  headAttachment: {fileID: 1664470356296875652}
+  chestAttachment: {fileID: 8442686444453030637}
+  coreAttachment: {fileID: 956367976619801500}
+  leftShoulderAttachment: {fileID: 353979996465564030}
+  rightShoulderAttachment: {fileID: 5485146476205547431}
   outlineMaterialTemplate: {fileID: 2100000, guid: 47cf6da9a9166b4428a4ccd310bc8cb3, type: 2}
   headInstance: {fileID: 0}
   torsoInstance: {fileID: 0}

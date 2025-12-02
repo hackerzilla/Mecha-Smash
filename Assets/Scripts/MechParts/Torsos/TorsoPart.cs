@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +9,10 @@ abstract public class TorsoPart : MechPart
 
     // Sprite management for skeleton rig system
     [Header("Sprite Configuration")]
-    [SerializeField] protected List<GameObject> torsoSprites = new List<GameObject>();
+    [SerializeField] protected GameObject chestSprite;
+    [SerializeField] protected GameObject coreSprite;
+    [SerializeField] protected GameObject leftShoulderSprite;
+    [SerializeField] protected GameObject rightShoulderSprite;
 
     abstract public void DefensiveAbility(PlayerController player, InputAction.CallbackContext context);
 
@@ -26,22 +28,34 @@ abstract public class TorsoPart : MechPart
     abstract public void DefensiveAbility();
 
     /// <summary>
-    /// Attaches the torso sprites to the skeleton rig at the specified attachment point.
+    /// Attaches the torso sprites to the skeleton rig at the specified attachment points.
     /// Called by MechController during part assembly.
     /// </summary>
-    public virtual void AttachSprites(Transform torsoAttachment)
+    public virtual void AttachSprites(Transform chestAttachment, Transform coreAttachment,
+                                       Transform leftShoulderAttachment, Transform rightShoulderAttachment)
     {
-        // Reparent all torso sprites to attachment point
-        if (torsoAttachment != null)
+        if (chestSprite != null && chestAttachment != null)
         {
-            foreach (GameObject sprite in torsoSprites)
-            {
-                if (sprite != null)
-                {
-                    sprite.transform.SetParent(torsoAttachment);
-                    sprite.transform.localPosition = Vector2.zero;
-                }
-            }
+            chestSprite.transform.SetParent(chestAttachment);
+            chestSprite.transform.localPosition = Vector2.zero;
+        }
+
+        if (coreSprite != null && coreAttachment != null)
+        {
+            coreSprite.transform.SetParent(coreAttachment);
+            coreSprite.transform.localPosition = Vector2.zero;
+        }
+
+        if (leftShoulderSprite != null && leftShoulderAttachment != null)
+        {
+            leftShoulderSprite.transform.SetParent(leftShoulderAttachment);
+            leftShoulderSprite.transform.localPosition = Vector2.zero;
+        }
+
+        if (rightShoulderSprite != null && rightShoulderAttachment != null)
+        {
+            rightShoulderSprite.transform.SetParent(rightShoulderAttachment);
+            rightShoulderSprite.transform.localPosition = Vector2.zero;
         }
     }
 
@@ -50,12 +64,9 @@ abstract public class TorsoPart : MechPart
     /// </summary>
     protected virtual void OnDestroy()
     {
-        foreach (GameObject sprite in torsoSprites)
-        {
-            if (sprite != null)
-            {
-                Destroy(sprite);
-            }
-        }
+        if (chestSprite != null) Destroy(chestSprite);
+        if (coreSprite != null) Destroy(coreSprite);
+        if (leftShoulderSprite != null) Destroy(leftShoulderSprite);
+        if (rightShoulderSprite != null) Destroy(rightShoulderSprite);
     }
 }

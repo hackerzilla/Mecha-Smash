@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4476546449460581878}
-  - component: {fileID: 4881430075759506094}
   - component: {fileID: 7053203569227135626}
   m_Layer: 0
   m_Name: Unstable Quantum Core
@@ -33,28 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &4881430075759506094
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5667582769369169224}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 631f0a2ee6cb74ce3a7417ae8cec609a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &7053203569227135626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,9 +49,8 @@ MonoBehaviour:
   player: {fileID: 0}
   description: 
   cooldown: 1
-  torsoSpritePrefabs:
-  - {fileID: 0}
-  headAttachmentPoint: {fileID: 0}
-  armsAttachmentPoint: {fileID: 0}
-  legsAttachmentPoint: {fileID: 0}
+  chestSprite: {fileID: 0}
+  coreSprite: {fileID: 0}
+  leftShoulderSprite: {fileID: 0}
+  rightShoulderSprite: {fileID: 0}
   invincibleDuration: 1.5

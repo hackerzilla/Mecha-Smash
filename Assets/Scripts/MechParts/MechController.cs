@@ -31,6 +31,15 @@ public class MechController : MonoBehaviour
     public Transform rightFootAttachment;
     public Transform eyePoint;
 
+    // Head attachment point on skeleton
+    public Transform headAttachment;
+
+    // Torso attachment points on skeleton
+    public Transform chestAttachment;
+    public Transform coreAttachment;
+    public Transform leftShoulderAttachment;
+    public Transform rightShoulderAttachment;
+
     [Header("Visual Settings")]
     [SerializeField] private Material outlineMaterialTemplate;
 
@@ -342,7 +351,7 @@ public class MechController : MonoBehaviour
         headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
         // Attach sprites to skeleton rig
-        headInstance.AttachSprites(headSlot);
+        headInstance.AttachSprites(headAttachment);
     }
     protected void AttachTorso()
     {
@@ -359,7 +368,7 @@ public class MechController : MonoBehaviour
         torsoInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
         // Attach sprites to skeleton rig
-        torsoInstance.AttachSprites(torsoSlot);
+        torsoInstance.AttachSprites(chestAttachment, coreAttachment, leftShoulderAttachment, rightShoulderAttachment);
     }
     protected void AttachArms()
     {
