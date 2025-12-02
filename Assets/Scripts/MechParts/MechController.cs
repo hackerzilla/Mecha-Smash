@@ -50,11 +50,13 @@ public class MechController : MonoBehaviour
 
     private MechMovement mechMovement;
     private Animator skeletonAnimator;
+    private MechOutlineRenderer outlineRenderer;
     private Color currentOutlineColor = Color.white;
 
     void Awake()
     {
         mechMovement = GetComponent<MechMovement>();
+        outlineRenderer = GetComponent<MechOutlineRenderer>();
         if (skeletonRig != null)
         {
             skeletonAnimator = skeletonRig.GetComponent<Animator>();
@@ -273,8 +275,13 @@ public class MechController : MonoBehaviour
         AttachLegs();
         ApplyLegStats();
 
-        // Apply outline material to newly assembled parts
-        if (currentOutlineColor != Color.white)
+        // Apply outline to newly assembled parts
+        if (outlineRenderer != null)
+        {
+            outlineRenderer.RefreshSpriteLayers();
+            outlineRenderer.SetOutlineColor(currentOutlineColor);
+        }
+        else if (currentOutlineColor != Color.white)
         {
             ApplyOutlineMaterial();
         }
@@ -307,7 +314,7 @@ public class MechController : MonoBehaviour
         {
             headPrefab = (HeadPart)part;
             AttachHead();
-            ApplyOutlineMaterial();
+            RefreshOutlineAfterSwap();
         }
         else if (part is TorsoPart)
         {
@@ -315,24 +322,36 @@ public class MechController : MonoBehaviour
             AttachTorso();
             // Note: Parts are now attached to slots on the skeleton rig,
             // not to the torso's attachment points, so no re-parenting needed
-            ApplyOutlineMaterial();
+            RefreshOutlineAfterSwap();
         }
         else if (part is ArmsPart)
         {
             armsPrefab = (ArmsPart)part;
             AttachArms();
-            ApplyOutlineMaterial();
+            RefreshOutlineAfterSwap();
         }
         else if (part is LegsPart)
         {
             legsPrefab = (LegsPart)part;
             AttachLegs();
             ApplyLegStats();
-            ApplyOutlineMaterial();
+            RefreshOutlineAfterSwap();
         }
         else
         {
             Debug.LogWarning($"Cannot swap part '{part.name}' - not a valid MechPart subclass");
+        }
+    }
+
+    private void RefreshOutlineAfterSwap()
+    {
+        if (outlineRenderer != null)
+        {
+            outlineRenderer.RefreshSpriteLayers();
+        }
+        else
+        {
+            ApplyOutlineMaterial();
         }
     }
 
@@ -411,7 +430,16 @@ public class MechController : MonoBehaviour
     public void SetOutlineColor(Color color)
     {
         currentOutlineColor = color;
-        ApplyOutlineMaterial();
+
+        // Use new outline renderer if available, otherwise fall back to per-sprite material
+        if (outlineRenderer != null)
+        {
+            outlineRenderer.SetOutlineColor(color);
+        }
+        else
+        {
+            ApplyOutlineMaterial();
+        }
     }
 
     /// <summary>

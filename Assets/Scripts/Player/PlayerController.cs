@@ -44,6 +44,13 @@ public class PlayerController : MonoBehaviour
         }
         Assert.NotNull(mechInstance);
 
+        // Set player index for outline layer isolation (must be before mech Start runs)
+        MechOutlineRenderer outlineRenderer = mechInstance.GetComponent<MechOutlineRenderer>();
+        if (outlineRenderer != null)
+        {
+            outlineRenderer.SetPlayerIndex(playerInput.playerIndex);
+        }
+
         // Apply outline color to mech
         mechInstance.SetOutlineColor(outlineColor);
 

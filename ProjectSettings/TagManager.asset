@@ -13,8 +13,8 @@ TagManager:
   - UI
   - Ground
   - Player
-  - 
-  - 
+  - MechSprites
+  - MechOutline
   - 
   - 
   - 
@@ -43,6 +43,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 1967174059
+    locked: 0
+  - name: MechOutline
+    uniqueID: 1849640409
     locked: 0
   - name: Player
     uniqueID: 343751035

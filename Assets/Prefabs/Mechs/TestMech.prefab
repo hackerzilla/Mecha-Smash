@@ -1450,6 +1450,7 @@ GameObject:
   - component: {fileID: 7941540926429174331}
   - component: {fileID: 2316152869218607206}
   - component: {fileID: 1611773581915627989}
+  - component: {fileID: 7969859369168138038}
   m_Layer: 0
   m_Name: TestMech
   m_TagString: Untagged
@@ -1683,6 +1684,25 @@ MonoBehaviour:
   jumpForce: 10
   maxJumps: 1
   deathY: -25
+--- !u!114 &7969859369168138038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7712348289771204258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9cdb72a6122ac4488a32ed2986de9c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MechOutlineRenderer
+  outlineMaterial: {fileID: 2100000, guid: 8e1641d0740915d419c179cb1921cd9b, type: 2}
+  outlineWidth: 4
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  renderTextureSize: 512
+  quadScale: 5
+  mechSpritesLayerName: MechSprites
+  mechOutlineLayerName: MechOutline
 --- !u!1 &7801651682892988412
 GameObject:
   m_ObjectHideFlags: 0
