@@ -3,15 +3,33 @@ using UnityEngine.InputSystem;
 
 public class UltraswordArms : ArmsPart
 {
-    [SerializeField] private GameObject swordHitBox;
+    [SerializeField] private GameObject swordSpriteAndHitbox;
+    private Collider2D swordCollider;
     private bool isAttacking = false;
 
-    protected override void Awake()
+    public override void AttachSprites(Transform leftHandAttachment, Transform rightHandAttachment)
     {
-        base.Awake();
-        if (swordHitBox != null)
+        base.AttachSprites(leftHandAttachment, rightHandAttachment);
+
+        // Reparent sword to right hand attachment point
+        if (swordSpriteAndHitbox != null && rightHandAttachment != null)
         {
-            swordHitBox.SetActive(false);
+            swordSpriteAndHitbox.transform.SetParent(rightHandAttachment);
+            swordSpriteAndHitbox.transform.localPosition = Vector3.zero;
+
+            // Set owner for StunBlade
+            StunBlade bladeScript = swordSpriteAndHitbox.GetComponent<StunBlade>();
+            if (bladeScript != null)
+            {
+                bladeScript.owner = mech.gameObject;
+            }
+
+            // Cache collider and start with it disabled (sprite stays visible)
+            swordCollider = swordSpriteAndHitbox.GetComponent<Collider2D>();
+            if (swordCollider != null)
+            {
+                swordCollider.enabled = false;
+            }
         }
     }
 
@@ -21,7 +39,6 @@ public class UltraswordArms : ArmsPart
         {
             isAttacking = true;
 
-            Debug.Log("Attacking");
             Animator skeletonAnimator = mech.GetSkeletonAnimator();
             if (skeletonAnimator != null)
             {
@@ -34,25 +51,28 @@ public class UltraswordArms : ArmsPart
 
     public override void OnSwordSwingHit()
     {
-        if (swordHitBox != null)
+        if (swordCollider != null)
         {
-            StunBlade bladeScript = swordHitBox.GetComponent<StunBlade>();
-            if (bladeScript != null)
-            {
-                bladeScript.owner = mech.gameObject;
-            }
-
-            swordHitBox.SetActive(true);
+            swordCollider.enabled = true;
         }
     }
 
     public override void OnSwordSwingEnd()
     {
-        if (swordHitBox != null)
+        if (swordCollider != null)
         {
-            swordHitBox.SetActive(false);
+            swordCollider.enabled = false;
         }
 
         isAttacking = false;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        if (swordSpriteAndHitbox != null)
+        {
+            Destroy(swordSpriteAndHitbox);
+        }
     }
 }
