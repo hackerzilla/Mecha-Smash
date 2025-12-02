@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class UltraswordArms : ArmsPart
 {
-    [SerializeField] private GameObject swordSpriteAndHitbox;
+    [SerializeField] private GameObject swordParent;
     private Collider2D swordCollider;
     private bool isAttacking = false;
 
@@ -11,21 +11,21 @@ public class UltraswordArms : ArmsPart
     {
         base.AttachSprites(leftHandAttachment, rightHandAttachment);
 
-        // Reparent sword to right hand attachment point
-        if (swordSpriteAndHitbox != null && rightHandAttachment != null)
+        // Reparent sword parent to right hand attachment point
+        if (swordParent != null && rightHandAttachment != null)
         {
-            swordSpriteAndHitbox.transform.SetParent(rightHandAttachment);
-            swordSpriteAndHitbox.transform.localPosition = Vector3.zero;
+            swordParent.transform.SetParent(rightHandAttachment);
+            swordParent.transform.localPosition = Vector3.zero;
 
-            // Set owner for StunBlade
-            StunBlade bladeScript = swordSpriteAndHitbox.GetComponent<StunBlade>();
+            // Set owner for StunBlade (on child)
+            StunBlade bladeScript = swordParent.GetComponentInChildren<StunBlade>();
             if (bladeScript != null)
             {
                 bladeScript.owner = mech.gameObject;
             }
 
-            // Cache collider and start with it disabled (sprite stays visible)
-            swordCollider = swordSpriteAndHitbox.GetComponent<Collider2D>();
+            // Cache collider (on child) and start with it disabled
+            swordCollider = swordParent.GetComponentInChildren<Collider2D>();
             if (swordCollider != null)
             {
                 swordCollider.enabled = false;
@@ -70,9 +70,9 @@ public class UltraswordArms : ArmsPart
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        if (swordSpriteAndHitbox != null)
+        if (swordParent != null)
         {
-            Destroy(swordSpriteAndHitbox);
+            Destroy(swordParent);
         }
     }
 }
