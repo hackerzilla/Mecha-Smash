@@ -14,6 +14,12 @@ abstract public class TorsoPart : MechPart
     [SerializeField] protected GameObject leftShoulderSprite;
     [SerializeField] protected GameObject rightShoulderSprite;
 
+    [Header("Sorting Order")]
+    [SerializeField] protected int chestSortingOrder = 14;
+    [SerializeField] protected int coreSortingOrder = 9;
+    [SerializeField] protected int leftShoulderSortingOrder = 12;
+    [SerializeField] protected int rightShoulderSortingOrder = 17;
+
     abstract public void DefensiveAbility(PlayerController player, InputAction.CallbackContext context);
 
     public virtual bool CanUseAbility()
@@ -38,24 +44,32 @@ abstract public class TorsoPart : MechPart
         {
             chestSprite.transform.SetParent(chestAttachment);
             chestSprite.transform.localPosition = Vector2.zero;
+            var sr = chestSprite.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.sortingOrder = chestSortingOrder;
         }
 
         if (coreSprite != null && coreAttachment != null)
         {
             coreSprite.transform.SetParent(coreAttachment);
             coreSprite.transform.localPosition = Vector2.zero;
+            var sr = coreSprite.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.sortingOrder = coreSortingOrder;
         }
 
         if (leftShoulderSprite != null && leftShoulderAttachment != null)
         {
             leftShoulderSprite.transform.SetParent(leftShoulderAttachment);
             leftShoulderSprite.transform.localPosition = Vector2.zero;
+            var sr = leftShoulderSprite.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.sortingOrder = leftShoulderSortingOrder;
         }
 
         if (rightShoulderSprite != null && rightShoulderAttachment != null)
         {
             rightShoulderSprite.transform.SetParent(rightShoulderAttachment);
             rightShoulderSprite.transform.localPosition = Vector2.zero;
+            var sr = rightShoulderSprite.GetComponent<SpriteRenderer>();
+            if (sr != null) sr.sortingOrder = rightShoulderSortingOrder;
         }
     }
 

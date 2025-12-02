@@ -327,6 +327,10 @@ MonoBehaviour:
   coreSprite: {fileID: 4764539912230078113}
   leftShoulderSprite: {fileID: 5407395583336745803}
   rightShoulderSprite: {fileID: 7840891416992199576}
+  chestSortingOrder: 14
+  coreSortingOrder: 9
+  leftShoulderSortingOrder: 12
+  rightShoulderSortingOrder: 17
   damageMultiplier: 0.5
   duration: 3
 --- !u!1 &7840891416992199576
