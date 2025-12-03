@@ -27,8 +27,8 @@ public class MechController : MonoBehaviour
     // Attachment points on skeleton - where part sprites get attached
     public Transform leftHandAttachment;
     public Transform rightHandAttachment;
-    public Transform leftFootAttachment;
-    public Transform rightFootAttachment;
+    public Transform leftCalfAttachment;
+    public Transform rightCalfAttachment;
     public Transform eyePoint;
 
     // Head attachment point on skeleton
@@ -422,7 +422,7 @@ public class MechController : MonoBehaviour
         legsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
         // Attach sprites to skeleton rig foot attachment points
-        legsInstance.AttachSprites(leftFootAttachment, rightFootAttachment);
+        legsInstance.AttachSprites(leftCalfAttachment, rightCalfAttachment);
     }
 
     /// <summary>

@@ -683,7 +683,7 @@ Transform:
   m_GameObject: {fileID: 4379518167509144280}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.0508, y: -0.0274, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -978,7 +978,7 @@ Transform:
   m_GameObject: {fileID: 6129479465047925609}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.0394, y: -0.0167, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1412,8 +1412,8 @@ MonoBehaviour:
   legsSlot: {fileID: 4878178499042226387}
   leftHandAttachment: {fileID: 5278319254271348374}
   rightHandAttachment: {fileID: 4497125513887916367}
-  leftFootAttachment: {fileID: 2979789792642197933}
-  rightFootAttachment: {fileID: 1691860909750532774}
+  leftCalfAttachment: {fileID: 2470928952428980432}
+  rightCalfAttachment: {fileID: 5457729768751538288}
   eyePoint: {fileID: 5773688314967553947}
   headAttachment: {fileID: 1664470356296875652}
   chestAttachment: {fileID: 8442686444453030637}
