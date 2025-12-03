@@ -42,6 +42,7 @@ public class MechController : MonoBehaviour
 
     [Header("Visual Settings")]
     [SerializeField] private Material outlineMaterialTemplate;
+    public Material torsoMaterialTemplate;
 
     public HeadPart headInstance;
     public TorsoPart torsoInstance;

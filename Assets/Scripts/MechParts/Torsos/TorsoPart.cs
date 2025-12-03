@@ -114,21 +114,6 @@ abstract public class TorsoPart : MechPart
         }
     }
 
-    /// <summary>
-    /// Cleanup sprites when this part is destroyed.
-    /// </summary>
-    protected virtual void OnDestroy()
-    {
-        foreach (GameObject sprite in torsoSprites)
-        {
-            if (sprite != null)
-            {
-                Destroy(sprite);
-            }
-        }
-    }
-    
-
     // NEW TORSO VFX CODE
     protected void TorsoDissolveVFX()
     {
@@ -175,7 +160,7 @@ abstract public class TorsoPart : MechPart
             yield return null;
         }
 
-        mechController.ApplyOutlineMaterial();
+        // mechController.ApplyOutlineMaterial();
         vfxRunning = null;
     }
 }

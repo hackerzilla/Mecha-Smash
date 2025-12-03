@@ -1421,6 +1421,7 @@ MonoBehaviour:
   leftShoulderAttachment: {fileID: 353979996465564030}
   rightShoulderAttachment: {fileID: 5485146476205547431}
   outlineMaterialTemplate: {fileID: 2100000, guid: 47cf6da9a9166b4428a4ccd310bc8cb3, type: 2}
+  torsoMaterialTemplate: {fileID: 2100000, guid: 91ad8097cfadb4ee39accf21203c9e1a, type: 2}
   headInstance: {fileID: 0}
   torsoInstance: {fileID: 0}
   armsInstance: {fileID: 0}
@@ -1570,6 +1571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MechHealth
   maxHealth: 100
   currentHealth: 0
+  isDead: 0
   onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
