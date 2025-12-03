@@ -74,6 +74,7 @@ MonoBehaviour:
   player: {fileID: 0}
   description: 
   headSprite: {fileID: 9074669114571588240}
+  headSpritePrefab: {fileID: 0}
   venom: {fileID: 4480476321382477210}
   biteDuration: 0.5
   damagePerTick: 10

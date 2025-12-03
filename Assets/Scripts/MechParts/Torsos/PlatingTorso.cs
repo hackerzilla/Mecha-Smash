@@ -36,6 +36,7 @@ public class PlatingTorso : TorsoPart
                 }
             }
 
+            TorsoDissolveVFX();
             animator.SetTrigger("DefensiveAbility");
 
             mechHealth.ApplyDamageReduction(damageMultiplier, duration);

@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 6440714264977151159}
   - component: {fileID: 8883455109374618525}
   m_Layer: 0
-  m_Name: HammerHead
+  m_Name: Hammerhead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,8 +220,9 @@ MonoBehaviour:
   description: 
   headSprite: {fileID: 650775230789036866}
   headbuttTrigger: {fileID: 161340310182757774}
-  chargeDuration: 0.5
+  headSpritePrefab: {fileID: 0}
   chargeForce: 20
+  chargeDuration: 0.5
   damage: 30
   knockbackForce: 10
   stunDuration: 2

@@ -34,6 +34,7 @@ public class QuantumTorso : TorsoPart
                 }
             }
 
+            TorsoDissolveVFX();
             animator.SetTrigger("DefensiveAbility");
 
             mechHealth.SetInvincible(invincibleDuration);

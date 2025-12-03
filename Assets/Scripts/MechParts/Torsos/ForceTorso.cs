@@ -26,6 +26,7 @@ public class ForceTorso : TorsoPart
             }
 
             animator.SetTrigger("DefensiveAbility");
+            TorsoDissolveVFX();
 
             Vector2 blastOrigin = player.mechInstance.transform.position;
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(blastOrigin, blastRadius, blastLayerMask);

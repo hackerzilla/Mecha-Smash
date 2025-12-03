@@ -1826,7 +1826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCard
   headOptions:
   - {fileID: 3187049979565007219, guid: 966c9d61300e24d33a5e001195060369, type: 3}
-  - {fileID: 8883455109374618525, guid: 27876b2379d9f4b11a60c7d4dc95f7cd, type: 3}
+  - {fileID: 8883455109374618525, guid: 37e281a3f66d2384ea4d386a726450b6, type: 3}
   - {fileID: 2695945620902010889, guid: 920341aa2ac145141afd7b5855c5ccfe, type: 3}
   torsoOptions:
   - {fileID: 6383253985334823945, guid: de729d02645d3478ba9ad76728eee79b, type: 3}
@@ -1835,7 +1835,7 @@ MonoBehaviour:
   armsOptions:
   - {fileID: 8818423925520398678, guid: 35d75e11865a945deb64417d9aa41fb9, type: 3}
   - {fileID: 7792172839861042120, guid: 5070fc9734833674b8e8add33e95f393, type: 3}
-  - {fileID: 6205887746378770901, guid: feaef927d951f174387b22eb7cd990c5, type: 3}
+  - {fileID: 8818423925520398678, guid: feaef927d951f174387b22eb7cd990c5, type: 3}
   legsOptions:
   - {fileID: 7231484667331967985, guid: 4a923d49503634f03953024cfe484c4a, type: 3}
   - {fileID: 2406029091777068606, guid: fe18c4d518a11b94ab575fe1b0e9ecd2, type: 3}

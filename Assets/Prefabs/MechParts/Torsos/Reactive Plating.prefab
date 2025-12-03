@@ -280,6 +280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4476546449460581878}
   - component: {fileID: 6383253985334823945}
+  - component: {fileID: 4881430075759506094}
   m_Layer: 0
   m_Name: Reactive Plating
   m_TagString: Untagged
@@ -318,10 +319,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16dc34ded78cf4f7fa3319c71b49caca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 4881430075759506094}
   mech: {fileID: 0}
   player: {fileID: 0}
   description: 
+  vfxColor: {r: 0.19776326, g: 0.6509434, b: 0.03991636, a: 1}
   cooldown: 1
   chestSprite: {fileID: 2208795246776783186}
   coreSprite: {fileID: 4764539912230078113}
@@ -331,6 +333,8 @@ MonoBehaviour:
   coreSortingOrder: 9
   leftShoulderSortingOrder: 12
   rightShoulderSortingOrder: 17
+  vfxDuration: 2
+  torsoSprites: []
   damageMultiplier: 0.5
   duration: 3
 --- !u!1 &7840891416992199576
@@ -423,3 +427,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &4881430075759506094
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5667582769369169224}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 631f0a2ee6cb74ce3a7417ae8cec609a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
