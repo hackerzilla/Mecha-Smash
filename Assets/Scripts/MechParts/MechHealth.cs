@@ -6,7 +6,7 @@ public class MechHealth : MonoBehaviour
 {
     public float maxHealth = 100f;
     public float currentHealth;
-    private bool isDead = false;
+    public bool isDead = false;
 
     [System.Serializable]
     public class HealthChangedEvent : UnityEvent<float, float> { } // currentHealth, maxHealth
