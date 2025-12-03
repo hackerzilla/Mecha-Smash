@@ -33,15 +33,20 @@ public class PlayerController : MonoBehaviour
 
     public int playerNumber { get; private set; }
 
+    void Awake()
+    {
+        if (mechInstance == null)
+        {
+            Assert.NotNull(mechPrefab);
+            mechInstance = Instantiate(mechPrefab, this.transform);
+        }
+    }
+
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
         playerNumber = playerInput.playerIndex + 1; // Convert 0-based index to 1-based player number
-        if (mechInstance == null)
-        {
-            Assert.NotNull(mechPrefab);
-            mechInstance = Instantiate(mechPrefab, this.transform); // mech assembles itself on start
-        }
+
         Assert.NotNull(mechInstance);
 
         // Set player index for outline layer isolation (must be before mech Start runs)

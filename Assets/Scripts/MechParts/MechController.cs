@@ -29,6 +29,8 @@ public class MechController : MonoBehaviour
     public Transform rightHandAttachment;
     public Transform leftCalfAttachment;
     public Transform rightCalfAttachment;
+    public Transform rightFootAttachment;
+    public Transform leftFootAttachment;
     public Transform eyePoint;
 
     // Head attachment point on skeleton

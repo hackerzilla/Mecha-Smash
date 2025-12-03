@@ -194,6 +194,15 @@ public class PlayerCard : MonoBehaviour
         
         UpdateAllPartDisplays();
 
+        // Sync mech parts with UI selection (swap all parts to match index 0)
+        if (playerRef != null)
+        {
+            if (headOptions.Count > 0) playerRef.SwapMechPart(headOptions[0]);
+            if (torsoOptions.Count > 0) playerRef.SwapMechPart(torsoOptions[0]);
+            if (armsOptions.Count > 0) playerRef.SwapMechPart(armsOptions[0]);
+            if (legsOptions.Count > 0) playerRef.SwapMechPart(legsOptions[0]);
+        }
+
         // Initialize all outlines and arrows with dark sprites
         for (int i = 0; i < PART_SLOT_COUNT; i++)
         {
