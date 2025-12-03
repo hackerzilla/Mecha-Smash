@@ -42,6 +42,7 @@ abstract public class LegsPart : MechPart
         {
             leftFootSprite.transform.SetParent(leftFootAttachment);
             leftFootSprite.transform.localPosition = Vector2.zero;
+            leftFootSprite.transform.localScale = Vector3.one;
         }
 
         // Reparent right foot sprite
@@ -49,6 +50,7 @@ abstract public class LegsPart : MechPart
         {
             rightFootSprite.transform.SetParent(rightFootAttachment);
             rightFootSprite.transform.localPosition = Vector2.zero;
+            rightFootSprite.transform.localScale = Vector3.one;
         }
     }
 

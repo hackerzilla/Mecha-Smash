@@ -44,6 +44,7 @@ abstract public class TorsoPart : MechPart
         {
             chestSprite.transform.SetParent(chestAttachment);
             chestSprite.transform.localPosition = Vector2.zero;
+            chestSprite.transform.localScale = Vector3.one;
             var sr = chestSprite.GetComponent<SpriteRenderer>();
             if (sr != null) sr.sortingOrder = chestSortingOrder;
         }
@@ -52,6 +53,7 @@ abstract public class TorsoPart : MechPart
         {
             coreSprite.transform.SetParent(coreAttachment);
             coreSprite.transform.localPosition = Vector2.zero;
+            coreSprite.transform.localScale = Vector3.one;
             var sr = coreSprite.GetComponent<SpriteRenderer>();
             if (sr != null) sr.sortingOrder = coreSortingOrder;
         }
@@ -60,6 +62,7 @@ abstract public class TorsoPart : MechPart
         {
             leftShoulderSprite.transform.SetParent(leftShoulderAttachment);
             leftShoulderSprite.transform.localPosition = Vector2.zero;
+            leftShoulderSprite.transform.localScale = Vector3.one;
             var sr = leftShoulderSprite.GetComponent<SpriteRenderer>();
             if (sr != null) sr.sortingOrder = leftShoulderSortingOrder;
         }
@@ -68,6 +71,7 @@ abstract public class TorsoPart : MechPart
         {
             rightShoulderSprite.transform.SetParent(rightShoulderAttachment);
             rightShoulderSprite.transform.localPosition = Vector2.zero;
+            rightShoulderSprite.transform.localScale = Vector3.one;
             var sr = rightShoulderSprite.GetComponent<SpriteRenderer>();
             if (sr != null) sr.sortingOrder = rightShoulderSortingOrder;
         }

@@ -47,6 +47,7 @@ abstract public class ArmsPart : MechPart
         {
             leftHandSprite.transform.SetParent(leftHandAttachment);
             leftHandSprite.transform.localPosition = Vector2.zero;
+            leftHandSprite.transform.localScale = Vector3.one;
         }
 
         // Reparent right hand sprite
@@ -54,6 +55,7 @@ abstract public class ArmsPart : MechPart
         {
             rightHandSprite.transform.SetParent(rightHandAttachment);
             rightHandSprite.transform.localPosition = Vector2.zero;
+            rightHandSprite.transform.localScale = Vector3.one;
         }
     }
 
