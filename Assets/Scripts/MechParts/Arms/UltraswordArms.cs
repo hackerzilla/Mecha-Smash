@@ -1,69 +1,78 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class UltraswordArms : ArmsPart 
+public class UltraswordArms : ArmsPart
 {
-    [SerializeField] private GameObject swordHitBox; // sword that has sword.cs
-    [SerializeField] private float windUpTime = 0.8f; // attack delay
-    [SerializeField] private float attackDuration = 0.5f;
+    [SerializeField] private GameObject swordParent;
+    private Collider2D swordCollider;
     private bool isAttacking = false;
 
-    protected override void Awake() {
-        base.Awake();
-        if(swordHitBox != null)
-        {
-            swordHitBox.SetActive(false);
-        }
-    }
-
-    override public void BasicAttack(PlayerController player, InputAction.CallbackContext context)
+    public override void AttachSprites(Transform leftHandAttachment, Transform rightHandAttachment)
     {
-        if(context.performed && !isAttacking)
+        base.AttachSprites(leftHandAttachment, rightHandAttachment);
+
+        // Reparent sword parent to right hand attachment point
+        if (swordParent != null && rightHandAttachment != null)
         {
-            BasicAttack();
-        }
-    }
+            swordParent.transform.SetParent(rightHandAttachment);
+            swordParent.transform.localPosition = Vector3.zero;
 
-    override public void BasicAttack()
-    {
-        if(mech == null)
-        {
-            mech = transform.root.GetComponent<PlayerController>().mechInstance;
-            StartCoroutine(SlashRoutine());
-        }
-    }
-
-    private IEnumerator SlashRoutine()
-    {
-        isAttacking = true;
-
-        // attack delay
-        animator.SetTrigger("WindUp");
-        Debug.Log("Ultrasonic Piezosword Charging");
-
-        // remove mech control during attack delay time
-        mech.SetMovementOverride(true, windUpTime + attackDuration);
-        yield return new WaitForSeconds(windUpTime);
-
-        // attack
-        animator.SetTrigger("BasicAttack");
-        Debug.Log("Ultrasonic Piezosword Slam");
-
-        if(swordHitBox != null)
-        {
-            // set owner
-            StunBlade bladeScript = swordHitBox.GetComponent<StunBlade>();
-            if(bladeScript != null)
+            // Set owner for StunBlade (on child)
+            StunBlade bladeScript = swordParent.GetComponentInChildren<StunBlade>();
+            if (bladeScript != null)
             {
                 bladeScript.owner = mech.gameObject;
             }
 
-            swordHitBox.SetActive(true); // turn on the blade
-            yield return new WaitForSeconds(attackDuration);
-            swordHitBox.SetActive(false); // turn off the blade
+            // Cache collider (on child) and start with it disabled
+            swordCollider = swordParent.GetComponentInChildren<Collider2D>();
+            if (swordCollider != null)
+            {
+                swordCollider.enabled = false;
+            }
+        }
+    }
+
+    public override void BasicAttack(PlayerController player, InputAction.CallbackContext context)
+    {
+        if (context.performed && !isAttacking)
+        {
+            isAttacking = true;
+
+            Animator skeletonAnimator = mech.GetSkeletonAnimator();
+            if (skeletonAnimator != null)
+            {
+                skeletonAnimator.SetTrigger("sword-swing");
+            }
+        }
+    }
+
+    public override void BasicAttack() { }
+
+    public override void OnSwordSwingHit()
+    {
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = true;
+        }
+    }
+
+    public override void OnSwordSwingEnd()
+    {
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = false;
         }
 
         isAttacking = false;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        if (swordParent != null)
+        {
+            Destroy(swordParent);
+        }
     }
 }

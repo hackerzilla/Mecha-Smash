@@ -73,6 +73,10 @@ MonoBehaviour:
   description: 
   vfxColor: {r: 0.8301887, g: 0.21325904, b: 0.043075833, a: 1}
   cooldown: 1
+  chestSprite: {fileID: 0}
+  coreSprite: {fileID: 0}
+  leftShoulderSprite: {fileID: 0}
+  rightShoulderSprite: {fileID: 0}
   vfxDuration: 2
   torsoSprites: []
   blastRadius: 10

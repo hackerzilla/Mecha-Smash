@@ -73,6 +73,10 @@ MonoBehaviour:
   description: 
   vfxColor: {r: 0.99215686, g: 0, b: 0.72478503, a: 1}
   cooldown: 1
+  chestSprite: {fileID: 0}
+  coreSprite: {fileID: 0}
+  leftShoulderSprite: {fileID: 0}
+  rightShoulderSprite: {fileID: 0}
   vfxDuration: 2
   torsoSprites: []
   invincibleDuration: 1.5

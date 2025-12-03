@@ -11,6 +11,16 @@ abstract public class HeadPart : MechPart
     abstract public void SpecialAttack();
 
     /// <summary>
+    /// Called by animation event when headbutt windup ends. Override in heads that use headbutt.
+    /// </summary>
+    public virtual void OnHeadbuttStart() { }
+
+    /// <summary>
+    /// Called by animation event when bite animation reaches the bite frame. Override in heads that use bite.
+    /// </summary>
+    public virtual void OnBiteStart() { }
+
+    /// <summary>
     /// Attaches the head sprite to the skeleton rig at the specified attachment point.
     /// Called by MechController during part assembly.
     /// </summary>
@@ -21,6 +31,7 @@ abstract public class HeadPart : MechPart
         {
             headSprite.transform.SetParent(headAttachment);
             headSprite.transform.localPosition = Vector2.zero;
+            headSprite.transform.localScale = Vector3.one;
         }
     }
 
