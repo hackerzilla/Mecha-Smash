@@ -6,6 +6,10 @@ using UnityEngine;
 /// </summary>
 public class MechAnimationEvents : MonoBehaviour
 {
+    [Header("Skeleton Sprites")]
+    public GameObject leftFootSprite;
+    public GameObject rightFootSprite;
+
     private MechController mechController;
 
     void Awake()

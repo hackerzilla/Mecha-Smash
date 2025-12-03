@@ -13,6 +13,7 @@ public class ThrusterLegs : LegsPart
     private float currentFuel;
     private bool isThrusting;
     private PlayerController playerController;
+    private MechAnimationEvents mechAnimEvents;
 
     protected override void Awake()
     {
@@ -20,6 +21,38 @@ public class ThrusterLegs : LegsPart
         AbilityName = "Jetpack";
         currentFuel = maxFuel;
         maxJumps = 1;
+    }
+
+    public override void AttachSprites(Transform leftFootAttachment, Transform rightFootAttachment)
+    {
+        base.AttachSprites(leftFootAttachment, rightFootAttachment);
+
+        // Hide skeleton's built-in feet
+        if (mech != null && mech.skeletonRig != null)
+        {
+            mechAnimEvents = mech.skeletonRig.GetComponent<MechAnimationEvents>();
+            if (mechAnimEvents != null)
+            {
+                if (mechAnimEvents.leftFootSprite != null)
+                    mechAnimEvents.leftFootSprite.SetActive(false);
+                if (mechAnimEvents.rightFootSprite != null)
+                    mechAnimEvents.rightFootSprite.SetActive(false);
+            }
+        }
+    }
+
+    protected override void OnDestroy()
+    {
+        // Restore skeleton's feet visibility before cleanup
+        if (mechAnimEvents != null)
+        {
+            if (mechAnimEvents.leftFootSprite != null)
+                mechAnimEvents.leftFootSprite.SetActive(true);
+            if (mechAnimEvents.rightFootSprite != null)
+                mechAnimEvents.rightFootSprite.SetActive(true);
+        }
+
+        base.OnDestroy();
     }
 
     void FixedUpdate()

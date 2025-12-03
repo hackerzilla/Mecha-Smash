@@ -2149,6 +2149,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7905440446968883676, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
   m_PrefabInstance: {fileID: 4817963069177283086}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3489351136775462062 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8264243568593870496, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
+  m_PrefabInstance: {fileID: 4817963069177283086}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3713336179320331296 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8166359242622492206, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
@@ -2238,6 +2243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c181925a53a274e17993f39fc4f02986, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MechAnimationEvents
+  leftFootSprite: {fileID: 6829162825622879081}
+  rightFootSprite: {fileID: 3489351136775462062}
 --- !u!4 &5084039648303818652 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 311580695235782034, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
@@ -2256,6 +2263,11 @@ Transform:
 --- !u!4 &6419071763767517798 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7221020487405985688, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
+  m_PrefabInstance: {fileID: 4817963069177283086}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6829162825622879081 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7198202966345598617, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
   m_PrefabInstance: {fileID: 4817963069177283086}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6958854732532207184 stripped
