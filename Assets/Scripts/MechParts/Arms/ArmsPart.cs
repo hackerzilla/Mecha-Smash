@@ -12,6 +12,31 @@ abstract public class ArmsPart : MechPart
     abstract public void BasicAttack();
 
     /// <summary>
+    /// Called by animation event to fire the right hand gun. Override in arms that use guns.
+    /// </summary>
+    public virtual void ShootRightHandGun() { }
+
+    /// <summary>
+    /// Called by animation event to fire the left hand gun. Override in arms that use guns.
+    /// </summary>
+    public virtual void ShootLeftHandGun() { }
+
+    /// <summary>
+    /// Called by animation event when shoot animation completes. Override to clear shooting state.
+    /// </summary>
+    public virtual void OnShootComplete() { }
+
+    /// <summary>
+    /// Called by animation event when sword swing hits. Override in arms that use swords.
+    /// </summary>
+    public virtual void OnSwordSwingHit() { }
+
+    /// <summary>
+    /// Called by animation event when sword swing ends. Override in arms that use swords.
+    /// </summary>
+    public virtual void OnSwordSwingEnd() { }
+
+    /// <summary>
     /// Attaches the arm sprites to the skeleton rig at the specified hand attachment points.
     /// Called by MechController during part assembly.
     /// </summary>
@@ -22,6 +47,7 @@ abstract public class ArmsPart : MechPart
         {
             leftHandSprite.transform.SetParent(leftHandAttachment);
             leftHandSprite.transform.localPosition = Vector2.zero;
+            leftHandSprite.transform.localScale = Vector3.one;
         }
 
         // Reparent right hand sprite
@@ -29,6 +55,7 @@ abstract public class ArmsPart : MechPart
         {
             rightHandSprite.transform.SetParent(rightHandAttachment);
             rightHandSprite.transform.localPosition = Vector2.zero;
+            rightHandSprite.transform.localScale = Vector3.one;
         }
     }
 

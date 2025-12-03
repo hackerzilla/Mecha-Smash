@@ -31,6 +31,15 @@ public class MechController : MonoBehaviour
     public Transform rightFootAttachment;
     public Transform eyePoint;
 
+    // Head attachment point on skeleton
+    public Transform headAttachment;
+
+    // Torso attachment points on skeleton
+    public Transform chestAttachment;
+    public Transform coreAttachment;
+    public Transform leftShoulderAttachment;
+    public Transform rightShoulderAttachment;
+
     [Header("Visual Settings")]
     [SerializeField] private Material outlineMaterialTemplate;
 
@@ -41,11 +50,13 @@ public class MechController : MonoBehaviour
 
     private MechMovement mechMovement;
     private Animator skeletonAnimator;
+    private MechOutlineRenderer outlineRenderer;
     private Color currentOutlineColor = Color.white;
 
     void Awake()
     {
         mechMovement = GetComponent<MechMovement>();
+        outlineRenderer = GetComponent<MechOutlineRenderer>();
         if (skeletonRig != null)
         {
             skeletonAnimator = skeletonRig.GetComponent<Animator>();
@@ -68,13 +79,100 @@ public class MechController : MonoBehaviour
 
     public void Jump()
     {
+        if (mechMovement != null && mechMovement.TryInitiateJump())
+        {
+            if (skeletonAnimator != null)
+            {
+                skeletonAnimator.SetTrigger("jump");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when jump animation reaches the launch frame.
+    /// </summary>
+    public void OnJumpAnimationEvent()
+    {
         if (mechMovement != null)
         {
-            mechMovement.Jump();
+            mechMovement.ApplyJumpForce();
         }
-        if (skeletonAnimator != null)
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when shoot animation triggers right hand gun.
+    /// </summary>
+    public void OnShootRightHandGunEvent()
+    {
+        if (armsInstance != null)
         {
-            skeletonAnimator.SetTrigger("jump");
+            armsInstance.ShootRightHandGun();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when shoot animation triggers left hand gun.
+    /// </summary>
+    public void OnShootLeftHandGunEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.ShootLeftHandGun();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when shoot animation completes.
+    /// </summary>
+    public void OnShootAnimationCompleteEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnShootComplete();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when headbutt windup ends and charge should begin.
+    /// </summary>
+    public void OnHeadbuttStartEvent()
+    {
+        if (headInstance != null)
+        {
+            headInstance.OnHeadbuttStart();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when bite animation reaches the bite frame.
+    /// </summary>
+    public void OnBiteStartEvent()
+    {
+        if (headInstance != null)
+        {
+            headInstance.OnBiteStart();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when sword swing hits.
+    /// </summary>
+    public void OnSwordSwingHitEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnSwordSwingHit();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when sword swing ends.
+    /// </summary>
+    public void OnSwordSwingEndEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnSwordSwingEnd();
         }
     }
 
@@ -177,8 +275,13 @@ public class MechController : MonoBehaviour
         AttachLegs();
         ApplyLegStats();
 
-        // Apply outline material to newly assembled parts
-        if (currentOutlineColor != Color.white)
+        // Apply outline to newly assembled parts
+        if (outlineRenderer != null)
+        {
+            outlineRenderer.RefreshSpriteLayers();
+            outlineRenderer.SetOutlineColor(currentOutlineColor);
+        }
+        else if (currentOutlineColor != Color.white)
         {
             ApplyOutlineMaterial();
         }
@@ -211,7 +314,7 @@ public class MechController : MonoBehaviour
         {
             headPrefab = (HeadPart)part;
             AttachHead();
-            ApplyOutlineMaterial();
+            RefreshOutlineAfterSwap();
         }
         else if (part is TorsoPart)
         {
@@ -219,24 +322,36 @@ public class MechController : MonoBehaviour
             AttachTorso();
             // Note: Parts are now attached to slots on the skeleton rig,
             // not to the torso's attachment points, so no re-parenting needed
-            ApplyOutlineMaterial();
+            RefreshOutlineAfterSwap();
         }
         else if (part is ArmsPart)
         {
             armsPrefab = (ArmsPart)part;
             AttachArms();
-            ApplyOutlineMaterial();
+            RefreshOutlineAfterSwap();
         }
         else if (part is LegsPart)
         {
             legsPrefab = (LegsPart)part;
             AttachLegs();
             ApplyLegStats();
-            ApplyOutlineMaterial();
+            RefreshOutlineAfterSwap();
         }
         else
         {
             Debug.LogWarning($"Cannot swap part '{part.name}' - not a valid MechPart subclass");
+        }
+    }
+
+    private void RefreshOutlineAfterSwap()
+    {
+        if (outlineRenderer != null)
+        {
+            outlineRenderer.RefreshSpriteLayers();
+        }
+        else
+        {
+            ApplyOutlineMaterial();
         }
     }
 
@@ -255,7 +370,7 @@ public class MechController : MonoBehaviour
         headInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
         // Attach sprites to skeleton rig
-        headInstance.AttachSprites(headSlot);
+        headInstance.AttachSprites(headAttachment);
     }
     protected void AttachTorso()
     {
@@ -272,7 +387,7 @@ public class MechController : MonoBehaviour
         torsoInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
         // Attach sprites to skeleton rig
-        torsoInstance.AttachSprites(torsoSlot);
+        torsoInstance.AttachSprites(chestAttachment, coreAttachment, leftShoulderAttachment, rightShoulderAttachment);
     }
     protected void AttachArms()
     {
@@ -315,7 +430,16 @@ public class MechController : MonoBehaviour
     public void SetOutlineColor(Color color)
     {
         currentOutlineColor = color;
-        ApplyOutlineMaterial();
+
+        // Use new outline renderer if available, otherwise fall back to per-sprite material
+        if (outlineRenderer != null)
+        {
+            outlineRenderer.SetOutlineColor(color);
+        }
+        else
+        {
+            ApplyOutlineMaterial();
+        }
     }
 
     /// <summary>

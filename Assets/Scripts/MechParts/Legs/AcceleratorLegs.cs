@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,15 +25,30 @@ public class AcceleratorLegs : LegsPart
                 return;
             }
 
-            animator.SetTrigger("MovementAbility"); 
+            Animator skeletonAnimator = mech.GetSkeletonAnimator();
+            if (skeletonAnimator != null)
+            {
+                skeletonAnimator.SetBool("isDashing", true);
+                skeletonAnimator.SetTrigger("dash");
+                StartCoroutine(ResetDashingAfterDelay(skeletonAnimator, dashDuration));
+            }
 
             player.SetMovementOverride(true, dashDuration);
-            
+
             Vector2 dashDir = new Vector2(player.GetFacingDirection(), 0);
             player.GetRigidbody().linearVelocity = new Vector2(dashDir.x * dashForce, 0f);
             StartCooldown();
         }
     }
     public override void MovementAbility()
-    {} 
+    {}
+
+    private IEnumerator ResetDashingAfterDelay(Animator animator, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (animator != null)
+        {
+            animator.SetBool("isDashing", false);
+        }
+    }
 }

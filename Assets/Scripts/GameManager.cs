@@ -84,10 +84,12 @@ public class GameManager : MonoBehaviour
                 int playerIndex = winner.GetComponent<UnityEngine.InputSystem.PlayerInput>().playerIndex + 1;
                 winnerName = $"Player {playerIndex}";
             }
-
+            
+            winner.mechInstance.GetComponent<MechHealth>().SetInvincible(restartDelay);
             Debug.Log($"Game Over! Winner: {winnerName}");
 
             onGameOver.Invoke(winnerName);
+            StartCoroutine(RestartGame());
         }
     }
 
@@ -99,7 +101,7 @@ public class GameManager : MonoBehaviour
             if (player.mechInstance != null)
             {
                 MechHealth mechHealth = player.mechInstance.GetComponent<MechHealth>();
-                if (mechHealth != null && mechHealth.currentHealth > 0)
+                if (mechHealth != null && !mechHealth.isDead && mechHealth.currentHealth > 0)
                 {
                     return player;
                 }

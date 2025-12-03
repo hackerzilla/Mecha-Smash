@@ -27,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2431078766104938468}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.021884907, z: -0, w: 0.9997605}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 0.3375, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 2.508, z: 0}
 --- !u!120 &4926843864631939682
 LineRenderer:
   serializedVersion: 2
@@ -162,7 +162,7 @@ MonoBehaviour:
   laserTime: 2
   hitLayers:
     serializedVersion: 2
-    m_Bits: 129
+    m_Bits: 193
   damageInterval: 0.2
   knockbackForce: 3
 --- !u!114 &5530915039730949832
