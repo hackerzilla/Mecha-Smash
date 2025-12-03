@@ -1531,7 +1531,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 6200000, guid: 58a678bfa9d838140b5908847f15a29d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1681,7 +1681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MechMovement
   moveSpeed: 8
   airControl: 0.6
-  jumpForce: 10
+  jumpForce: 17
   maxJumps: 1
   deathY: -25
 --- !u!114 &7969859369168138038
@@ -1701,7 +1701,6 @@ MonoBehaviour:
   outlineColor: {r: 1, g: 1, b: 1, a: 1}
   renderTextureSize: 512
   quadScale: 5
-  mechSpritesLayerName: MechSprites
   mechOutlineLayerName: MechOutline
 --- !u!1 &7801651682892988412
 GameObject:

@@ -31,6 +31,7 @@ abstract public class HeadPart : MechPart
         {
             headSprite.transform.SetParent(headAttachment);
             headSprite.transform.localPosition = Vector2.zero;
+            headSprite.transform.localScale = Vector3.one;
         }
     }
 
