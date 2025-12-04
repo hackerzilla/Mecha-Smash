@@ -3,12 +3,15 @@ using UnityEngine.InputSystem;
 
 public class ThrusterLegs : LegsPart
 {
-    [SerializeField] 
+    [SerializeField]
     private float thrustForce = 15f;
-    [SerializeField] 
+    [SerializeField]
     private float maxFuel = 3.0f;
-    [SerializeField] 
+    [SerializeField]
     private float rechargeRate = 1.0f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource jetpackSound;
 
     private float currentFuel;
     private bool isThrusting;
@@ -17,7 +20,6 @@ public class ThrusterLegs : LegsPart
 
     protected override void Awake()
     {
-        base.Awake();
         AbilityName = "Jetpack";
         currentFuel = maxFuel;
         maxJumps = 1;
@@ -74,6 +76,14 @@ public class ThrusterLegs : LegsPart
                 currentFuel += rechargeRate * Time.deltaTime; 
             }
         }
+        else
+        {
+            if (currentFuel <= 0.0f)
+            {
+                jetpackSound.Stop();
+                isThrusting = false;
+            }
+        }
     }
 
     public override void MovementAbility(PlayerController player, InputAction.CallbackContext context)
@@ -86,16 +96,22 @@ public class ThrusterLegs : LegsPart
             if (CanUseAbility() && currentFuel > 0)
             {
                 isThrusting = true;
-                animator.SetBool("MovementAbilityActive", true); 
+                if (jetpackSound != null)
+                {
+                    jetpackSound.Play();
+                }
                 StartCooldown();
             }
         }
-        
+
         // When unclick "LegsAbility"
         if (context.canceled)
         {
             isThrusting = false;
-            animator.SetBool("MovementAbilityActive", false);
+            if (jetpackSound != null)
+            {
+                jetpackSound.Stop();
+            }
         }
     }
     

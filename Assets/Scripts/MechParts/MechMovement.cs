@@ -14,6 +14,7 @@ public class MechMovement : MonoBehaviour
 
     [Header("Audio")]
     [SerializeField] private AudioSource landingSound;
+    [SerializeField] private AudioSource jumpSound;
 
     private Rigidbody2D rb;
     private Vector2 moveInput;

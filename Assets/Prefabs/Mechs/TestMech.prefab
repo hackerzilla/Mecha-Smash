@@ -1888,11 +1888,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MechMovement
   moveSpeed: 8
-  airControl: 0.6
+  airControl: 0.8
   jumpForce: 17
   maxJumps: 1
   deathY: -25
   landingSound: {fileID: 3044931375747865091}
+  jumpSound: {fileID: 0}
 --- !u!114 &7969859369168138038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2319,6 +2320,10 @@ PrefabInstance:
     - target: {fileID: -485990856666115531, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -178.064
+      objectReference: {fileID: 0}
+    - target: {fileID: -401026206881983025, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -188458474966055407, guid: 15a78aa77c9a35548a8e184cd6e5e160, type: 3}
       propertyPath: m_LocalRotation.w

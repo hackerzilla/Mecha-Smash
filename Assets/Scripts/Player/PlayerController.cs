@@ -131,7 +131,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMovementAbility(InputAction.CallbackContext context)
     {
-        if (context.performed && mechInstance != null)
+        if (mechInstance != null && (context.performed || context.canceled))
         {
             mechInstance.MovementAbility(this, context);
         }

@@ -8,6 +8,7 @@ public class AcceleratorLegs : LegsPart
     private float dashForce = 20f;
     [SerializeField]
     private float dashDuration = 0.2f;
+    [SerializeField] protected AudioSource dashSound;
 
     protected override void Awake()
     {
@@ -47,6 +48,7 @@ public class AcceleratorLegs : LegsPart
             Vector2 dashDir = new Vector2(player.GetFacingDirection(), 0);
             player.GetRigidbody().linearVelocity = new Vector2(dashDir.x * dashForce, 0f);
             StartCooldown();
+            dashSound.Play();
         }
     }
     public override void MovementAbility()
