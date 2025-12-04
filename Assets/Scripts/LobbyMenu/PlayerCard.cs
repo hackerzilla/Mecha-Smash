@@ -30,6 +30,7 @@ public class PlayerCard : MonoBehaviour
     public Sprite unreadySprite;
     public Sprite readyIndicatorSprite;
     public Sprite unreadyIndicatorSprite;
+    public AudioSource readySound;
 
     [Header("Player-Specific Sprites")]
     public Sprite[] playerNameSprites = new Sprite[4];
@@ -247,6 +248,7 @@ public class PlayerCard : MonoBehaviour
         {
             readyButtonText.text = "Ready";
             isReady = true;
+            // readySound.Play();
         }
     }
 
@@ -414,10 +416,10 @@ public class PlayerCard : MonoBehaviour
             readyBotRightImage.sprite = isReady ? readyIndicatorSprite : unreadyIndicatorSprite;
         }
 
-        // Stop part selection when ready
         if (isReady)
         {
             StopFlashing();
+            readySound.Play();
         }
         else
         {
@@ -439,7 +441,6 @@ public class PlayerCard : MonoBehaviour
             
             if (!player.playerCard.isReady)
             {
-                Debug.Log($"Player {player.name} is not ready! Not all players are ready.");
                 return;
             }
         }

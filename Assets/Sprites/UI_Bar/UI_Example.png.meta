@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 16b54a2f67ce14d9cb9e704ee6576149
+guid: 8c2b5f37a228724418775fcf28140505
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3219114225627513544
-    second: green_square_200x200_0
+      213: -6869989182949927918
+    second: UI_Example_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -110,7 +110,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: iOS
+    buildTarget: WindowsStoreApps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: green_square_200x200_0
+      name: UI_Example_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 200
-        height: 200
+        x: 622
+        y: 212
+        width: 677
+        height: 677
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 83db01adaa86353d0800000000000000
-      internalID: -3219114225627513544
+      spriteID: 2145e73ac35e8a0a0800000000000000
+      internalID: -6869989182949927918
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      green_square_200x200_0: -3219114225627513544
+      UI_Example_0: -6869989182949927918
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

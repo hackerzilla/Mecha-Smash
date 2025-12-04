@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 586181bd250ae4b0b954a3b7d79b9f5d
+guid: 5dc278c86931bad47bf410d31313d750
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2976329513916044185
-    second: yellow_square_200x200_0
+      213: 1795104736277101127
+    second: V5_3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -110,7 +110,7 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
-    buildTarget: iOS
+    buildTarget: WindowsStoreApps
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: yellow_square_200x200_0
+      name: V5_3_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 200
-        height: 200
+        width: 326
+        height: 1605
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 76ce58c8314f1b6d0800000000000000
-      internalID: -2976329513916044185
+      spriteID: 74afa6c2f3e79e810800000000000000
+      internalID: 1795104736277101127
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      yellow_square_200x200_0: -2976329513916044185
+      V5_3_0: 1795104736277101127
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
