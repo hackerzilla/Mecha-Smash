@@ -21,6 +21,10 @@ public class MechHealth : MonoBehaviour
     [SerializeField] protected AudioSource hitmarkerSound1;
     [SerializeField] protected AudioSource hitmarkerSound2;
 
+    [Header("Damage Flash VFX")]
+    [SerializeField] private float flashDuration = 0.15f;
+    private Coroutine flashCoroutine;
+
     void Awake()
     {
         currentHealth = maxHealth;
@@ -54,6 +58,9 @@ public class MechHealth : MonoBehaviour
 
         float finalDamage = amount * damageMultiplier; // damage reduction
         ChangeHealth(-finalDamage);
+
+        // Trigger damage flash VFX
+        TriggerDamageFlash();
 
         // Trigger flinch animation
         if (skeletonAnimator != null)
@@ -126,5 +133,48 @@ public class MechHealth : MonoBehaviour
         currentHealth += delta;
         currentHealth = Mathf.Clamp(currentHealth, 0f, maxHealth);
         onHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
+
+    private void TriggerDamageFlash()
+    {
+        if (flashCoroutine != null)
+            StopCoroutine(flashCoroutine);
+        flashCoroutine = StartCoroutine(DamageFlashVFX());
+    }
+
+    private IEnumerator DamageFlashVFX()
+    {
+        MechController mechController = GetComponent<MechController>();
+        if (mechController?.damageFlashMaterial == null || mechController.skeletonRig == null)
+            yield break;
+
+        SpriteRenderer[] renderers = mechController.skeletonRig.GetComponentsInChildren<SpriteRenderer>(true);
+        Material matInstance = new Material(mechController.damageFlashMaterial);
+
+        float t = 0f;
+        while (t < flashDuration)
+        {
+            // Start at full white (1), fade to normal (0)
+            float flashAmount = Mathf.Lerp(1f, 0f, t / flashDuration);
+            matInstance.SetFloat("_FlashAmount", flashAmount);
+
+            foreach (SpriteRenderer renderer in renderers)
+            {
+                renderer.material = matInstance;
+            }
+
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        // Reset to default material
+        foreach (SpriteRenderer renderer in renderers)
+        {
+            if (renderer != null)
+                renderer.material = mechController.defaultSpriteMaterial;
+        }
+
+        Destroy(matInstance);
+        flashCoroutine = null;
     }
 }

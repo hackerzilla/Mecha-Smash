@@ -1717,6 +1717,8 @@ MonoBehaviour:
   rightShoulderAttachment: {fileID: 5485146476205547431}
   outlineMaterialTemplate: {fileID: 2100000, guid: 47cf6da9a9166b4428a4ccd310bc8cb3, type: 2}
   torsoMaterialTemplate: {fileID: 2100000, guid: 91ad8097cfadb4ee39accf21203c9e1a, type: 2}
+  defaultSpriteMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  damageFlashMaterial: {fileID: 2100000, guid: 8b7fcbeafa4fafe4cb90f1652e2b1e74, type: 2}
   headInstance: {fileID: 0}
   torsoInstance: {fileID: 0}
   armsInstance: {fileID: 0}
@@ -1875,6 +1877,7 @@ MonoBehaviour:
       m_Calls: []
   hitmarkerSound1: {fileID: 7898590042613156423}
   hitmarkerSound2: {fileID: 3000717948062303184}
+  flashDuration: 0.15
 --- !u!114 &1611773581915627989
 MonoBehaviour:
   m_ObjectHideFlags: 0
