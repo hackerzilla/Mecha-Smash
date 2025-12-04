@@ -239,7 +239,7 @@ MonoBehaviour:
   maxJumps: 1
   leftFootSprite: {fileID: 1974332023827060352}
   rightFootSprite: {fileID: 4294804457694032482}
-  thrustForce: 25
+  thrustForce: 29
   maxFuel: 3
   rechargeRate: 1
   jetpackSound: {fileID: 6721689789078286676}

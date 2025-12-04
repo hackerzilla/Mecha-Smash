@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class VenomHead : HeadPart
 {
-    public Venom venom;
     public float biteDuration = 0.5f;
     public float damagePerTick = 10f;
     public float tickInterval = 0.5f;
@@ -12,21 +11,27 @@ public class VenomHead : HeadPart
     public float healPerTick = 5f;
 
     private PlayerController owner;
+    private Collider2D headCollider;
+    private VenomTrigger triggerScript;
 
     public override void AttachSprites(Transform headAttachment)
     {
         base.AttachSprites(headAttachment);
 
-        // Reparent venom hitbox to eyepoint for correct collision position
-        if (venom != null && mech.eyePoint != null)
+        // Get collider and trigger script from headSprite
+        if (headSprite != null)
         {
-            venom.transform.SetParent(mech.eyePoint);
-            venom.transform.localPosition = Vector3.zero;
-            venom.SetOwner(mech.gameObject);
+            headCollider = headSprite.GetComponent<Collider2D>();
+            triggerScript = headSprite.GetComponent<VenomTrigger>();
 
-            // Start disabled
-            venom.GetComponent<BoxCollider2D>().enabled = false;
-            venom.GetComponent<SpriteRenderer>().enabled = false;
+            if (triggerScript != null)
+            {
+                triggerScript.owner = mech.gameObject;
+                triggerScript.venomHead = this;
+            }
+
+            if (headCollider != null)
+                headCollider.enabled = false;
         }
     }
 
@@ -57,19 +62,34 @@ public class VenomHead : HeadPart
 
     public override void OnBiteStart()
     {
-        // Enable venom hitbox when animation event fires
-        venom.GetComponent<BoxCollider2D>().enabled = true;
-        venom.GetComponent<SpriteRenderer>().enabled = true;
+        // Reset hit state for new bite
+        if (triggerScript != null) triggerScript.ResetHit();
+
+        // Enable head collider when animation event fires
+        if (headCollider != null) headCollider.enabled = true;
 
         // Disable after bite duration
-        StartCoroutine(DisableVenomAfterDelay());
+        StartCoroutine(DisableColliderAfterDelay());
     }
 
-    private IEnumerator DisableVenomAfterDelay()
+    public void OnVenomHit(MechHealth target)
+    {
+        // Apply venom DoT to target and heal self
+        StartCoroutine(ApplyVenomDoT(target));
+        StartCoroutine(HealVenomDoT());
+
+        // Apply brief knockback
+        MechMovement targetMovement = target.GetComponent<MechMovement>();
+        if (targetMovement != null)
+        {
+            targetMovement.SetMovementOverride(true, 0.2f);
+        }
+    }
+
+    private IEnumerator DisableColliderAfterDelay()
     {
         yield return new WaitForSeconds(biteDuration);
-        venom.GetComponent<BoxCollider2D>().enabled = false;
-        venom.GetComponent<SpriteRenderer>().enabled = false;
+        if (headCollider != null) headCollider.enabled = false;
     }
 
     public IEnumerator ApplyVenomDoT(MechHealth target)
@@ -94,12 +114,4 @@ public class VenomHead : HeadPart
         }
     }
 
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        if (venom != null)
-        {
-            Destroy(venom.gameObject);
-        }
-    }
 }

@@ -147,7 +147,17 @@ public class HammerHead : HeadPart
     private IEnumerator DisableColliderAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+
         if (headCollider != null) headCollider.enabled = false;
+
+        // Trigger end animation if charge completed without collision
+        Animator skeletonAnimator = mech.GetSkeletonAnimator();
+        if (skeletonAnimator != null)
+        {
+            skeletonAnimator.ResetTrigger("headbutt-initiate");
+            skeletonAnimator.SetTrigger("headbutt-collided");
+        }
+
         chargeCoroutine = null;
     }
 }

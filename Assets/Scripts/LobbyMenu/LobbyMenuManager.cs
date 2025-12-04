@@ -72,24 +72,24 @@ public class LobbyMenuManager : MonoBehaviour
         // Fix for DualSense duplicate bug in builds:
         // DualSense registers as both HID device and XInputController in builds.
         // Reject XInput controllers when a DualSense/DualShock device already exists.
-        var device0 = playerInput.devices.FirstOrDefault();
-        if (device0 != null && device0.description.interfaceName == "XInput")
-        {
-            // Check if any PlayStation controller (DualSense/DualShock) exists
-            bool playstationControllerExists = InputSystem.devices.Any(d =>
-                d.displayName.Contains("DualSense") ||
-                d.displayName.Contains("DualShock") ||
-                d.displayName.Contains("Wireless Controller") ||
-                (d.description.product != null && d.description.product.Contains("DualSense")) ||
-                (d.description.product != null && d.description.product.Contains("DualShock")));
-
-            if (playstationControllerExists)
-            {
-                Debug.Log($"Rejecting duplicate XInput player spawn (PlayStation controller exists): {device0.displayName}");
-                Destroy(playerInput.gameObject);
-                return;
-            }
-        }
+        // var device0 = playerInput.devices.FirstOrDefault();
+        // if (device0 != null && device0.description.interfaceName == "XInput")
+        // {
+        //     // Check if any PlayStation controller (DualSense/DualShock) exists
+        //     bool playstationControllerExists = InputSystem.devices.Any(d =>
+        //         d.displayName.Contains("DualSense") ||
+        //         d.displayName.Contains("DualShock") ||
+        //         d.displayName.Contains("Wireless Controller") ||
+        //         (d.description.product != null && d.description.product.Contains("DualSense")) ||
+        //         (d.description.product != null && d.description.product.Contains("DualShock")));
+        //
+        //     if (playstationControllerExists)
+        //     {
+        //         Debug.Log($"Rejecting duplicate XInput player spawn (PlayStation controller exists): {device0.displayName}");
+        //         Destroy(playerInput.gameObject);
+        //         return;
+        //     }
+        // }
 
         // Track all devices for this player
         foreach (var device in playerInput.devices)

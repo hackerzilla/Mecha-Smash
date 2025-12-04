@@ -1646,11 +1646,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2790832145959573354}
   - component: {fileID: 784989681567541876}
+  - component: {fileID: 1611773581915627989}
   - component: {fileID: 8379868751200576304}
   - component: {fileID: 2960981710294402185}
   - component: {fileID: 7941540926429174331}
   - component: {fileID: 2316152869218607206}
-  - component: {fileID: 1611773581915627989}
   - component: {fileID: 7969859369168138038}
   m_Layer: 0
   m_Name: TestMech
@@ -1723,6 +1723,25 @@ MonoBehaviour:
   torsoInstance: {fileID: 0}
   armsInstance: {fileID: 0}
   legsInstance: {fileID: 0}
+--- !u!114 &1611773581915627989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7712348289771204258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e47dc4d2bf67c4b7eb0496ce6f5814d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MechMovement
+  moveSpeed: 8
+  airControl: 0.8
+  jumpForce: 22
+  maxJumps: 1
+  deathY: -25
+  landingSound: {fileID: 3044931375747865091}
+  jumpSound: {fileID: 0}
 --- !u!50 &8379868751200576304
 Rigidbody2D:
   serializedVersion: 5
@@ -1738,7 +1757,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 3
   m_Material: {fileID: 6200000, guid: 58a678bfa9d838140b5908847f15a29d, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1878,25 +1897,6 @@ MonoBehaviour:
   hitmarkerSound1: {fileID: 7898590042613156423}
   hitmarkerSound2: {fileID: 3000717948062303184}
   flashDuration: 0.15
---- !u!114 &1611773581915627989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7712348289771204258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e47dc4d2bf67c4b7eb0496ce6f5814d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MechMovement
-  moveSpeed: 8
-  airControl: 0.8
-  jumpForce: 17
-  maxJumps: 1
-  deathY: -25
-  landingSound: {fileID: 3044931375747865091}
-  jumpSound: {fileID: 0}
 --- !u!114 &7969859369168138038
 MonoBehaviour:
   m_ObjectHideFlags: 0

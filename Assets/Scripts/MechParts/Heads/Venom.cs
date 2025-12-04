@@ -5,15 +5,21 @@ public class Venom : MonoBehaviour
 {
     public VenomHead venomHead;
     private GameObject owner;
+    private bool hasHit = false;
 
     public void SetOwner(GameObject ownerMech)
     {
         owner = ownerMech;
     }
 
+    public void ResetHit()
+    {
+        hasHit = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (owner == null) return;
+        if (owner == null || hasHit) return;
 
         // Ignore collisions with the owner mech
         if (collision.gameObject == owner || collision.transform.root.gameObject == owner)
@@ -25,6 +31,8 @@ public class Venom : MonoBehaviour
         MechHealth mechHealth = collision.GetComponentInParent<MechHealth>();
         if (mechHealth != null)
         {
+            hasHit = true;  // Prevent re-triggering
+
             // Deal damage
             StartCoroutine(venomHead.ApplyVenomDoT(mechHealth));
             StartCoroutine(venomHead.HealVenomDoT());

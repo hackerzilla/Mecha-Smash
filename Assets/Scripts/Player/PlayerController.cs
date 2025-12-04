@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private float canSubmitAfterTime = 0f;
     public bool canMove;
+    private Vector2 currentMoveInput;
 
     public int playerNumber { get; private set; }
 
@@ -88,9 +89,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        currentMoveInput = context.ReadValue<Vector2>();
         if (mechInstance != null)
         {
-            mechInstance.OnMove(context.ReadValue<Vector2>());
+            mechInstance.OnMove(currentMoveInput);
         }
     }
 
@@ -98,7 +100,11 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed && mechInstance != null)
         {
-            mechInstance.Jump();
+            // deadzone
+            if (currentMoveInput.y > 0.55f)
+            {
+                mechInstance.Jump();
+            }
         }
     }
 
