@@ -17,6 +17,9 @@ public class MechHealth : MonoBehaviour
     private float damageMultiplier = 1.0f; // 1.0 = 100% damage
     private bool isInvincible = false;  // for Quantum Core
     private Animator skeletonAnimator;
+    
+    [SerializeField] protected AudioSource hitmarkerSound1;
+    [SerializeField] protected AudioSource hitmarkerSound2;
 
     void Awake()
     {
@@ -35,6 +38,15 @@ public class MechHealth : MonoBehaviour
     // ⭐️ Different scripts(bullet, ability stuff) call this method and give damage.
     public void TakeDamage(float amount)
     {
+        float rand = Random.Range(0.0f, 1.0f);
+        if (rand > 0.5f)
+        {
+            hitmarkerSound1.Play(); 
+        }
+        else
+        {
+            hitmarkerSound2.Play();
+        }
         if (isInvincible || amount <= 0 || isDead)
         {
             return;

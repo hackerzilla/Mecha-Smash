@@ -12,10 +12,14 @@ public class MechMovement : MonoBehaviour
     [Header("Death Zone")]
     [SerializeField] private float deathY = -25f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource landingSound;
+
     private Rigidbody2D rb;
     private Vector2 moveInput;
     private int jumpsRemaining;
     private bool isGrounded;
+    private bool wasGrounded;
     private bool isFacingRight = true;
     private bool isMovementOverridden = false;
     private Animator skeletonAnimator;
@@ -42,10 +46,16 @@ public class MechMovement : MonoBehaviour
 
         // Ground Check - any contact means grounded (MVP)
         isGrounded = rb.IsTouchingLayers();
-        if (isGrounded)
+        if (isGrounded && !wasGrounded)
         {
+            // Just landed
             jumpsRemaining = maxJumps;
+            if (landingSound != null)
+            {
+                landingSound.Play();
+            }
         }
+        wasGrounded = isGrounded;
 
         // Update animator parameters
         UpdateAnimatorParameters();

@@ -1,11 +1,11 @@
-Charging lazer
-continuous lazer
-hit marker
-hit marker 2
-impact
-jetpack
-lazergunshot
-lazergunshotfast
-quick move 
-ready up
+- Charging lazer - done
+- continuous lazer
+- hit marker - done
+- hit marker 2 - done
+- impact - done
+- jetpack 
+- lazergunshot
+- lazergunshotfast
+- quick move 
+- ready up - done
 

@@ -12,6 +12,9 @@ public class LaserBeam : MonoBehaviour
     [Header("Combat")]
     [SerializeField] private float damageInterval = 0.1f;
     [SerializeField] private float knockbackForce = 5f;
+    
+    [Header("Audio")]
+    [SerializeField] protected AudioSource audioSource;
 
     private LineRenderer lr;
     private GameObject owner;
@@ -29,6 +32,10 @@ public class LaserBeam : MonoBehaviour
     public IEnumerator ShootLaser_()
     {
         lr.enabled = true;
+        if (audioSource != null)
+        {
+            audioSource.Play();
+        }
         float elapsedTime = 0f;
 
         // Continuously damage while laser is active
@@ -122,6 +129,10 @@ public class LaserBeam : MonoBehaviour
     private void HideLaser()
     {
         lr.enabled = false;
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+        }
     }
 
     private void Draw2DRay(Vector2 startPos, Vector2 endPos)
