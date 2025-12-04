@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -364,7 +363,6 @@ public class MechController : MonoBehaviour
         {
             Destroy(headInstance.gameObject);
         }
-        Assert.AreNotEqual(headPrefab, null);
 
         // Instantiate part at slot
         headInstance = Instantiate(headPrefab, headSlot);
@@ -381,7 +379,6 @@ public class MechController : MonoBehaviour
         {
             Destroy(torsoInstance.gameObject);
         }
-        Assert.AreNotEqual(torsoPrefab, null);
 
         // Instantiate part at slot
         torsoInstance = Instantiate(torsoPrefab, torsoSlot);
@@ -398,7 +395,6 @@ public class MechController : MonoBehaviour
         {
             Destroy(armsInstance.gameObject);
         }
-        Assert.AreNotEqual(armsPrefab, null);
 
         // Instantiate part at slot
         armsInstance = Instantiate(armsPrefab, armsSlot);
@@ -415,7 +411,6 @@ public class MechController : MonoBehaviour
         {
             Destroy(legsInstance.gameObject);
         }
-        Assert.AreNotEqual(legsPrefab, null);
 
         // Instantiate part at slot
         legsInstance = Instantiate(legsPrefab, legsSlot);

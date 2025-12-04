@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -37,7 +36,6 @@ public class PlayerController : MonoBehaviour
     {
         if (mechInstance == null)
         {
-            Assert.NotNull(mechPrefab);
             mechInstance = Instantiate(mechPrefab, this.transform);
         }
     }
@@ -47,7 +45,6 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerNumber = playerInput.playerIndex + 1; // Convert 0-based index to 1-based player number
 
-        Assert.NotNull(mechInstance);
 
         // Set player index for outline layer isolation (must be before mech Start runs)
         MechOutlineRenderer outlineRenderer = mechInstance.GetComponent<MechOutlineRenderer>();
