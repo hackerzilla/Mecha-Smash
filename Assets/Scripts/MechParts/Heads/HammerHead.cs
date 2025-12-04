@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class HammerHead : HeadPart
 {
-    public GameObject headbuttTrigger;
     [Header("Charge Settings")]
     public float chargeDuration = 0.5f;
     public float chargeForce = 20f;
@@ -15,17 +14,28 @@ public class HammerHead : HeadPart
     public float stunDuration = 1.5f;
 
     private PlayerController owner;
+    private Collider2D headCollider;
+    private HammerHeadTrigger triggerScript;
+    private Coroutine chargeCoroutine;
 
     public override void AttachSprites(Transform headAttachment)
     {
         base.AttachSprites(headAttachment);
 
-        // Reparent headbutt trigger to eyepoint for correct collision position
-        if (headbuttTrigger != null && mech.eyePoint != null)
+        // Get collider and trigger script from headSprite
+        if (headSprite != null)
         {
-            headbuttTrigger.transform.SetParent(mech.eyePoint);
-            headbuttTrigger.transform.localPosition = Vector3.zero;
-            headbuttTrigger.SetActive(false);
+            headCollider = headSprite.GetComponent<Collider2D>();
+            triggerScript = headSprite.GetComponent<HammerHeadTrigger>();
+
+            if (triggerScript != null)
+            {
+                triggerScript.owner = mech.gameObject;
+                triggerScript.hammerHead = this;
+            }
+
+            if (headCollider != null)
+                headCollider.enabled = false;
         }
     }
 
@@ -53,11 +63,9 @@ public class HammerHead : HeadPart
     {
         if (owner == null) return;
 
-        // Enable headbutt trigger for collision detection
-        if (headbuttTrigger != null)
-        {
-            headbuttTrigger.SetActive(true);
-        }
+        // Enable collider and reset hit state
+        if (triggerScript != null) triggerScript.ResetHit();
+        if (headCollider != null) headCollider.enabled = true;
 
         // Apply charge velocity when animation event fires (after windup)
         Vector2 direction = new Vector2(owner.GetFacingDirection(), 0);
@@ -70,23 +78,22 @@ public class HammerHead : HeadPart
         // Start charge duration timer - movement re-enabled after this
         owner.SetMovementOverride(true, chargeDuration);
 
-        // Disable trigger after charge duration
-        StartCoroutine(DisableHeadbuttTriggerAfterDelay(chargeDuration));
+        // Disable collider after charge duration if no collision occurred
+        if (chargeCoroutine != null) StopCoroutine(chargeCoroutine);
+        chargeCoroutine = StartCoroutine(DisableColliderAfterDelay(chargeDuration));
     }
 
     public override void SpecialAttack()
     {
-
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void OnHeadbuttCollision(Collider2D collision)
     {
-        if (owner == null) return;
-
-        // Ignore collisions with the owner mech
-        if (collision.gameObject == owner || collision.transform.root.gameObject == owner)
+        // Stop the auto-disable coroutine
+        if (chargeCoroutine != null)
         {
-            return;
+            StopCoroutine(chargeCoroutine);
+            chargeCoroutine = null;
         }
 
         // Trigger collision animation
@@ -96,95 +103,51 @@ public class HammerHead : HeadPart
             skeletonAnimator.SetTrigger("headbutt-collided");
         }
 
-        // Disable headbutt trigger on collision
-        DisableHeadbuttTrigger();
+        // Disable collider
+        if (headCollider != null) headCollider.enabled = false;
 
-        // Try to find MechHealth component on the collision or its parent
+        // Stop the charge momentum
+        if (owner != null)
+        {
+            Rigidbody2D ownerRb = owner.GetRigidbody();
+            if (ownerRb != null)
+            {
+                ownerRb.linearVelocity = new Vector2(0, ownerRb.linearVelocity.y);
+            }
+        }
+
+        // Try to find MechHealth on collision target
         MechHealth mechHealth = collision.GetComponentInParent<MechHealth>();
         if (mechHealth != null)
         {
             // Deal damage
             mechHealth.TakeDamage(damage);
 
-            // Apply knockback - get components from the mech root
-            Rigidbody2D rb = mechHealth.GetComponent<Rigidbody2D>();
-            MechMovement mechMovement = mechHealth.GetComponent<MechMovement>();
+            // Apply knockback
+            Rigidbody2D targetRb = mechHealth.GetComponent<Rigidbody2D>();
+            MechMovement targetMovement = mechHealth.GetComponent<MechMovement>();
 
-            if (rb != null && mechMovement != null)
+            if (targetRb != null && targetMovement != null)
             {
-                // Calculate knockback direction and velocity
-                Vector2 knockbackDirection = (rb.transform.position - transform.position).normalized;
-                Vector2 knockbackVelocity = knockbackDirection * knockbackForce;
-
-                // Disable movement control temporarily
-                mechMovement.SetMovementOverride(true);
-
-                // Apply instant velocity change
-                rb.linearVelocity = knockbackVelocity;
-
-                // Re-enable movement after charge duration
-                mechMovement.SetMovementOverride(true, chargeDuration);
+                Vector2 knockbackDirection = (targetRb.transform.position - transform.position).normalized;
+                targetMovement.SetMovementOverride(true, stunDuration);
+                targetRb.linearVelocity = knockbackDirection * knockbackForce;
             }
         }
         else
         {
-            // Hit a wall stuns the player
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            // Hit a wall - stun the owner
+            if (owner != null)
             {
-                owner.SetMovementOverride(true);
                 owner.SetMovementOverride(true, stunDuration);
             }
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (owner == null) return;
-
-        // Ignore collisions with the owner mech
-        if (collision.gameObject == owner.gameObject || collision.transform.root.gameObject == owner.gameObject)
-        {
-            return;
-        }
-
-        // Trigger collision animation for any collision
-        Animator skeletonAnimator = mech.GetSkeletonAnimator();
-        if (skeletonAnimator != null)
-        {
-            skeletonAnimator.SetTrigger("headbutt-collided");
-        }
-
-        // Disable headbutt trigger on collision
-        DisableHeadbuttTrigger();
-
-        // Check if hit a wall - stun the player
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            owner.SetMovementOverride(true);
-            owner.SetMovementOverride(true, stunDuration);
-        }
-    }
-
-    private IEnumerator DisableHeadbuttTriggerAfterDelay(float delay)
+    private IEnumerator DisableColliderAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        DisableHeadbuttTrigger();
-    }
-
-    private void DisableHeadbuttTrigger()
-    {
-        if (headbuttTrigger != null)
-        {
-            headbuttTrigger.SetActive(false);
-        }
-    }
-
-    protected override void OnDestroy()
-    {
-        base.OnDestroy();
-        if (headbuttTrigger != null)
-        {
-            Destroy(headbuttTrigger);
-        }
+        if (headCollider != null) headCollider.enabled = false;
+        chargeCoroutine = null;
     }
 }
