@@ -13,6 +13,10 @@ public class ThrusterLegs : LegsPart
     [Header("Audio")]
     [SerializeField] private AudioSource jetpackSound;
 
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem leftFootParticles;
+    [SerializeField] private ParticleSystem rightFootParticles;
+
     private float currentFuel;
     private bool isThrusting;
     private PlayerController playerController;
@@ -41,6 +45,9 @@ public class ThrusterLegs : LegsPart
                     mechAnimEvents.rightFootSprite.SetActive(false);
             }
         }
+
+        // Ensure particles are stopped initially
+        StopParticles();
     }
 
     protected override void OnDestroy()
@@ -81,6 +88,7 @@ public class ThrusterLegs : LegsPart
             if (currentFuel <= 0.0f)
             {
                 jetpackSound.Stop();
+                StopParticles();
                 isThrusting = false;
             }
         }
@@ -100,6 +108,7 @@ public class ThrusterLegs : LegsPart
                 {
                     jetpackSound.Play();
                 }
+                StartParticles();
                 StartCooldown();
             }
         }
@@ -112,9 +121,22 @@ public class ThrusterLegs : LegsPart
             {
                 jetpackSound.Stop();
             }
+            StopParticles();
         }
     }
     
     public override void MovementAbility()
     {}
+
+    private void StartParticles()
+    {
+        if (leftFootParticles != null) leftFootParticles.Play();
+        if (rightFootParticles != null) rightFootParticles.Play();
+    }
+
+    private void StopParticles()
+    {
+        if (leftFootParticles != null) leftFootParticles.Stop();
+        if (rightFootParticles != null) rightFootParticles.Stop();
+    }
 }
