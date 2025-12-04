@@ -180,6 +180,50 @@ public class MechController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when left punch hitbox should activate.
+    /// </summary>
+    public void OnLeftPunchHitEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnLeftPunchHit();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when left punch ends.
+    /// </summary>
+    public void OnLeftPunchEndEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnLeftPunchEnd();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when right punch hitbox should activate.
+    /// </summary>
+    public void OnRightPunchHitEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnRightPunchHit();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when right punch ends.
+    /// </summary>
+    public void OnRightPunchEndEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnRightPunchEnd();
+        }
+    }
+
     public void SetMovementOverride(bool isOverriding)
     {
         if (mechMovement != null)
