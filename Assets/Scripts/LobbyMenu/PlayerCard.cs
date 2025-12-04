@@ -594,4 +594,23 @@ public class PlayerCard : MonoBehaviour
         Debug.LogWarning($"[PlayerCard] Player index {playerIndex} out of bounds for outline colors array");
         return Color.white;
     }
+
+    /// <summary>
+    /// Hides the PlayerCard visually but keeps it alive for audio to finish playing.
+    /// Destroys the GameObject after the specified delay.
+    /// </summary>
+    public void HideAndDestroyAfterDelay(float delay = 3f)
+    {
+        // Reparent to root so lobbyMenu.SetActive(false) doesn't disable us
+        transform.SetParent(null);
+
+        // Make invisible by disabling all graphic components
+        foreach (var graphic in GetComponentsInChildren<Graphic>())
+        {
+            graphic.enabled = false;
+        }
+
+        // Destroy after delay to allow audio to finish
+        Destroy(gameObject, delay);
+    }
 }

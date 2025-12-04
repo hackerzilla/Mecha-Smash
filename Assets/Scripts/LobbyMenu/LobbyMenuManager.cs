@@ -94,6 +94,15 @@ public class LobbyMenuManager : MonoBehaviour
     
     public void StartGame()
     {
+        // Hide PlayerCards but keep them alive for audio to finish playing
+        foreach (PlayerController player in players)
+        {
+            if (player.playerCard != null)
+            {
+                player.playerCard.HideAndDestroyAfterDelay(3f);
+            }
+        }
+
         // make lobby menu invisible
         lobbyMenu.SetActive(false);
 
