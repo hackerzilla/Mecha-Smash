@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -22,6 +23,9 @@ public class LobbyMenuManager : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent<PlayerController> onPlayerJoinedGame;
+
+    // Track devices that have joined to prevent duplicates (fixes DualSense duplicate bug in builds)
+    private HashSet<InputDevice> joinedDevices = new HashSet<InputDevice>();
 
     private void Awake()
     {
@@ -54,6 +58,45 @@ public class LobbyMenuManager : MonoBehaviour
     // Called every time a player joins via Player Input Manager (a new controller is detected)
     private void OnPlayerJoined(PlayerInput playerInput)
     {
+        // Check for duplicate device - prevent same controller joining twice
+        foreach (var device in playerInput.devices)
+        {
+            if (joinedDevices.Contains(device))
+            {
+                Debug.LogWarning($"Duplicate join attempt from device: {device.displayName}. Destroying duplicate player.");
+                Destroy(playerInput.gameObject);
+                return;
+            }
+        }
+
+        // Fix for DualSense duplicate bug in builds:
+        // DualSense registers as both HID device and XInputController in builds.
+        // Reject XInput controllers when a DualSense/DualShock device already exists.
+        var device0 = playerInput.devices.FirstOrDefault();
+        if (device0 != null && device0.description.interfaceName == "XInput")
+        {
+            // Check if any PlayStation controller (DualSense/DualShock) exists
+            bool playstationControllerExists = InputSystem.devices.Any(d =>
+                d.displayName.Contains("DualSense") ||
+                d.displayName.Contains("DualShock") ||
+                d.displayName.Contains("Wireless Controller") ||
+                (d.description.product != null && d.description.product.Contains("DualSense")) ||
+                (d.description.product != null && d.description.product.Contains("DualShock")));
+
+            if (playstationControllerExists)
+            {
+                Debug.Log($"Rejecting duplicate XInput player spawn (PlayStation controller exists): {device0.displayName}");
+                Destroy(playerInput.gameObject);
+                return;
+            }
+        }
+
+        // Track all devices for this player
+        foreach (var device in playerInput.devices)
+        {
+            joinedDevices.Add(device);
+        }
+
         players.Add(playerInput.GetComponent<PlayerController>());
 
         if (playerCardPrefab != null)
@@ -87,6 +130,12 @@ public class LobbyMenuManager : MonoBehaviour
     // Called every time a player leaves via Player Input Manager (a new controller is disconnected)
     private void OnPlayerLeft(PlayerInput playerInput)
     {
+        // Remove devices from tracking
+        foreach (var device in playerInput.devices)
+        {
+            joinedDevices.Remove(device);
+        }
+
         players.Remove(playerInput.GetComponent<PlayerController>());
 
         Debug.Log($"Player {playerInput.playerIndex} left. Total players: {players.Count}");
