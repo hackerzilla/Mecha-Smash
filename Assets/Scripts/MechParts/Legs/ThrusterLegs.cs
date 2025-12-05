@@ -3,23 +3,65 @@ using UnityEngine.InputSystem;
 
 public class ThrusterLegs : LegsPart
 {
-    [SerializeField] 
+    [SerializeField]
     private float thrustForce = 15f;
-    [SerializeField] 
+    [SerializeField]
     private float maxFuel = 3.0f;
-    [SerializeField] 
+    [SerializeField]
     private float rechargeRate = 1.0f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource jetpackSound;
+
+    [Header("Particles")]
+    [SerializeField] private ParticleSystem leftFootParticles;
+    [SerializeField] private ParticleSystem rightFootParticles;
 
     private float currentFuel;
     private bool isThrusting;
     private PlayerController playerController;
+    private MechAnimationEvents mechAnimEvents;
 
     protected override void Awake()
     {
-        base.Awake();
         AbilityName = "Jetpack";
         currentFuel = maxFuel;
         maxJumps = 1;
+    }
+
+    public override void AttachSprites(Transform leftFootAttachment, Transform rightFootAttachment)
+    {
+        base.AttachSprites(leftFootAttachment, rightFootAttachment);
+
+        // Hide skeleton's built-in feet
+        if (mech != null && mech.skeletonRig != null)
+        {
+            mechAnimEvents = mech.skeletonRig.GetComponent<MechAnimationEvents>();
+            if (mechAnimEvents != null)
+            {
+                if (mechAnimEvents.leftFootSprite != null)
+                    mechAnimEvents.leftFootSprite.SetActive(false);
+                if (mechAnimEvents.rightFootSprite != null)
+                    mechAnimEvents.rightFootSprite.SetActive(false);
+            }
+        }
+
+        // Ensure particles are stopped initially
+        StopParticles();
+    }
+
+    protected override void OnDestroy()
+    {
+        // Restore skeleton's feet visibility before cleanup
+        if (mechAnimEvents != null)
+        {
+            if (mechAnimEvents.leftFootSprite != null)
+                mechAnimEvents.leftFootSprite.SetActive(true);
+            if (mechAnimEvents.rightFootSprite != null)
+                mechAnimEvents.rightFootSprite.SetActive(true);
+        }
+
+        base.OnDestroy();
     }
 
     void FixedUpdate()
@@ -41,6 +83,15 @@ public class ThrusterLegs : LegsPart
                 currentFuel += rechargeRate * Time.deltaTime; 
             }
         }
+        else
+        {
+            if (currentFuel <= 0.0f)
+            {
+                jetpackSound.Stop();
+                StopParticles();
+                isThrusting = false;
+            }
+        }
     }
 
     public override void MovementAbility(PlayerController player, InputAction.CallbackContext context)
@@ -53,19 +104,39 @@ public class ThrusterLegs : LegsPart
             if (CanUseAbility() && currentFuel > 0)
             {
                 isThrusting = true;
-                animator.SetBool("MovementAbilityActive", true); 
+                if (jetpackSound != null)
+                {
+                    jetpackSound.Play();
+                }
+                StartParticles();
                 StartCooldown();
             }
         }
-        
+
         // When unclick "LegsAbility"
         if (context.canceled)
         {
             isThrusting = false;
-            animator.SetBool("MovementAbilityActive", false);
+            if (jetpackSound != null)
+            {
+                jetpackSound.Stop();
+            }
+            StopParticles();
         }
     }
     
     public override void MovementAbility()
     {}
+
+    private void StartParticles()
+    {
+        if (leftFootParticles != null) leftFootParticles.Play();
+        if (rightFootParticles != null) rightFootParticles.Play();
+    }
+
+    private void StopParticles()
+    {
+        if (leftFootParticles != null) leftFootParticles.Stop();
+        if (rightFootParticles != null) rightFootParticles.Stop();
+    }
 }

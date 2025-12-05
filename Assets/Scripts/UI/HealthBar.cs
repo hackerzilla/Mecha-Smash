@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using NUnit.Framework;
 
 public class HealthBar : MonoBehaviour
 {
@@ -11,7 +10,6 @@ public class HealthBar : MonoBehaviour
     void OnEnable()
     {
         initialBarSize = fillBar.rectTransform.sizeDelta.x;
-        Assert.NotNull(mechHealth);
         mechHealth.onHealthChanged.AddListener(OnHealthChanged);
     }
 
@@ -22,7 +20,6 @@ public class HealthBar : MonoBehaviour
 
     void OnHealthChanged(float newHealth, float maxHealth)
     {
-        Assert.NotNull(fillBar);
         float healthPercent = newHealth / maxHealth;
         fillBar.rectTransform.sizeDelta = new Vector2(initialBarSize * healthPercent,  fillBar.rectTransform.sizeDelta.y);
     }

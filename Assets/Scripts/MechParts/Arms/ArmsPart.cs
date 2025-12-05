@@ -37,6 +37,26 @@ abstract public class ArmsPart : MechPart
     public virtual void OnSwordSwingEnd() { }
 
     /// <summary>
+    /// Called by animation event when left punch hitbox should activate.
+    /// </summary>
+    public virtual void OnLeftPunchHit() { }
+
+    /// <summary>
+    /// Called by animation event when left punch ends.
+    /// </summary>
+    public virtual void OnLeftPunchEnd() { }
+
+    /// <summary>
+    /// Called by animation event when right punch hitbox should activate.
+    /// </summary>
+    public virtual void OnRightPunchHit() { }
+
+    /// <summary>
+    /// Called by animation event when right punch ends.
+    /// </summary>
+    public virtual void OnRightPunchEnd() { }
+
+    /// <summary>
     /// Attaches the arm sprites to the skeleton rig at the specified hand attachment points.
     /// Called by MechController during part assembly.
     /// </summary>

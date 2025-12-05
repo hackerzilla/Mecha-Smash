@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 
 /// <summary>
@@ -17,7 +16,5 @@ abstract public class MechPart : MonoBehaviour
     // This function will run for all mech parts regardless of type.
     protected virtual void Awake()
     {
-        animator = GetComponent<Animator>();
-        Assert.NotNull(animator);
     }
 }

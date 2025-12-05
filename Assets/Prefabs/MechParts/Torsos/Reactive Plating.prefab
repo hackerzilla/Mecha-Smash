@@ -25,9 +25,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2208795246776783186}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.013, y: 0.256, z: 0}
-  m_LocalScale: {x: 0.32976472, y: 0.32976472, z: 0.65952945}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.012, y: 0.226, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4476546449460581878}
@@ -78,16 +78,16 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_SortingOrder: 13
+  m_Sprite: {fileID: -4288720634565320183, guid: dfaf965fe3a5ed746b38a3d1fd33f855, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.31, y: 0.27}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &4764539912230078113
@@ -115,9 +115,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4764539912230078113}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.267, y: 0.32099998, z: 0}
-  m_LocalScale: {x: 0.231, y: 0.35, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.013, y: 0.097, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4476546449460581878}
@@ -168,16 +168,16 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_SortingOrder: 9
+  m_Sprite: {fileID: 1805192344827567055, guid: 187d2a7c234c01d4d9c32601e8e4d928, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.16, y: 0.1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5407395583336745803
@@ -206,8 +206,8 @@ Transform:
   m_GameObject: {fileID: 5407395583336745803}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.072, y: 0, z: 0}
-  m_LocalScale: {x: 0.217155, y: 0.217155, z: 0.43431}
+  m_LocalPosition: {x: 0.18, y: 0.41, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4476546449460581878}
@@ -258,16 +258,16 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_SortingOrder: 9
+  m_Sprite: {fileID: 8867367764599320302, guid: 897b35a32441a32418ac8ccc8866d233, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.31, y: 0.27}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5667582769369169224
@@ -280,7 +280,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4476546449460581878}
   - component: {fileID: 6383253985334823945}
-  - component: {fileID: 4881430075759506094}
   m_Layer: 0
   m_Name: Reactive Plating
   m_TagString: Untagged
@@ -319,22 +318,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16dc34ded78cf4f7fa3319c71b49caca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 4881430075759506094}
+  animator: {fileID: 0}
   mech: {fileID: 0}
   player: {fileID: 0}
   description: 
   vfxColor: {r: 0.19776326, g: 0.6509434, b: 0.03991636, a: 1}
   cooldown: 1
+  vfxDuration: 2
   chestSprite: {fileID: 2208795246776783186}
   coreSprite: {fileID: 4764539912230078113}
   leftShoulderSprite: {fileID: 5407395583336745803}
   rightShoulderSprite: {fileID: 7840891416992199576}
+  torsoSprites: []
   chestSortingOrder: 14
   coreSortingOrder: 9
-  leftShoulderSortingOrder: 12
+  leftShoulderSortingOrder: 9
   rightShoulderSortingOrder: 17
-  vfxDuration: 2
-  torsoSprites: []
   damageMultiplier: 0.5
   duration: 3
 --- !u!1 &7840891416992199576
@@ -363,8 +362,8 @@ Transform:
   m_GameObject: {fileID: 7840891416992199576}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.643, y: 0, z: 0}
-  m_LocalScale: {x: 0.203015, y: 0.203015, z: 0.40603}
+  m_LocalPosition: {x: -0.246, y: 0.373, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4476546449460581878}
@@ -415,37 +414,15 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_SortingOrder: 16
+  m_Sprite: {fileID: -3082190421167376618, guid: 0b395d69e1eee294a933cd56cfda814d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.16, y: 0.14}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &4881430075759506094
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5667582769369169224}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 631f0a2ee6cb74ce3a7417ae8cec609a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0

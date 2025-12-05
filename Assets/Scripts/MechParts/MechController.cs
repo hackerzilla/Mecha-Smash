@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -27,8 +26,10 @@ public class MechController : MonoBehaviour
     // Attachment points on skeleton - where part sprites get attached
     public Transform leftHandAttachment;
     public Transform rightHandAttachment;
-    public Transform leftFootAttachment;
+    public Transform leftCalfAttachment;
+    public Transform rightCalfAttachment;
     public Transform rightFootAttachment;
+    public Transform leftFootAttachment;
     public Transform eyePoint;
 
     // Head attachment point on skeleton
@@ -43,6 +44,8 @@ public class MechController : MonoBehaviour
     [Header("Visual Settings")]
     [SerializeField] private Material outlineMaterialTemplate;
     public Material torsoMaterialTemplate;
+    public Material defaultSpriteMaterial;
+    public Material damageFlashMaterial;
 
     public HeadPart headInstance;
     public TorsoPart torsoInstance;
@@ -174,6 +177,50 @@ public class MechController : MonoBehaviour
         if (armsInstance != null)
         {
             armsInstance.OnSwordSwingEnd();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when left punch hitbox should activate.
+    /// </summary>
+    public void OnLeftPunchHitEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnLeftPunchHit();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when left punch ends.
+    /// </summary>
+    public void OnLeftPunchEndEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnLeftPunchEnd();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when right punch hitbox should activate.
+    /// </summary>
+    public void OnRightPunchHitEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnRightPunchHit();
+        }
+    }
+
+    /// <summary>
+    /// Called by MechAnimationEvents bridge when right punch ends.
+    /// </summary>
+    public void OnRightPunchEndEvent()
+    {
+        if (armsInstance != null)
+        {
+            armsInstance.OnRightPunchEnd();
         }
     }
 
@@ -362,7 +409,6 @@ public class MechController : MonoBehaviour
         {
             Destroy(headInstance.gameObject);
         }
-        Assert.AreNotEqual(headPrefab, null);
 
         // Instantiate part at slot
         headInstance = Instantiate(headPrefab, headSlot);
@@ -379,7 +425,6 @@ public class MechController : MonoBehaviour
         {
             Destroy(torsoInstance.gameObject);
         }
-        Assert.AreNotEqual(torsoPrefab, null);
 
         // Instantiate part at slot
         torsoInstance = Instantiate(torsoPrefab, torsoSlot);
@@ -396,7 +441,6 @@ public class MechController : MonoBehaviour
         {
             Destroy(armsInstance.gameObject);
         }
-        Assert.AreNotEqual(armsPrefab, null);
 
         // Instantiate part at slot
         armsInstance = Instantiate(armsPrefab, armsSlot);
@@ -413,7 +457,6 @@ public class MechController : MonoBehaviour
         {
             Destroy(legsInstance.gameObject);
         }
-        Assert.AreNotEqual(legsPrefab, null);
 
         // Instantiate part at slot
         legsInstance = Instantiate(legsPrefab, legsSlot);
@@ -422,7 +465,7 @@ public class MechController : MonoBehaviour
         legsInstance.transform.SetLocalPositionAndRotation(Vector2.zero, Quaternion.identity);
 
         // Attach sprites to skeleton rig foot attachment points
-        legsInstance.AttachSprites(leftFootAttachment, rightFootAttachment);
+        legsInstance.AttachSprites(leftCalfAttachment, rightCalfAttachment);
     }
 
     /// <summary>

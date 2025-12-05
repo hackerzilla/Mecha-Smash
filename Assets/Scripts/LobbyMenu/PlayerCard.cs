@@ -30,6 +30,7 @@ public class PlayerCard : MonoBehaviour
     public Sprite unreadySprite;
     public Sprite readyIndicatorSprite;
     public Sprite unreadyIndicatorSprite;
+    public AudioSource readySound;
 
     [Header("Player-Specific Sprites")]
     public Sprite[] playerNameSprites = new Sprite[4];
@@ -194,6 +195,15 @@ public class PlayerCard : MonoBehaviour
         
         UpdateAllPartDisplays();
 
+        // Sync mech parts with UI selection (swap all parts to match index 0)
+        if (playerRef != null)
+        {
+            if (headOptions.Count > 0) playerRef.SwapMechPart(headOptions[0]);
+            if (torsoOptions.Count > 0) playerRef.SwapMechPart(torsoOptions[0]);
+            if (armsOptions.Count > 0) playerRef.SwapMechPart(armsOptions[0]);
+            if (legsOptions.Count > 0) playerRef.SwapMechPart(legsOptions[0]);
+        }
+
         // Initialize all outlines and arrows with dark sprites
         for (int i = 0; i < PART_SLOT_COUNT; i++)
         {
@@ -238,6 +248,7 @@ public class PlayerCard : MonoBehaviour
         {
             readyButtonText.text = "Ready";
             isReady = true;
+            // readySound.Play();
         }
     }
 
@@ -405,10 +416,10 @@ public class PlayerCard : MonoBehaviour
             readyBotRightImage.sprite = isReady ? readyIndicatorSprite : unreadyIndicatorSprite;
         }
 
-        // Stop part selection when ready
         if (isReady)
         {
             StopFlashing();
+            readySound.Play();
         }
         else
         {
@@ -430,7 +441,6 @@ public class PlayerCard : MonoBehaviour
             
             if (!player.playerCard.isReady)
             {
-                Debug.Log($"Player {player.name} is not ready! Not all players are ready.");
                 return;
             }
         }
@@ -583,5 +593,24 @@ public class PlayerCard : MonoBehaviour
 
         Debug.LogWarning($"[PlayerCard] Player index {playerIndex} out of bounds for outline colors array");
         return Color.white;
+    }
+
+    /// <summary>
+    /// Hides the PlayerCard visually but keeps it alive for audio to finish playing.
+    /// Destroys the GameObject after the specified delay.
+    /// </summary>
+    public void HideAndDestroyAfterDelay(float delay = 3f)
+    {
+        // Reparent to root so lobbyMenu.SetActive(false) doesn't disable us
+        transform.SetParent(null);
+
+        // Make invisible by disabling all graphic components
+        foreach (var graphic in GetComponentsInChildren<Graphic>())
+        {
+            graphic.enabled = false;
+        }
+
+        // Destroy after delay to allow audio to finish
+        Destroy(gameObject, delay);
     }
 }

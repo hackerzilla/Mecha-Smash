@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -30,19 +29,23 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private float canSubmitAfterTime = 0f;
     public bool canMove;
+    private Vector2 currentMoveInput;
 
     public int playerNumber { get; private set; }
+
+    void Awake()
+    {
+        if (mechInstance == null)
+        {
+            mechInstance = Instantiate(mechPrefab, this.transform);
+        }
+    }
 
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
         playerNumber = playerInput.playerIndex + 1; // Convert 0-based index to 1-based player number
-        if (mechInstance == null)
-        {
-            Assert.NotNull(mechPrefab);
-            mechInstance = Instantiate(mechPrefab, this.transform); // mech assembles itself on start
-        }
-        Assert.NotNull(mechInstance);
+
 
         // Set player index for outline layer isolation (must be before mech Start runs)
         MechOutlineRenderer outlineRenderer = mechInstance.GetComponent<MechOutlineRenderer>();
@@ -86,9 +89,10 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        currentMoveInput = context.ReadValue<Vector2>();
         if (mechInstance != null)
         {
-            mechInstance.OnMove(context.ReadValue<Vector2>());
+            mechInstance.OnMove(currentMoveInput);
         }
     }
 
@@ -96,7 +100,11 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed && mechInstance != null)
         {
-            mechInstance.Jump();
+            // deadzone
+            if (currentMoveInput.y > 0.55f)
+            {
+                mechInstance.Jump();
+            }
         }
     }
 
@@ -126,7 +134,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMovementAbility(InputAction.CallbackContext context)
     {
-        if (context.performed && mechInstance != null)
+        if (mechInstance != null && (context.performed || context.canceled))
         {
             mechInstance.MovementAbility(this, context);
         }

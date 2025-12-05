@@ -8,12 +8,22 @@ public class AcceleratorLegs : LegsPart
     private float dashForce = 20f;
     [SerializeField]
     private float dashDuration = 0.2f;
+    [SerializeField] protected AudioSource dashSound;
 
     protected override void Awake()
     {
         base.Awake();
         AbilityName = "Tread Dash";
         maxJumps = 1;
+    }
+
+    public override void AttachSprites(Transform leftFootAttachment, Transform rightFootAttachment)
+    {
+        // Use foot attachments instead of calf attachments for treads
+        Transform leftFoot = mech != null ? mech.leftFootAttachment : leftFootAttachment;
+        Transform rightFoot = mech != null ? mech.rightFootAttachment : rightFootAttachment;
+
+        base.AttachSprites(leftFoot, rightFoot);
     }
 
     public override void MovementAbility(PlayerController player, InputAction.CallbackContext context)
@@ -38,6 +48,7 @@ public class AcceleratorLegs : LegsPart
             Vector2 dashDir = new Vector2(player.GetFacingDirection(), 0);
             player.GetRigidbody().linearVelocity = new Vector2(dashDir.x * dashForce, 0f);
             StartCooldown();
+            dashSound.Play();
         }
     }
     public override void MovementAbility()

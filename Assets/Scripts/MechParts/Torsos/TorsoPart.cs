@@ -127,7 +127,7 @@ abstract public class TorsoPart : MechPart
     protected IEnumerator TorsoDissolve()
     {
         MechController mechController = transform.root.GetComponent<PlayerController>()?.mechInstance;
-        
+
         // Change Parameters here
         float t = 0f;
         float flashSpeed = 10f;
@@ -149,7 +149,6 @@ abstract public class TorsoPart : MechPart
 
             foreach (SpriteRenderer renderer in renderers)
             {
-                
                 matInstance.SetFloat("_DissolveAmount", dissolve);
                 matInstance.SetFloat("_OutlineThickness", outline);
                 matInstance.SetColor("_OutlineColor", vfxColor * 3);
@@ -160,7 +159,16 @@ abstract public class TorsoPart : MechPart
             yield return null;
         }
 
-        // mechController.ApplyOutlineMaterial();
+        // Reset to default sprite material (MechOutlineRenderer handles outlines separately)
+        foreach (SpriteRenderer renderer in renderers)
+        {
+            if (renderer != null)
+                renderer.material = mechController.defaultSpriteMaterial;
+        }
+
+        // Cleanup VFX material
+        Destroy(matInstance);
+
         vfxRunning = null;
     }
 }

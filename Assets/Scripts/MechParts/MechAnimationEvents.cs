@@ -6,6 +6,10 @@ using UnityEngine;
 /// </summary>
 public class MechAnimationEvents : MonoBehaviour
 {
+    [Header("Skeleton Sprites")]
+    public GameObject leftFootSprite;
+    public GameObject rightFootSprite;
+
     private MechController mechController;
 
     void Awake()
@@ -98,6 +102,50 @@ public class MechAnimationEvents : MonoBehaviour
         if (mechController != null)
         {
             mechController.OnSwordSwingEndEvent();
+        }
+    }
+
+    /// <summary>
+    /// Called by Animation Event when left punch hitbox should activate.
+    /// </summary>
+    public void OnLeftPunchHit()
+    {
+        if (mechController != null)
+        {
+            mechController.OnLeftPunchHitEvent();
+        }
+    }
+
+    /// <summary>
+    /// Called by Animation Event when left punch ends.
+    /// </summary>
+    public void OnLeftPunchEnd()
+    {
+        if (mechController != null)
+        {
+            mechController.OnLeftPunchEndEvent();
+        }
+    }
+
+    /// <summary>
+    /// Called by Animation Event when right punch hitbox should activate.
+    /// </summary>
+    public void OnRightPunchHit()
+    {
+        if (mechController != null)
+        {
+            mechController.OnRightPunchHitEvent();
+        }
+    }
+
+    /// <summary>
+    /// Called by Animation Event when right punch ends.
+    /// </summary>
+    public void OnRightPunchEnd()
+    {
+        if (mechController != null)
+        {
+            mechController.OnRightPunchEndEvent();
         }
     }
 }

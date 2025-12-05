@@ -130,7 +130,7 @@
                 },
                 {
                     "name": "2D Vector",
-                    "id": "48b36ea8-ddbd-4bb4-b8f3-3d3e097992d5",
+                    "id": "f21876bd-f900-4d37-b0e9-c1543904c678",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -141,7 +141,7 @@
                 },
                 {
                     "name": "up",
-                    "id": "50399230-c656-4728-8cdb-d378b9325699",
+                    "id": "90438ea4-4afe-4bfb-a947-965a49540d0e",
                     "path": "<HID::usb gamepad           >/stick/up",
                     "interactions": "",
                     "processors": "",
@@ -152,7 +152,7 @@
                 },
                 {
                     "name": "down",
-                    "id": "0fc2ec44-d86c-43f9-a7ee-b5025795dbe1",
+                    "id": "46a4189d-f3c5-4c0d-9b73-ce15ebcb917c",
                     "path": "<HID::usb gamepad           >/stick/down",
                     "interactions": "",
                     "processors": "",
@@ -163,7 +163,7 @@
                 },
                 {
                     "name": "left",
-                    "id": "c7a44394-931f-48db-9fc7-5e224884ac1e",
+                    "id": "df8da199-4819-4c00-8d01-c748033a92a1",
                     "path": "<HID::usb gamepad           >/stick/left",
                     "interactions": "",
                     "processors": "",
@@ -174,7 +174,7 @@
                 },
                 {
                     "name": "right",
-                    "id": "0b318a92-6a7d-4c05-9335-04fe81881aaa",
+                    "id": "e405712f-497c-4deb-92ea-f4f2720243ea",
                     "path": "<HID::usb gamepad           >/stick/right",
                     "interactions": "",
                     "processors": "",
@@ -207,7 +207,7 @@
                 },
                 {
                     "name": "",
-                    "id": "4d72780b-0308-42fe-84a8-f251169f9ab5",
+                    "id": "f698a5be-3d04-4cf2-9b6b-212deb5337d2",
                     "path": "<HID::usb gamepad           >/stick/up",
                     "interactions": "",
                     "processors": "",
@@ -240,11 +240,11 @@
                 },
                 {
                     "name": "",
-                    "id": "10818dd4-47be-4de1-a036-29258b64f6e3",
+                    "id": "caca73d3-6840-4952-af97-1e843c8fd412",
                     "path": "<HID::usb gamepad           >/button4",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Touch",
                     "action": "DefensiveAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -273,7 +273,7 @@
                 },
                 {
                     "name": "",
-                    "id": "3d058b4a-b72b-44cb-a1fc-5548b841d2b2",
+                    "id": "842ef1b6-318b-49d2-99ee-ebe07a7d403e",
                     "path": "<HID::usb gamepad           >/button2",
                     "interactions": "",
                     "processors": "",
@@ -306,7 +306,7 @@
                 },
                 {
                     "name": "",
-                    "id": "b2db444f-898b-4ce1-805a-54e6f358f3bf",
+                    "id": "68c7f19b-0ee2-4b5f-b9ff-c4f0a06847d6",
                     "path": "<HID::usb gamepad           >/button3",
                     "interactions": "",
                     "processors": "",
@@ -339,7 +339,7 @@
                 },
                 {
                     "name": "",
-                    "id": "73dfc700-37f3-42ad-8017-49dcaaffe3ae",
+                    "id": "8f14a07a-ed3c-45bb-be0e-cf20b5ec942a",
                     "path": "<HID::usb gamepad           >/trigger",
                     "interactions": "",
                     "processors": "",
@@ -525,7 +525,7 @@
                 },
                 {
                     "name": "2D Vector",
-                    "id": "ad392178-7d9f-4444-a5d9-6e74752ce2a0",
+                    "id": "36d437eb-a360-4056-ac33-c7d07c2ba96d",
                     "path": "2DVector",
                     "interactions": "",
                     "processors": "",
@@ -536,7 +536,7 @@
                 },
                 {
                     "name": "up",
-                    "id": "7b8f9374-a27b-4446-aca5-f316fb738435",
+                    "id": "75786511-7c2f-441b-ae60-3520fa258f00",
                     "path": "<HID::usb gamepad           >/stick/up",
                     "interactions": "",
                     "processors": "",
@@ -547,7 +547,7 @@
                 },
                 {
                     "name": "down",
-                    "id": "b8d7bb15-cd8a-49a2-a2f5-37c0616d4eb7",
+                    "id": "7bfc5c4e-f0ac-41d4-afc8-be2ec415da45",
                     "path": "<HID::usb gamepad           >/stick/down",
                     "interactions": "",
                     "processors": "",
@@ -558,7 +558,7 @@
                 },
                 {
                     "name": "left",
-                    "id": "db306d90-5e8b-4822-9dc5-291b9e7110c9",
+                    "id": "235eeaeb-52e9-4b74-bbec-d11d1cfbbeac",
                     "path": "<HID::usb gamepad           >/stick/left",
                     "interactions": "",
                     "processors": "",
@@ -569,7 +569,7 @@
                 },
                 {
                     "name": "right",
-                    "id": "1a500c35-afb0-419d-8fe3-69ebe3c26520",
+                    "id": "25a72970-a4ea-4790-8c36-89a9c9919ff3",
                     "path": "<HID::usb gamepad           >/stick/right",
                     "interactions": "",
                     "processors": "",
@@ -602,19 +602,8 @@
                 },
                 {
                     "name": "",
-                    "id": "8e8eaad4-4fb9-4c55-bfa9-1ed234ceec8a",
+                    "id": "ef8ff35e-8313-48b0-b5ef-5625866d9a08",
                     "path": "<HID::usb gamepad           >/button3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Submit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e1c5866d-3029-4a27-83d7-c933c4935974",
-                    "path": "<HID::usb gamepad           >/button2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -629,17 +618,6 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Cancel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f8681a7e-5564-48b0-baa4-2b9773d09f3f",
-                    "path": "<HID::usb gamepad           >/button3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Joystick",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false

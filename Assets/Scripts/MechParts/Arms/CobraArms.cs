@@ -5,6 +5,8 @@ public class CobraArms : ArmsPart
 {
     [Header("Projectile Settings")]
     public GameObject projectilePrefab;
+    
+    [SerializeField] private AudioSource gunShot;
 
     private bool isShooting = false;
 
@@ -62,5 +64,6 @@ public class CobraArms : ArmsPart
             cannon.direction = direction;
             cannon.SetOwner(mech.gameObject);
         }
+        gunShot.Play();
     }
 }
