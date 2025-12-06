@@ -6,7 +6,7 @@ public class StunBlade : MonoBehaviour
     private bool hasHIt = false;
     public GameObject owner;
 
-    private void OnDisable() {
+    public void ResetHit() {
         hasHIt = false;
     }
 
@@ -33,12 +33,14 @@ public class StunBlade : MonoBehaviour
 
         if (hasHIt)
         {
+            Debug.Log("StunBlade already hasHit");
             return;
         }
 
         MechHealth targetHealth = other.GetComponentInParent<MechHealth>();
         if(targetHealth != null)
         {
+            Debug.Log("StunBlade hits!");
             targetHealth.TakeDamage(damage);
             hasHIt = true;
         }

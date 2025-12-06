@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e36d14d838fb69b4cbf76bd24ccc037d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StunBlade
-  damage: 25
+  damage: 20
   owner: {fileID: 0}
 --- !u!1 &2658669609666925969
 GameObject:
@@ -203,4 +203,4 @@ MonoBehaviour:
   description: Very slow but powerful slashes that stun when they hit.
   leftHandSprite: {fileID: 0}
   rightHandSprite: {fileID: 540017567962045126}
-  swordParent: {fileID: 0}
+  stunBlade: {fileID: 6039435982903695133}

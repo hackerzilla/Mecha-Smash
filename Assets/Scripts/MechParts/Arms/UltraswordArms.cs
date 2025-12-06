@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class UltraswordArms : ArmsPart
 {
-    [SerializeField] private GameObject swordParent;
+    [SerializeField] private StunBlade stunBlade;
     private Collider2D swordCollider;
     private bool isAttacking = false;
 
@@ -11,21 +11,17 @@ public class UltraswordArms : ArmsPart
     {
         base.AttachSprites(leftHandAttachment, rightHandAttachment);
 
-        // Reparent sword parent to right hand attachment point
-        if (swordParent != null && rightHandAttachment != null)
+        if (stunBlade != null && rightHandAttachment != null)
         {
-            swordParent.transform.SetParent(rightHandAttachment);
-            swordParent.transform.localPosition = Vector3.zero;
+            // Reparent stunBlade to right hand attachment point
+            stunBlade.transform.SetParent(rightHandAttachment);
+            stunBlade.transform.localPosition = Vector3.zero;
 
-            // Set owner for StunBlade (on child)
-            StunBlade bladeScript = swordParent.GetComponentInChildren<StunBlade>();
-            if (bladeScript != null)
-            {
-                bladeScript.owner = mech.gameObject;
-            }
+            // Set owner
+            stunBlade.owner = mech.gameObject;
 
-            // Cache collider (on child) and start with it disabled
-            swordCollider = swordParent.GetComponentInChildren<Collider2D>();
+            // Cache collider and start with it disabled
+            swordCollider = stunBlade.GetComponent<Collider2D>();
             if (swordCollider != null)
             {
                 swordCollider.enabled = false;
@@ -51,6 +47,10 @@ public class UltraswordArms : ArmsPart
 
     public override void OnSwordSwingHit()
     {
+        if (stunBlade != null)
+        {
+            stunBlade.ResetHit();
+        }
         if (swordCollider != null)
         {
             swordCollider.enabled = true;
@@ -70,9 +70,9 @@ public class UltraswordArms : ArmsPart
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        if (swordParent != null)
+        if (stunBlade != null)
         {
-            Destroy(swordParent);
+            Destroy(stunBlade.gameObject);
         }
     }
 }

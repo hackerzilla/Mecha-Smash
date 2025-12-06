@@ -39,7 +39,7 @@ public class MechHealth : MonoBehaviour
         }
     }
     
-    // ⭐️ Different scripts(bullet, ability stuff) call this method and give damage.
+    // Different scripts(bullet, ability stuff) call this method and give damage.
     public void TakeDamage(float amount)
     {
         float rand = Random.Range(0.0f, 1.0f);
